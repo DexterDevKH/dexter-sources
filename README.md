@@ -38,7 +38,6 @@ Tap your preferred sideloading client on your iOS device to add this repository 
 * 🪶 **[Feather](https://dexterdevkh.github.io/dexter-sources/?r=feather)** — Modern on-device certificate signer
 * 🌿 **[AltStore](https://dexterdevkh.github.io/dexter-sources/?r=altstore)** — Classic sideloading manager
 * 📦 **[LiveContainer](https://dexterdevkh.github.io/dexter-sources/?r=livecontainer)** — Run multiple apps inside a single container without using app IDs
-* 🍯 **[StikStore](https://dexterdevkh.github.io/dexter-sources/?r=stikstore)** — Add direct repo source
 * ⚡ **[TrollApps](https://dexterdevkh.github.io/dexter-sources/?r=trollapps)** — TrollStore repository manager
 
 ---

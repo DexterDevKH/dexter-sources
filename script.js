@@ -18,7 +18,6 @@
         "altstore-classic": (url) => `altstore-classic://source?url=${encodeURIComponent(url)}`,
         feather: (url) => `feather://source/${url}`,
         livecontainer: (url) => `livecontainer://source?url=${encodeURIComponent(url)}`,
-        stikstore: (url) => `stikstore://source?url=${encodeURIComponent(url)}`,
         trollapps: (url) => `trollapps://add?url=${encodeURIComponent(url)}`,
         scarlet: (url) => `scarlet://source?url=${encodeURIComponent(url)}`,
         esign: (url) => `esign://source?url=${encodeURIComponent(url)}`
@@ -179,7 +178,14 @@
     // 1. Instant Deep-link Redirection (?r=sidestore, ?r=feather, etc.)
     if (redirectKey && SCHEMES[redirectKey]) {
         try {
-            window.location.replace(SCHEMES[redirectKey](sourceUrl));
+            // Remove ?r= from URL immediately so refreshing or reloading the page never re-triggers the app scheme
+            const cleanParams = new URLSearchParams(window.location.search);
+            cleanParams.delete("r");
+            const cleanSearch = cleanParams.toString();
+            const cleanUrl = window.location.pathname + (cleanSearch ? `?${cleanSearch}` : "") + window.location.hash;
+            window.history.replaceState(null, "", cleanUrl);
+
+            window.location.href = SCHEMES[redirectKey](sourceUrl);
         } catch (e) {
             console.error("Redirection error:", e);
         }
@@ -244,11 +250,6 @@
 
             if (SCHEMES[key]) {
                 btn.href = SCHEMES[key](sourceUrl);
-                btn.addEventListener("click", () => {
-                    const nextParams = new URLSearchParams(window.location.search);
-                    nextParams.set("r", key);
-                    window.history.replaceState(null, "", `?${nextParams.toString()}`);
-                });
             }
         });
     }
@@ -323,24 +324,46 @@
      * Fetch Live Manifest (Auto-syncs with sources.json)
      */
     function fetchLiveManifest() {
-        // Use relative sources.json on web/localhost with cache-busting, or custom ?url= query if provided
         const isWeb = window.location.protocol === "http:" || window.location.protocol === "https:";
-        const targetUrl = urlParams.has("url") ? sourceUrl : (isWeb ? `sources.json?_t=${Date.now()}` : sourceUrl);
+        const targetUrl = urlParams.has("url") ? sourceUrl : (isWeb ? "sources.json" : sourceUrl);
 
-        fetch(targetUrl, { cache: "no-cache" })
+        fetch(targetUrl)
             .then((res) => {
                 if (!res.ok) throw new Error("HTTP status " + res.status);
                 return res.json();
             })
             .then((data) => {
                 if (data && typeof data === "object") {
-                    currentManifest = data;
-                    applyManifest(data);
+                    // Only re-render if data has actually changed to save CPU/battery
+                    if (!isManifestIdentical(currentManifest, data)) {
+                        currentManifest = data;
+                        applyManifest(data);
+                    }
                 }
             })
             .catch((err) => {
                 console.warn("Could not fetch remote sources.json; using cached fallback:", err);
             });
+    }
+
+    /**
+     * Compare manifests to avoid redundant DOM destruction and repaints
+     */
+    function isManifestIdentical(a, b) {
+        if (!a || !b) return false;
+        if (a.name !== b.name) return false;
+        const appsA = a.apps || [];
+        const appsB = b.apps || [];
+        if (appsA.length !== appsB.length) return false;
+        for (let i = 0; i < appsA.length; i++) {
+            if (appsA[i].bundleIdentifier !== appsB[i].bundleIdentifier) return false;
+            if (appsA[i].version !== appsB[i].version) return false;
+            if (appsA[i].downloadURL !== appsB[i].downloadURL) return false;
+        }
+        const newsA = (a.news && a.news[0]) ? a.news[0].title : "";
+        const newsB = (b.news && b.news[0]) ? b.news[0].title : "";
+        if (newsA !== newsB) return false;
+        return true;
     }
 
     /**
@@ -381,12 +404,21 @@
             const latestNews = data.news[0];
             if (newsHeadline) newsHeadline.textContent = latestNews.title || "Latest Update";
             if (newsCaption) newsCaption.textContent = latestNews.caption || "";
+            if (latestNews.tintColor && newsBanner) {
+                const hexColor = latestNews.tintColor.startsWith("#") ? latestNews.tintColor : `#${latestNews.tintColor}`;
+                newsBanner.style.setProperty("--news-accent", hexColor);
+            }
             if (newsBanner) newsBanner.classList.remove("hidden");
         }
 
         if (newsCloseBtn && newsBanner) {
             newsCloseBtn.addEventListener("click", () => {
-                newsBanner.classList.add("hidden");
+                newsBanner.style.transition = "opacity 0.25s ease, transform 0.25s ease";
+                newsBanner.style.opacity = "0";
+                newsBanner.style.transform = "translateY(-6px)";
+                setTimeout(() => {
+                    newsBanner.classList.add("hidden");
+                }, 250);
             });
         }
 
@@ -654,6 +686,26 @@
     }
 
     /**
+     * Dynamically load QR Engine on-demand to save mobile bandwidth & load time
+     */
+    function loadQrEngine() {
+        return new Promise((resolve) => {
+            if (typeof qrcode === "function" || window.qrcode) {
+                resolve(true);
+                return;
+            }
+            const script = document.createElement("script");
+            script.src = "qrcode.min.js";
+            script.onload = () => resolve(true);
+            script.onerror = () => {
+                console.warn("Could not load qrcode.min.js");
+                resolve(false);
+            };
+            document.head.appendChild(script);
+        });
+    }
+
+    /**
      * Modals management (QR Code, App Details, Esc key listeners)
      */
     function initModals() {
@@ -665,8 +717,9 @@
         const appModalCloseBtn = document.getElementById("appModalCloseBtn");
 
         if (qrLauncherBtn && qrModal) {
-            qrLauncherBtn.addEventListener("click", () => {
+            qrLauncherBtn.addEventListener("click", async () => {
                 qrModal.classList.remove("hidden");
+                await loadQrEngine();
                 renderActiveQrCode();
             });
         }
