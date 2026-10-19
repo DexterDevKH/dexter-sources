@@ -25,40 +25,38 @@
     };
 
     // Fallback source manifest for offline or direct file:// viewing
+    // Fallback source manifest for offline or direct file:// viewing
     const FALLBACK_MANIFEST = {
         name: "DexterDevKH Apps",
-        subtitle: "Official tweaked iOS apps & multimedia clients",
-        description: "Official SideStore, Feather, AltStore, and LiveContainer repository curated by DexterDevKH. High performance, sponsor-blocking, and ad-free playback for iOS.",
+        identifier: "com.dexterdevkh.source",
+        sourceURL: "https://dexterdevkh.github.io/dexter-sources/sources.json",
         iconURL: "icons/profile.png",
+        userinfo: {},
         apps: [
             {
                 name: "DexTube",
                 bundleIdentifier: "com.google.ios.youtube",
                 developerName: "DexterDevKH",
-                subtitle: "Enhanced YouTube client with ad-blocking & background play",
-                localizedDescription: "Official iOS release of DTLite (DexTube). Features complete ad-blocking, background audio playback, SponsorBlock integration, Return YouTube Dislike, PiP (Picture-in-Picture), OLED pure dark mode, and customizable video playback speeds.",
+                subtitle: "Streamlined multimedia client",
+                localizedDescription: "Official iOS builds of DTLite.",
                 iconURL: "icons/dtlite.png",
                 tintColor: "007AFF",
-                category: "entertainment",
                 version: "21.41.5",
                 versionDate: "2026-10-17T13:45:30Z",
-                versionDescription: "• Updated YouTube base to v21.41.5\n• Enhanced SponsorBlock auto-skip reliability\n• Improved PiP transition animations on iOS 17 & 18\n• Stability fixes and performance optimizations",
+                versionDescription: "Version 21.41.5 release.",
                 downloadURL: "https://github.com/DexterDevKH/DTLite/releases/download/ytp-v6.0.b2-21.41.5/DexTubePlus_v6.0.b2_21.41.5.ipa",
-                size: 148605378,
+                size: 148605386,
+                screenshotURLs: [],
+                absoluteVersion: "21.41.5",
+                appID: "com.google.ios.youtube",
                 versions: [
                     {
                         version: "21.41.5",
                         date: "2026-10-17T13:45:30Z",
                         downloadURL: "https://github.com/DexterDevKH/DTLite/releases/download/ytp-v6.0.b2-21.41.5/DexTubePlus_v6.0.b2_21.41.5.ipa",
-                        localizedDescription: "• Updated YouTube base to v21.41.5\n• Enhanced SponsorBlock auto-skip reliability\n• Improved PiP transition animations on iOS 17 & 18\n• Stability fixes and performance optimizations",
-                        size: 148605378
-                    },
-                    {
-                        version: "21.40.5",
-                        date: "2026-10-06T09:36:22Z",
-                        downloadURL: "https://github.com/DexterDevKH/DTLite/releases/download/ytp-v6.0.b2-21.40.5/DexTubePlus_v6.0.b2_21.40.5.ipa",
-                        localizedDescription: "Version 21.40.5 release with stability updates.",
-                        size: 147834744
+                        localizedDescription: "Version 21.41.5 release.",
+                        size: 148605386,
+                        absoluteVersion: "21.41.5"
                     }
                 ]
             },
@@ -66,35 +64,33 @@
                 name: "DexTube Music",
                 bundleIdentifier: "com.google.ios.youtubemusic",
                 developerName: "DexterDevKH",
-                subtitle: "High-fidelity music streaming, background audio & lyrics",
-                localizedDescription: "Official iOS release of DTMusicUltimate (DexTube Music). Features ad-free music streaming, background playback, high-bitrate audio toggle, synchronized real-time lyrics, offline caching, and a sleek customized audio player interface.",
+                subtitle: "High-fidelity music streaming & playback",
+                localizedDescription: "Official iOS builds of DTMusicUltimate.",
                 iconURL: "icons/dtmusicultimate.png",
                 tintColor: "FF2D55",
-                category: "music",
-                version: "9.41.2",
-                versionDate: "2026-10-18T09:41:27Z",
-                versionDescription: "• Updated YouTube Music base to v9.41.2\n• Audio enhancement and lossless equalizer presets\n• Background streaming fixes for iOS 18\n• Improved lyrics synchronization",
-                downloadURL: "https://github.com/DexterDevKH/DTMusicUltimate/releases/download/dtm-9.41.2/DTMusicUltimate_9.41.2.ipa",
-                size: 107008594,
+                version: "9.42.2",
+                versionDate: "2026-10-19T16:19:57Z",
+                versionDescription: "Version 9.42.2 release.",
+                downloadURL: "https://github.com/DexterDevKH/DTMusicUltimate/releases/download/dtm-9.42.2/DTMusicUltimate_9.42.2.ipa",
+                size: 107274691,
+                screenshotURLs: [],
+                absoluteVersion: "9.42.2",
+                appID: "com.google.ios.youtubemusic",
                 versions: [
                     {
-                        version: "9.41.2",
-                        date: "2026-10-18T09:41:27Z",
-                        downloadURL: "https://github.com/DexterDevKH/DTMusicUltimate/releases/download/dtm-9.41.2/DTMusicUltimate_9.41.2.ipa",
-                        localizedDescription: "• Updated YouTube Music base to v9.41.2\n• Audio enhancement and lossless equalizer presets\n• Background streaming fixes for iOS 18\n• Improved lyrics synchronization",
-                        size: 107008594
+                        version: "9.42.2",
+                        date: "2026-10-19T16:19:57Z",
+                        downloadURL: "https://github.com/DexterDevKH/DTMusicUltimate/releases/download/dtm-9.42.2/DTMusicUltimate_9.42.2.ipa",
+                        localizedDescription: "Version 9.42.2 release.",
+                        size: 107274691,
+                        absoluteVersion: "9.42.2"
                     }
                 ]
             }
         ],
-        news: [
-            {
-                title: "DexTube 21.41.5 & DexTube Music 9.41.2 Now Live",
-                identifier: "release-2026-10",
-                caption: "Latest builds ready for installation with iOS 18 support.",
-                date: "2026-10-18T10:00:00Z"
-            }
-        ]
+        news: [],
+        version: 1,
+        apiVersion: "v1"
     };
 
     // Local icons map for flawless offline & web viewing
@@ -109,6 +105,14 @@
             return LOCAL_APP_ICONS[app.bundleIdentifier];
         }
         return app.iconURL || "icons/dtlite.png";
+    }
+
+    function getAppCategory(app) {
+        if (!app) return "";
+        if (app.category) return app.category;
+        if (app.bundleIdentifier === "com.google.ios.youtubemusic") return "music";
+        if (app.bundleIdentifier === "com.google.ios.youtube") return "entertainment";
+        return "";
     }
 
     // State
@@ -358,7 +362,7 @@
         const filtered = apps.filter((app) => {
             // Category filter
             if (activeFilter !== "all") {
-                const appCat = (app.category || "").toLowerCase();
+                const appCat = getAppCategory(app).toLowerCase();
                 if (activeFilter === "entertainment" && !appCat.includes("entertainment") && !appCat.includes("video")) {
                     return false;
                 }
@@ -439,10 +443,11 @@
 
         headerRow.appendChild(title);
 
-        if (app.category) {
+        const category = getAppCategory(app);
+        if (category) {
             const catBadge = document.createElement("span");
             catBadge.className = "app-category-badge";
-            catBadge.textContent = app.category;
+            catBadge.textContent = category === "entertainment" ? "Video & Media" : (category === "music" ? "Music" : category);
             headerRow.appendChild(catBadge);
         }
 
@@ -659,11 +664,14 @@
         } else if (activeQrTarget === "altstore") {
             targetUrl = SCHEMES.altstore(sourceUrl);
             caption = "Direct AltStore Import Scheme";
+        } else if (activeQrTarget === "livecontainer") {
+            targetUrl = SCHEMES.livecontainer(sourceUrl);
+            caption = "Direct LiveContainer Import Scheme";
         } else if (activeQrTarget === "feather") {
             targetUrl = SCHEMES.feather(sourceUrl);
             caption = "Direct Feather Import Scheme";
         } else if (activeQrTarget === "portal") {
-            targetUrl = window.location.href;
+            targetUrl = (currentManifest && currentManifest.website) || "https://dexterdevkh.github.io/dexter-sources/";
             caption = "DexterDevKH Web Portal URL";
         }
 
@@ -771,99 +779,57 @@
     }
 
     /**
-     * Pure JavaScript Lightweight QR Code Generator
-     * Self-contained, zero-dependency canvas renderer.
+     * Standards-Compliant ISO/IEC 18004 QR Code Canvas Renderer
+     * Uses self-contained Kazuhiko Arase QR engine with auto version selection,
+     * Reed-Solomon error correction (Level M), and 4-module quiet zone margin.
      */
     function generateQrOnCanvas(canvas, text) {
+        if (!canvas) return;
         const ctx = canvas.getContext("2d");
         const size = canvas.width;
+
+        // Reset canvas to pure white background
         ctx.fillStyle = "#ffffff";
         ctx.fillRect(0, 0, size, size);
 
-        // Simple lightweight hash grid generator with finder patterns
-        // for instant visual fallback, or full matrix if supported
-        const matrix = createQrMatrix(text);
-        const moduleCount = matrix.length;
-        const cellSize = (size - 24) / moduleCount;
-        const offset = 12;
+        const qrLib = (typeof qrcode === "function") ? qrcode : (window.qrcode || null);
+        if (typeof qrLib === "function") {
+            try {
+                // Type number 0 enables automatic version selection (1-40)
+                // Error correction level 'M' (15%) is optimal for camera recognition
+                const qr = qrLib(0, "M");
+                qr.addData(text);
+                qr.make();
 
-        ctx.fillStyle = "#0f172a";
-        for (let r = 0; r < moduleCount; r++) {
-            for (let c = 0; c < moduleCount; c++) {
-                if (matrix[r][c]) {
-                    ctx.fillRect(
-                        Math.round(offset + c * cellSize),
-                        Math.round(offset + r * cellSize),
-                        Math.ceil(cellSize),
-                        Math.ceil(cellSize)
-                    );
-                }
-            }
-        }
-    }
+                const moduleCount = qr.getModuleCount();
+                // Standard 4-module quiet zone for robust camera detection
+                const margin = 4;
+                const totalModules = moduleCount + (margin * 2);
+                const cellSize = size / totalModules;
 
-    /**
-     * Generates a Standard 21x21 or 25x25 QR Matrix with standard finder patterns
-     */
-    function createQrMatrix(input) {
-        const N = 25;
-        const grid = Array.from({ length: N }, () => Array(N).fill(false));
-
-        // Draw Finder Pattern helper
-        function drawFinder(row, col) {
-            for (let r = -1; r <= 7; r++) {
-                for (let c = -1; c <= 7; c++) {
-                    const pr = row + r;
-                    const pc = col + c;
-                    if (pr >= 0 && pr < N && pc >= 0 && pc < N) {
-                        if (r >= 0 && r <= 6 && c >= 0 && c <= 6) {
-                            if (r === 0 || r === 6 || c === 0 || c === 6 || (r >= 2 && r <= 4 && c >= 2 && c <= 4)) {
-                                grid[pr][pc] = true;
-                            } else {
-                                grid[pr][pc] = false;
-                            }
-                        } else {
-                            grid[pr][pc] = false;
+                ctx.fillStyle = "#0f172a";
+                for (let r = 0; r < moduleCount; r++) {
+                    for (let c = 0; c < moduleCount; c++) {
+                        if (qr.isDark(r, c)) {
+                            const x = Math.round((c + margin) * cellSize);
+                            const y = Math.round((r + margin) * cellSize);
+                            const w = Math.ceil(cellSize);
+                            const h = Math.ceil(cellSize);
+                            ctx.fillRect(x, y, w, h);
                         }
                     }
                 }
+                return;
+            } catch (err) {
+                console.error("QR generation error:", err);
             }
         }
 
-        // 3 Finder patterns (Top-Left, Top-Right, Bottom-Left)
-        drawFinder(0, 0);
-        drawFinder(0, N - 7);
-        drawFinder(N - 7, 0);
-
-        // Timing patterns
-        for (let i = 8; i < N - 8; i++) {
-            grid[6][i] = (i % 2 === 0);
-            grid[i][6] = (i % 2 === 0);
-        }
-
-        // Pseudo-random deterministic module distribution based on input string
-        let hash = 0x811c9dc5;
-        for (let i = 0; i < input.length; i++) {
-            hash ^= input.charCodeAt(i);
-            hash = (hash * 0x01000193) >>> 0;
-        }
-
-        let bitIndex = 0;
-        for (let r = 0; r < N; r++) {
-            for (let c = 0; c < N; c++) {
-                // Skip finder patterns
-                if ((r < 8 && c < 8) || (r < 8 && c >= N - 8) || (r >= N - 8 && c < 8)) continue;
-                if (r === 6 || c === 6) continue;
-
-                // Deterministic pseudo-bits
-                hash = (hash ^ (r * 31 + c * 17 + bitIndex)) >>> 0;
-                hash = (hash * 1664525 + 1013904223) >>> 0;
-                grid[r][c] = (hash % 3 === 0 || hash % 7 === 0);
-                bitIndex++;
-            }
-        }
-
-        return grid;
+        // Visual fallback
+        ctx.fillStyle = "#64748b";
+        ctx.font = "14px Inter, -apple-system, sans-serif";
+        ctx.textAlign = "center";
+        ctx.fillText("Could not load QR engine", size / 2, size / 2);
     }
 
 })();

@@ -1348,6 +1348,17 @@ body {
     height: 220px;
 }
 
+.qr-code-frame canvas {
+    width: 100%;
+    height: 100%;
+    max-width: 188px;
+    max-height: 188px;
+    display: block;
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+    image-rendering: pixelated;
+}
+
 .qr-footer-caption {
     text-align: center;
     font-size: 0.72rem;
