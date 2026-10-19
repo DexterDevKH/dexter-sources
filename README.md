@@ -26,7 +26,7 @@ A high-performance, curated repository distributing optimized, feature-packed iO
 | App | Category | Latest Version | Features | Direct Download |
 | :--- | :--- | :--- | :--- | :--- |
 | <img src="icons/dtlite.png" width="40" height="40" style="border-radius:10px" alt="DexTube" /><br>**DexTube** | Video & Media | `v21.41.5` | Ad-blocking, SponsorBlock, Background Playback, PiP, OLED Pure Dark Mode | [Download IPA](https://github.com/DexterDevKH/DTLite/releases/latest) |
-| <img src="icons/dtmusicultimate.png" width="40" height="40" style="border-radius:10px" alt="DexTube Music" /><br>**DexTube Music** | Music & Audio | `v9.41.2` | Lossless EQ, Ad-Free Streaming, Real-time Lyrics, Offline Playback | [Download IPA](https://github.com/DexterDevKH/DTMusicUltimate/releases/latest) |
+| <img src="icons/dtmusicultimate.png" width="40" height="40" style="border-radius:10px" alt="DexTube Music" /><br>**DexTube Music** | Music & Audio | `v9.42.2` | Lossless EQ, Ad-Free Streaming, Real-time Lyrics, Offline Playback | [Download IPA](https://github.com/DexterDevKH/DTMusicUltimate/releases/latest) |
 
 ---
 

@@ -23,7 +23,7 @@
       "versionDate": "2026-10-17T13:45:30Z",
       "versionDescription": "Version 21.41.5 release.",
       "downloadURL": "https://github.com/DexterDevKH/DTLite/releases/download/ytp-v6.0.b2-21.41.5/DexTubePlus_v6.0.b2_21.41.5.ipa",
-      "size": 148605378,
+      "size": 148605386,
       "screenshotURLs": [],
       "absoluteVersion": "21.41.5",
       "appID": "com.google.ios.youtube",
@@ -33,7 +33,7 @@
           "date": "2026-10-17T13:45:30Z",
           "downloadURL": "https://github.com/DexterDevKH/DTLite/releases/download/ytp-v6.0.b2-21.41.5/DexTubePlus_v6.0.b2_21.41.5.ipa",
           "localizedDescription": "Version 21.41.5 release.",
-          "size": 148605378,
+          "size": 148605386,
           "absoluteVersion": "21.41.5"
         },
         {
@@ -43,6 +43,14 @@
           "localizedDescription": "Version 21.40.5 release.",
           "size": 147834744,
           "absoluteVersion": "21.40.5"
+        },
+        {
+          "version": "21.39.4",
+          "date": "2026-10-03T03:28:17Z",
+          "downloadURL": "https://github.com/DexterDevKH/DTLite/releases/download/ytp-v6.0.b2-21.39.4/DexTubePlus_v6.0.b2_21.39.4.ipa",
+          "localizedDescription": "Version 21.39.4 release.",
+          "size": 148047124,
+          "absoluteVersion": "21.39.4"
         }
       ]
     },
@@ -55,15 +63,23 @@
       "iconURL": "https://raw.githubusercontent.com/DexterDevKH/dexter-sources/main/icons/dtmusicultimate.png",
       "tintColor": "FF2D55",
       "category": "music",
-      "version": "9.41.2",
-      "versionDate": "2026-10-18T09:41:27Z",
-      "versionDescription": "Version 9.41.2 release.",
-      "downloadURL": "https://github.com/DexterDevKH/DTMusicUltimate/releases/download/dtm-9.41.2/DTMusicUltimate_9.41.2.ipa",
-      "size": 107008594,
+      "version": "9.42.2",
+      "versionDate": "2026-10-19T16:19:57Z",
+      "versionDescription": "Version 9.42.2 release.",
+      "downloadURL": "https://github.com/DexterDevKH/DTMusicUltimate/releases/download/dtm-9.42.2/DTMusicUltimate_9.42.2.ipa",
+      "size": 107274691,
       "screenshotURLs": [],
-      "absoluteVersion": "9.41.2",
+      "absoluteVersion": "9.42.2",
       "appID": "com.google.ios.youtubemusic",
       "versions": [
+        {
+          "version": "9.42.2",
+          "date": "2026-10-19T16:19:57Z",
+          "downloadURL": "https://github.com/DexterDevKH/DTMusicUltimate/releases/download/dtm-9.42.2/DTMusicUltimate_9.42.2.ipa",
+          "localizedDescription": "Version 9.42.2 release.",
+          "size": 107274691,
+          "absoluteVersion": "9.42.2"
+        },
         {
           "version": "9.41.2",
           "date": "2026-10-18T09:41:27Z",
@@ -84,6 +100,16 @@
     }
   ],
   "news": [
+    {
+      "title": "DexTube Music v9.42.2 Released",
+      "identifier": "release-com-google-ios-youtubemusic-9-42-2",
+      "caption": "Version 9.42.2 is now available with the latest features, enhancements, and iOS 18 fixes.",
+      "date": "2026-10-19T16:19:57Z",
+      "tintColor": "6366F1",
+      "imageURL": "https://raw.githubusercontent.com/DexterDevKH/dexter-sources/main/icons/dtmusicultimate.png",
+      "appID": "com.google.ios.youtubemusic",
+      "notify": true
+    },
     {
       "title": "DexTube 21.41.5 & DexTube Music 9.41.2 Now Live",
       "identifier": "release-2026-10",
