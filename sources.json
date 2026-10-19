@@ -1,0 +1,100 @@
+{
+  "name": "DexterDevKH Apps",
+  "identifier": "com.dexterdevkh.source",
+  "sourceURL": "https://dexterdevkh.github.io/dexter-sources/sources.json",
+  "website": "https://dexterdevkh.github.io/dexter-sources/",
+  "subtitle": "Official tweaked iOS apps & multimedia clients",
+  "description": "Official SideStore, Feather, AltStore, and LiveContainer repository curated by DexterDevKH. High performance, sponsor-blocking, and ad-free playback for iOS.",
+  "iconURL": "https://avatars.githubusercontent.com/u/274127037?v=4",
+  "headerURL": "",
+  "tintColor": "6366F1",
+  "userinfo": {},
+  "apps": [
+    {
+      "name": "DexTube",
+      "bundleIdentifier": "com.google.ios.youtube",
+      "developerName": "DexterDevKH",
+      "subtitle": "Enhanced YouTube client with ad-blocking & background play",
+      "localizedDescription": "Official iOS release of DTLite (DexTube). Features complete ad-blocking, background audio playback, SponsorBlock integration, Return YouTube Dislike, PiP (Picture-in-Picture), OLED pure dark mode, and customizable video playback speeds.",
+      "iconURL": "https://raw.githubusercontent.com/DexterDevKH/dexter-sources/main/icons/dtlite.png",
+      "tintColor": "007AFF",
+      "category": "entertainment",
+      "version": "21.41.5",
+      "versionDate": "2026-10-17T13:45:30Z",
+      "versionDescription": "Version 21.41.5 release.",
+      "downloadURL": "https://github.com/DexterDevKH/DTLite/releases/download/ytp-v6.0.b2-21.41.5/DexTubePlus_v6.0.b2_21.41.5.ipa",
+      "size": 148605378,
+      "screenshotURLs": [],
+      "absoluteVersion": "21.41.5",
+      "appID": "com.google.ios.youtube",
+      "versions": [
+        {
+          "version": "21.41.5",
+          "date": "2026-10-17T13:45:30Z",
+          "downloadURL": "https://github.com/DexterDevKH/DTLite/releases/download/ytp-v6.0.b2-21.41.5/DexTubePlus_v6.0.b2_21.41.5.ipa",
+          "localizedDescription": "Version 21.41.5 release.",
+          "size": 148605378,
+          "absoluteVersion": "21.41.5"
+        },
+        {
+          "version": "21.40.5",
+          "date": "2026-10-06T09:36:22Z",
+          "downloadURL": "https://github.com/DexterDevKH/DTLite/releases/download/ytp-v6.0.b2-21.40.5/DexTubePlus_v6.0.b2_21.40.5.ipa",
+          "localizedDescription": "Version 21.40.5 release.",
+          "size": 147834744,
+          "absoluteVersion": "21.40.5"
+        }
+      ]
+    },
+    {
+      "name": "DexTube Music",
+      "bundleIdentifier": "com.google.ios.youtubemusic",
+      "developerName": "DexterDevKH",
+      "subtitle": "High-fidelity music streaming, background audio & lyrics",
+      "localizedDescription": "Official iOS release of DTMusicUltimate (DexTube Music). Features ad-free music streaming, background playback, high-bitrate audio toggle, synchronized real-time lyrics, offline caching, and a sleek customized audio player interface.",
+      "iconURL": "https://raw.githubusercontent.com/DexterDevKH/dexter-sources/main/icons/dtmusicultimate.png",
+      "tintColor": "FF2D55",
+      "category": "music",
+      "version": "9.41.2",
+      "versionDate": "2026-10-18T09:41:27Z",
+      "versionDescription": "Version 9.41.2 release.",
+      "downloadURL": "https://github.com/DexterDevKH/DTMusicUltimate/releases/download/dtm-9.41.2/DTMusicUltimate_9.41.2.ipa",
+      "size": 107008594,
+      "screenshotURLs": [],
+      "absoluteVersion": "9.41.2",
+      "appID": "com.google.ios.youtubemusic",
+      "versions": [
+        {
+          "version": "9.41.2",
+          "date": "2026-10-18T09:41:27Z",
+          "downloadURL": "https://github.com/DexterDevKH/DTMusicUltimate/releases/download/dtm-9.41.2/DTMusicUltimate_9.41.2.ipa",
+          "localizedDescription": "Version 9.41.2 release.",
+          "size": 107008594,
+          "absoluteVersion": "9.41.2"
+        },
+        {
+          "version": "9.40.2",
+          "date": "2026-10-11T06:31:37Z",
+          "downloadURL": "https://github.com/DexterDevKH/DTMusicUltimate/releases/download/dtm-9.40.2/DTMusicUltimate_9.40.2.ipa",
+          "localizedDescription": "Version 9.40.2 release.",
+          "size": 106696986,
+          "absoluteVersion": "9.40.2"
+        }
+      ]
+    }
+  ],
+  "news": [
+    {
+      "title": "DexTube 21.41.5 & DexTube Music 9.41.2 Now Live",
+      "identifier": "release-2026-10",
+      "caption": "Fresh updates for DexTube and DexTube Music are now ready for download with iOS 18 support.",
+      "date": "2026-10-18T10:00:00Z",
+      "tintColor": "6366F1",
+      "imageURL": "https://raw.githubusercontent.com/DexterDevKH/dexter-sources/main/icons/dtlite.png",
+      "appID": "com.google.ios.youtube",
+      "notify": true
+    }
+  ],
+  "version": 1,
+  "apiVersion": "v1"
+}

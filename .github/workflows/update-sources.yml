@@ -1,0 +1,86 @@
+name: Update SideStore Source
+
+on:
+  schedule:
+    - cron: '15,45 * * * *'
+  workflow_dispatch:
+    inputs:
+      force:
+        description: 'Force commit even if no changes'
+        required: false
+        default: false
+        type: boolean
+      max_versions:
+        description: 'Max historical versions to keep'
+        required: false
+        default: '1'
+        type: string
+  repository_dispatch:
+    types: [release, update, new-ipa]
+
+concurrency:
+  group: source-sync
+  cancel-in-progress: true
+
+jobs:
+  sync-releases:
+    name: Sync GitHub Releases
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          token: ${{ secrets.PAT || secrets.GITHUB_TOKEN }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Backup current sources.json
+        run: cp sources.json sources.json.bak
+
+      - name: Run manifest updater
+        env:
+          TOKEN: ${{ secrets.PAT || secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.PAT || secrets.GITHUB_TOKEN }}
+          GITHUB_OWNER: "DexterDevKH"
+        run: |
+          MAX_VER="${{ inputs.max_versions || '2' }}"
+          python update_sources.py --source sources.json --max-versions "$MAX_VER"
+
+      - name: Validate manifest JSON format
+        run: |
+          python -m json.tool sources.json > /dev/null
+          echo "✅ sources.json syntax validated successfully."
+
+      - name: Check for changes
+        id: diff
+        run: |
+          if diff -q sources.json sources.json.bak > /dev/null 2>&1 && git diff --quiet README.md; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "📭 No manifest or README changes detected."
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+            echo "📬 Manifest or README updated with new release metadata."
+          fi
+          rm -f sources.json.bak
+
+      - name: Commit and push updates
+        if: steps.diff.outputs.changed == 'true' || inputs.force == true
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add sources.json README.md
+          if git diff --staged --quiet; then
+            echo "No changes staged."
+            exit 0
+          fi
+          git commit -m "chore(auto): update sources.json and README releases [skip ci]"
+          git push

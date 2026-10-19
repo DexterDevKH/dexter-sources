@@ -1,0 +1,46 @@
+name: Keep Workflows Alive
+
+# GitHub disables scheduled workflows in repositories with no commits for 60 days.
+# This workflow prevents automatic deactivation by maintaining active workflow states.
+
+on:
+  schedule:
+    # Runs on the 1st and 15th of every month at 00:00 UTC
+    - cron: '0 0 1,15 * *'
+  workflow_dispatch:
+
+jobs:
+  keepalive:
+    name: Prevent Inactivity Deactivation
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    permissions:
+      actions: write
+
+    steps:
+      - name: Re-enable disabled workflows
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.PAT || secrets.GITHUB_TOKEN }}
+          script: |
+            const { data: workflows } = await github.rest.actions.listRepoWorkflows({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+            });
+
+            for (const wf of workflows.workflows) {
+              if (wf.state === 'disabled_inactivity') {
+                console.log(`🔄 Re-enabling inactive workflow: ${wf.name} (${wf.id})`);
+                await github.rest.actions.enableWorkflow({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  workflow_id: wf.id,
+                });
+                console.log(`✅ Re-enabled: ${wf.name}`);
+              } else {
+                console.log(`✔️  ${wf.name} is active (${wf.state})`);
+              }
+            }
+
+            console.log('🏓 Keep-alive workflow check completed.');
