@@ -1605,14 +1605,19 @@ body {
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     color: #ffffff;
-    padding: 10px 18px;
+    padding: 10px 20px;
     border-radius: 999px;
     box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
     display: inline-flex;
     align-items: center;
+    justify-content: center;
     gap: 8px;
-    font-size: 0.8rem;
+    font-size: 0.85rem;
     font-weight: 600;
+    white-space: nowrap;
+    width: max-content;
+    max-width: calc(100vw - 32px);
+    pointer-events: none;
     z-index: 10000;
     animation: toast-spring 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
@@ -1628,6 +1633,12 @@ body {
     width: 16px;
     height: 16px;
     color: #10b981;
+    flex-shrink: 0;
+}
+
+.toast-message {
+    white-space: nowrap;
+    display: inline-block;
 }
 
 @keyframes toast-spring {

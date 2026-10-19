@@ -221,7 +221,7 @@
                 const next = current === "light" ? "dark" : "light";
                 root.setAttribute("data-theme", next);
                 localStorage.setItem("dexter-theme", next);
-                showToast(`Switched to ${next === "dark" ? "Dark Mode 🌙" : "Light Mode ☀️"}`);
+                showToast(`Switched to ${next === "dark" ? "Dark Mode\u00A0🌙" : "Light Mode\u00A0☀️"}`);
             });
         }
     }
@@ -268,7 +268,7 @@
             copyBtn.addEventListener("click", async () => {
                 const success = await copyToClipboard(sourceUrl);
                 if (success) {
-                    showToast("Source JSON URL copied to clipboard! 📋");
+                    showToast("Source JSON URL copied to clipboard!");
                     const copyText = document.getElementById("copyBtnText");
                     if (copyText) {
                         copyText.textContent = "Copied!";
@@ -603,7 +603,7 @@
         if (copyIpaBtn) {
             copyIpaBtn.onclick = async () => {
                 await copyToClipboard(downloadUrl);
-                showToast("Direct IPA Download link copied! 🔗");
+                showToast("Direct IPA Download link copied!");
             };
         }
 
