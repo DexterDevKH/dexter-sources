@@ -208,7 +208,8 @@ def generate_news_item(app_name: str, version: str, date_str: str, icon_url: str
 
 def update_manifest(
     source_path: str = "sources.json",
-    max_versions: int = 2,
+    max_versions: int = 3,
+    max_news: int = 2,
     token: str = "",
     dry_run: bool = False,
     update_news: bool = True,
@@ -348,14 +349,18 @@ def update_manifest(
             else:
                 logger.info("'%s' is already up to date (v%s)", conf.name, current_ver)
 
-    # Prepend new announcements to news (keeping max 5)
+    # Prepend new announcements to news (keeping max_news)
+    existing_news = manifest.get("news", [])
+    if not isinstance(existing_news, list):
+        existing_news = []
+
     if new_announcements and update_news:
-        existing_news = manifest.get("news", [])
         existing_ids = {n.get("identifier") for n in existing_news if isinstance(n, dict)}
         for ann in new_announcements:
             if ann["identifier"] not in existing_ids:
                 existing_news.insert(0, ann)
-        manifest["news"] = existing_news[:5]
+
+    manifest["news"] = existing_news[:max_news]
 
     if dry_run:
         logger.info("[DRY RUN] Would write updated manifest. Total modified: %d", updated_count)
@@ -408,7 +413,10 @@ def parse_args() -> argparse.Namespace:
         "-s", "--source", default="sources.json", help="Path to source manifest JSON file (default: sources.json)"
     )
     parser.add_argument(
-        "-m", "--max-versions", type=int, default=2, help="Maximum number of historical versions to keep (default: 2)"
+        "-m", "--max-versions", type=int, default=3, help="Maximum number of historical versions to keep (default: 3)"
+    )
+    parser.add_argument(
+        "-n", "--max-news", type=int, default=2, help="Maximum number of news announcements to keep (default: 2)"
     )
     parser.add_argument(
         "-t", "--token", default="", help="GitHub Personal Access Token for higher API rate limits"
@@ -428,6 +436,7 @@ if __name__ == "__main__":
         updated = update_manifest(
             source_path=args.source,
             max_versions=args.max_versions,
+            max_news=args.max_news,
             token=args.token,
             dry_run=args.dry_run,
             update_news=not args.no_news,

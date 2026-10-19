@@ -13,7 +13,12 @@ on:
       max_versions:
         description: 'Max historical versions to keep'
         required: false
-        default: '1'
+        default: '3'
+        type: string
+      max_news:
+        description: 'Max news announcements to keep'
+        required: false
+        default: '2'
         type: string
   repository_dispatch:
     types: [release, update, new-ipa]
@@ -52,8 +57,9 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.PAT || secrets.GITHUB_TOKEN }}
           GITHUB_OWNER: "DexterDevKH"
         run: |
-          MAX_VER="${{ inputs.max_versions || '2' }}"
-          python update_sources.py --source sources.json --max-versions "$MAX_VER"
+          MAX_VER="${{ inputs.max_versions || '3' }}"
+          MAX_NEWS="${{ inputs.max_news || '2' }}"
+          python update_sources.py --source sources.json --max-versions "$MAX_VER" --max-news "$MAX_NEWS"
 
       - name: Validate manifest JSON format
         run: |
