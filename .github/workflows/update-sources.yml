@@ -18,7 +18,7 @@ on:
       max_news:
         description: 'Max news announcements to keep'
         required: false
-        default: '0'
+        default: '2'
         type: string
   repository_dispatch:
     types: [release, update, new-ipa]
@@ -58,7 +58,7 @@ jobs:
           GITHUB_OWNER: "DexterDevKH"
         run: |
           MAX_VER="${{ inputs.max_versions || '3' }}"
-          MAX_NEWS="${{ inputs.max_news || '0' }}"
+          MAX_NEWS="${{ inputs.max_news || '2' }}"
           python update_sources.py --source sources.json --max-versions "$MAX_VER" --max-news "$MAX_NEWS"
 
       - name: Validate manifest JSON format

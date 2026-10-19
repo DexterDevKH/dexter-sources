@@ -187,7 +187,7 @@ def save_source_manifest_atomic(path: str, data: Dict[str, Any]) -> None:
     logger.info("Successfully saved updated manifest to '%s'", path)
 
 
-def generate_news_item(app_name: str, version: str, date_str: str, icon_url: str, bundle_id: str) -> Dict[str, Any]:
+def generate_news_item(app_name: str, version: str, date_str: str, icon_url: str, bundle_id: str, tint_color: str = "6366F1") -> Dict[str, Any]:
     """Creates a news announcement entry for new releases."""
     formatted_date = date_str if date_str else datetime.now(timezone.utc).isoformat()
     return {
@@ -195,7 +195,7 @@ def generate_news_item(app_name: str, version: str, date_str: str, icon_url: str
         "identifier": f"release-{bundle_id.replace('.', '-')}-{version.replace('.', '-')}",
         "caption": f"Version {version} is now available with the latest features, enhancements, and iOS 18 fixes.",
         "date": formatted_date,
-        "tintColor": "6366F1",
+        "tintColor": tint_color,
         "imageURL": icon_url,
         "appID": bundle_id,
         "notify": True,
@@ -205,10 +205,10 @@ def generate_news_item(app_name: str, version: str, date_str: str, icon_url: str
 def update_manifest(
     source_path: str = "sources.json",
     max_versions: int = 3,
-    max_news: int = 0,
+    max_news: int = 2,
     token: str = "",
     dry_run: bool = False,
-    update_news: bool = False,
+    update_news: bool = True,
 ) -> int:
     """
     Main reconciliation loop that fetches GitHub releases and syncs with sources.json.
@@ -220,7 +220,7 @@ def update_manifest(
     avatar_url = get_profile_avatar(GITHUB_OWNER, token)
     manifest["iconURL"] = avatar_url
     manifest.setdefault("userinfo", {})
-    manifest["news"] = []
+    manifest.setdefault("news", [])
     manifest.setdefault("version", 1)
     manifest.setdefault("apiVersion", "v1")
 
@@ -309,6 +309,10 @@ def update_manifest(
             existing_apps_by_id[conf.bundle_id] = app_entry
             updated_count += 1
             logger.info("Added new app '%s' [%s] version %s", conf.name, conf.bundle_id, latest_version["version"])
+            if update_news and max_news > 0:
+                new_announcements.append(generate_news_item(
+                    conf.name, latest_version["version"], latest_version["date"], conf.icon_url, conf.bundle_id, conf.tint_color
+                ))
         else:
             current_ver = app_entry.get("version")
             current_url = app_entry.get("downloadURL")
@@ -317,40 +321,66 @@ def update_manifest(
             changed = (current_ver != latest_version["version"]) or (current_url != latest_version["downloadURL"])
 
             # Ensure all schema fields match strict SideStore form
-            app_entry["name"] = conf.name
-            app_entry["bundleIdentifier"] = conf.bundle_id
-            app_entry["developerName"] = GITHUB_OWNER
-            app_entry["subtitle"] = conf.subtitle
-            app_entry["localizedDescription"] = conf.fallback_description
-            app_entry["iconURL"] = conf.icon_url
-            app_entry["tintColor"] = conf.tint_color
-            app_entry["version"] = latest_version["version"]
-            app_entry["versionDate"] = latest_version["date"]
-            app_entry["versionDescription"] = latest_version["localizedDescription"]
-            app_entry["downloadURL"] = latest_version["downloadURL"]
-            app_entry["size"] = latest_version["size"]
-            app_entry["screenshotURLs"] = app_entry.get("screenshotURLs") or []
-            app_entry["absoluteVersion"] = latest_version["absoluteVersion"]
-            app_entry["appID"] = conf.bundle_id
-            app_entry["versions"] = valid_versions
-            # Strip non-standard fields
-            app_entry.pop("category", None)
+            app_entry.clear()
+            app_entry.update({
+                "name": conf.name,
+                "bundleIdentifier": conf.bundle_id,
+                "developerName": GITHUB_OWNER,
+                "subtitle": conf.subtitle,
+                "localizedDescription": conf.fallback_description,
+                "iconURL": conf.icon_url,
+                "tintColor": conf.tint_color,
+                "version": latest_version["version"],
+                "versionDate": latest_version["date"],
+                "versionDescription": latest_version["localizedDescription"],
+                "downloadURL": latest_version["downloadURL"],
+                "size": latest_version["size"],
+                "screenshotURLs": existing_apps_by_id.get(conf.bundle_id, {}).get("screenshotURLs") or [],
+                "absoluteVersion": latest_version["absoluteVersion"],
+                "appID": conf.bundle_id,
+                "versions": valid_versions,
+            })
 
             if changed:
                 updated_count += 1
                 logger.info("Updated '%s' from %s to %s", conf.name, current_ver, latest_version["version"])
+                if update_news and max_news > 0:
+                    new_announcements.append(generate_news_item(
+                        conf.name, latest_version["version"], latest_version["date"], conf.icon_url, conf.bundle_id, conf.tint_color
+                    ))
             else:
                 logger.info("'%s' is already up to date (v%s)", conf.name, current_ver)
 
-    manifest["news"] = []
+    existing_news = manifest.get("news", [])
+    if not isinstance(existing_news, list):
+        existing_news = []
+
+    if new_announcements and update_news and max_news > 0:
+        existing_ids = {n.get("identifier") for n in existing_news if isinstance(n, dict)}
+        for ann in new_announcements:
+            if ann["identifier"] not in existing_ids:
+                existing_news.insert(0, ann)
+
+    # Strictly rebuild root manifest to match canonical SideStore structure
+    canonical_manifest = {
+        "name": manifest.get("name", f"{GITHUB_OWNER} Apps"),
+        "identifier": manifest.get("identifier", f"com.{GITHUB_OWNER.lower()}.source"),
+        "sourceURL": manifest.get("sourceURL", f"https://{GITHUB_OWNER.lower()}.github.io/dexter-sources/sources.json"),
+        "iconURL": avatar_url,
+        "userinfo": manifest.get("userinfo") if isinstance(manifest.get("userinfo"), dict) else {},
+        "apps": manifest.get("apps", []),
+        "news": existing_news[:max_news],
+        "version": 1,
+        "apiVersion": "v1",
+    }
 
     if dry_run:
         logger.info("[DRY RUN] Would write updated manifest. Total modified: %d", updated_count)
-        print(json.dumps(manifest, indent=2))
+        print(json.dumps(canonical_manifest, indent=2))
         return updated_count
 
-    save_source_manifest_atomic(source_path, manifest)
-    update_readme_table("README.md", manifest)
+    save_source_manifest_atomic(source_path, canonical_manifest)
+    update_readme_table("README.md", canonical_manifest)
     logger.info("Manifest sync complete. Total apps updated: %d", updated_count)
     return updated_count
 
@@ -398,7 +428,7 @@ def parse_args() -> argparse.Namespace:
         "-m", "--max-versions", type=int, default=3, help="Maximum number of historical versions to keep (default: 3)"
     )
     parser.add_argument(
-        "-n", "--max-news", type=int, default=0, help="Maximum number of news announcements to keep (default: 0)"
+        "-n", "--max-news", type=int, default=2, help="Maximum number of news announcements to keep (default: 2)"
     )
     parser.add_argument(
         "-t", "--token", default="", help="GitHub Personal Access Token for higher API rate limits"
