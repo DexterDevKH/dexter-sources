@@ -2,7 +2,7 @@ name: Update SideStore Source
 
 on:
   schedule:
-    - cron: '8 */3 * * *'
+    - cron: '0 */3 * * *'
       timezone: 'Asia/Phnom_Penh'
   workflow_dispatch:
     inputs:
