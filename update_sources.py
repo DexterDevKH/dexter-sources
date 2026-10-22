@@ -2,9 +2,9 @@
 """
 DexterDevKH Source Updater
 ==========================
-Synchronizes GitHub Releases with SideStore v2 (apps-v2.json schema) and AltStore manifest.
+Synchronizes GitHub Releases with SideStore & AltStore sources.json manifest.
 Supports multiple apps, version sanitization, release body parsing, news item
-generation with release links, and safe atomic writing.
+generation, and safe atomic writing.
 """
 
 from __future__ import annotations
@@ -45,11 +45,9 @@ class AppConfig:
     icon_url: str
     ipa_keyword: str = ".ipa"
     fallback_description: str = ""
-    permissions: List[Dict[str, str]] = field(default_factory=list)
-    app_permissions: Dict[str, Any] = field(default_factory=dict)
 
 
-# Configured applications in DexterDevKH source with SideStore v2 permissions
+# Configured applications in DexterDevKH source
 APP_CONFIGS: List[AppConfig] = [
     AppConfig(
         bundle_id="com.google.ios.youtube",
@@ -60,40 +58,6 @@ APP_CONFIGS: List[AppConfig] = [
         tint_color="007AFF",
         icon_url=f"https://raw.githubusercontent.com/{GITHUB_OWNER}/dexter-sources/main/icons/dtlite.png",
         fallback_description="Official iOS release of DTLite (DexTube) featuring ad-blocking, background playback, and SponsorBlock.",
-        permissions=[
-            {
-                "type": "background-audio",
-                "usageDescription": "Allows background playback and audio streaming when the screen is locked or using other apps.",
-            },
-            {
-                "type": "background-fetch",
-                "usageDescription": "Periodically checks for feed updates, subscriptions, and background sync.",
-            },
-            {
-                "type": "local-network",
-                "usageDescription": "Connects to Google Cast, Smart TVs, and local DLNA streaming devices.",
-            },
-        ],
-        app_permissions={
-            "entitlements": [
-                {"name": "com.apple.security.application-groups"},
-                {"name": "get-task-allow"},
-            ],
-            "privacy": [
-                {
-                    "name": "NSBackgroundAudioUsageDescription",
-                    "usageDescription": "Allows background playback and audio streaming when the screen is locked or using other apps.",
-                },
-                {
-                    "name": "NSBackgroundFetchUsageDescription",
-                    "usageDescription": "Periodically checks for feed updates and sync.",
-                },
-                {
-                    "name": "LocalNetwork",
-                    "usageDescription": "Connects to Google Cast, Smart TVs, and local DLNA streaming devices.",
-                },
-            ],
-        },
     ),
     AppConfig(
         bundle_id="com.google.ios.youtubemusic",
@@ -104,40 +68,6 @@ APP_CONFIGS: List[AppConfig] = [
         tint_color="FF2D55",
         icon_url=f"https://raw.githubusercontent.com/{GITHUB_OWNER}/dexter-sources/main/icons/dtmusicultimate.png",
         fallback_description="Official iOS release of DTMusicUltimate (DexTube Music) featuring background audio, ad-free listening, and lossless presets.",
-        permissions=[
-            {
-                "type": "background-audio",
-                "usageDescription": "Enables continuous lossless and high-fidelity music playback in the background.",
-            },
-            {
-                "type": "background-fetch",
-                "usageDescription": "Syncs playlist states and caches music tracks in the background.",
-            },
-            {
-                "type": "local-network",
-                "usageDescription": "Allows streaming audio to AirPlay, Google Cast, and Wi-Fi speakers.",
-            },
-        ],
-        app_permissions={
-            "entitlements": [
-                {"name": "com.apple.security.application-groups"},
-                {"name": "get-task-allow"},
-            ],
-            "privacy": [
-                {
-                    "name": "NSBackgroundAudioUsageDescription",
-                    "usageDescription": "Enables continuous background music playback and headphone controls.",
-                },
-                {
-                    "name": "NSBackgroundFetchUsageDescription",
-                    "usageDescription": "Syncs playlist states and caches music tracks.",
-                },
-                {
-                    "name": "LocalNetwork",
-                    "usageDescription": "Allows streaming audio to AirPlay, Google Cast, and Wi-Fi speakers.",
-                },
-            ],
-        },
     ),
 ]
 
@@ -167,6 +97,15 @@ def fetch_json(url: str, token: str = "") -> Optional[Any]:
     except Exception as e:
         logger.error("Network error fetching %s: %s", url, e)
     return None
+
+
+def get_profile_avatar(owner: str, token: str = "") -> str:
+    """Retrieves user avatar from GitHub API or falls back to public avatar URL."""
+    url = f"https://api.github.com/users/{owner}"
+    data = fetch_json(url, token)
+    if isinstance(data, dict) and "avatar_url" in data:
+        return data["avatar_url"]
+    return f"https://github.com/{owner}.png"
 
 
 def sanitize_version(tag_name: str) -> str:
@@ -216,14 +155,17 @@ def clean_release_body(body: Optional[str], default_text: str) -> str:
 def load_source_manifest(path: str) -> Dict[str, Any]:
     """Loads and validates the source JSON manifest."""
     if not os.path.exists(path):
-        logger.info("Manifest '%s' not found. Creating standard initial SideStore v2 manifest.", path)
+        logger.info("Manifest '%s' not found. Creating standard initial manifest.", path)
         return {
-            "version": 2,
             "name": f"{GITHUB_OWNER} Apps",
             "identifier": f"com.{GITHUB_OWNER.lower()}.source",
             "sourceURL": f"https://{GITHUB_OWNER.lower()}.github.io/dexter-sources/sources.json",
+            "iconURL": f"https://github.com/{GITHUB_OWNER}.png",
+            "userinfo": {},
             "apps": [],
             "news": [],
+            "version": 1,
+            "apiVersion": "v1",
         }
 
     with open(path, "r", encoding="utf-8") as f:
@@ -245,24 +187,17 @@ def save_source_manifest_atomic(path: str, data: Dict[str, Any]) -> None:
     logger.info("Successfully saved updated manifest to '%s'", path)
 
 
-def generate_news_item(
-    app_name: str,
-    version: str,
-    date_str: str,
-    bundle_id: str,
-    tint_color: str = "6366F1",
-    url: str = "",
-) -> Dict[str, Any]:
-    """Creates a news announcement entry for new releases conforming to SideStore v2."""
-    formatted_date = date_str[:10] if date_str and len(date_str) >= 10 else datetime.now(timezone.utc).strftime("%Y-%m-%d")
-    release_url = url or f"https://github.com/{GITHUB_OWNER}/dexter-sources"
+def generate_news_item(app_name: str, version: str, date_str: str, icon_url: str, bundle_id: str, tint_color: str = "6366F1") -> Dict[str, Any]:
+    """Creates a news announcement entry for new releases."""
+    formatted_date = date_str if date_str else datetime.now(timezone.utc).isoformat()
     return {
         "title": f"{app_name} v{version} Released",
         "identifier": f"release-{bundle_id.replace('.', '-')}-{version.replace('.', '-')}",
         "caption": f"Version {version} is now available with the latest features, enhancements, and iOS 18 fixes.",
-        "tintColor": tint_color,
-        "url": release_url,
         "date": formatted_date,
+        "tintColor": tint_color,
+        "imageURL": icon_url,
+        "appID": bundle_id,
         "notify": True,
     }
 
@@ -276,11 +211,22 @@ def update_manifest(
     update_news: bool = True,
 ) -> int:
     """
-    Main reconciliation loop that fetches GitHub releases and syncs with sources.json
-    conforming strictly to SideStore v2 (apps-v2.json) format.
+    Main reconciliation loop that fetches GitHub releases and syncs with sources.json.
     Returns the number of updated apps.
     """
     manifest = load_source_manifest(source_path)
+
+    # Refresh owner metadata
+    avatar_url = get_profile_avatar(GITHUB_OWNER, token)
+    manifest["iconURL"] = avatar_url
+    manifest.setdefault("userinfo", {})
+    manifest.setdefault("news", [])
+    manifest.setdefault("version", 1)
+    manifest.setdefault("apiVersion", "v1")
+
+    # Strip any non-standard root keys for strict SideStore compatibility
+    for key in ["headerURL", "website", "subtitle", "description", "tintColor"]:
+        manifest.pop(key, None)
 
     existing_apps_by_id: Dict[str, Dict[str, Any]] = {
         app.get("bundleIdentifier"): app for app in manifest.get("apps", []) if isinstance(app, dict)
@@ -298,18 +244,7 @@ def update_manifest(
             logger.warning("Could not fetch releases for %s. Keeping existing metadata.", conf.repo)
             continue
 
-        # Cache existing sha256 hashes by version so we preserve them
-        existing_entry = existing_apps_by_id.get(conf.bundle_id)
-        existing_sha_by_ver: Dict[str, str] = {}
-        if existing_entry:
-            for ev in existing_entry.get("versions", []):
-                if ev.get("version") and ev.get("sha256"):
-                    existing_sha_by_ver[ev["version"]] = ev["sha256"]
-            if existing_entry.get("version") and existing_entry.get("sha256"):
-                existing_sha_by_ver[existing_entry["version"]] = existing_entry["sha256"]
-
         valid_versions: List[Dict[str, Any]] = []
-        latest_rel_html_url = ""
 
         for rel in releases:
             if not isinstance(rel, dict) or rel.get("draft", False):
@@ -331,20 +266,14 @@ def update_manifest(
             pub_date = rel.get("published_at") or datetime.now(timezone.utc).isoformat()
             changelog = clean_release_body(rel.get("body"), f"Version {clean_ver} release.")
 
-            if not latest_rel_html_url:
-                latest_rel_html_url = rel.get("html_url") or ""
-
-            ver_dict: Dict[str, Any] = {
+            valid_versions.append({
                 "version": clean_ver,
                 "date": pub_date,
                 "downloadURL": ipa_asset.get("browser_download_url"),
                 "localizedDescription": changelog,
                 "size": ipa_asset.get("size", 0),
-            }
-            if clean_ver in existing_sha_by_ver:
-                ver_dict["sha256"] = existing_sha_by_ver[clean_ver]
-
-            valid_versions.append(ver_dict)
+                "absoluteVersion": clean_ver,
+            })
 
             if len(valid_versions) >= max_versions:
                 break
@@ -357,47 +286,32 @@ def update_manifest(
         app_entry = existing_apps_by_id.get(conf.bundle_id)
         is_new_app = app_entry is None
 
-        existing_screenshots = app_entry.get("screenshotURLs") if app_entry else []
-
-        new_app_data = {
-            "name": conf.name,
-            "bundleIdentifier": conf.bundle_id,
-            "developerName": GITHUB_OWNER,
-            "subtitle": conf.subtitle,
-            "localizedDescription": conf.fallback_description,
-            "iconURL": conf.icon_url,
-            "tintColor": conf.tint_color,
-            "screenshotURLs": existing_screenshots or [],
-            "version": latest_version["version"],
-            "date": latest_version["date"],
-            "downloadURL": latest_version["downloadURL"],
-            "size": latest_version["size"],
-            "versions": valid_versions,
-            "releaseChannels": [
-                {
-                    "track": "stable",
-                    "releases": valid_versions,
-                }
-            ],
-            "permissions": conf.permissions,
-            "appPermissions": conf.app_permissions,
-        }
-        if "sha256" in latest_version:
-            new_app_data["sha256"] = latest_version["sha256"]
-
         if is_new_app:
-            manifest.setdefault("apps", []).append(new_app_data)
-            existing_apps_by_id[conf.bundle_id] = new_app_data
+            app_entry = {
+                "name": conf.name,
+                "bundleIdentifier": conf.bundle_id,
+                "developerName": GITHUB_OWNER,
+                "subtitle": conf.subtitle,
+                "localizedDescription": conf.fallback_description,
+                "iconURL": conf.icon_url,
+                "tintColor": conf.tint_color,
+                "version": latest_version["version"],
+                "versionDate": latest_version["date"],
+                "versionDescription": latest_version["localizedDescription"],
+                "downloadURL": latest_version["downloadURL"],
+                "size": latest_version["size"],
+                "screenshotURLs": [],
+                "absoluteVersion": latest_version["absoluteVersion"],
+                "appID": conf.bundle_id,
+                "versions": valid_versions,
+            }
+            manifest.setdefault("apps", []).append(app_entry)
+            existing_apps_by_id[conf.bundle_id] = app_entry
             updated_count += 1
             logger.info("Added new app '%s' [%s] version %s", conf.name, conf.bundle_id, latest_version["version"])
             if update_news and max_news > 0:
                 new_announcements.append(generate_news_item(
-                    conf.name,
-                    latest_version["version"],
-                    latest_version["date"],
-                    conf.bundle_id,
-                    conf.tint_color,
-                    url=latest_rel_html_url,
+                    conf.name, latest_version["version"], latest_version["date"], conf.icon_url, conf.bundle_id, conf.tint_color
                 ))
         else:
             current_ver = app_entry.get("version")
@@ -406,20 +320,33 @@ def update_manifest(
             # Check if updated
             changed = (current_ver != latest_version["version"]) or (current_url != latest_version["downloadURL"])
 
+            # Ensure all schema fields match strict SideStore form
             app_entry.clear()
-            app_entry.update(new_app_data)
+            app_entry.update({
+                "name": conf.name,
+                "bundleIdentifier": conf.bundle_id,
+                "developerName": GITHUB_OWNER,
+                "subtitle": conf.subtitle,
+                "localizedDescription": conf.fallback_description,
+                "iconURL": conf.icon_url,
+                "tintColor": conf.tint_color,
+                "version": latest_version["version"],
+                "versionDate": latest_version["date"],
+                "versionDescription": latest_version["localizedDescription"],
+                "downloadURL": latest_version["downloadURL"],
+                "size": latest_version["size"],
+                "screenshotURLs": existing_apps_by_id.get(conf.bundle_id, {}).get("screenshotURLs") or [],
+                "absoluteVersion": latest_version["absoluteVersion"],
+                "appID": conf.bundle_id,
+                "versions": valid_versions,
+            })
 
             if changed:
                 updated_count += 1
                 logger.info("Updated '%s' from %s to %s", conf.name, current_ver, latest_version["version"])
                 if update_news and max_news > 0:
                     new_announcements.append(generate_news_item(
-                        conf.name,
-                        latest_version["version"],
-                        latest_version["date"],
-                        conf.bundle_id,
-                        conf.tint_color,
-                        url=latest_rel_html_url,
+                        conf.name, latest_version["version"], latest_version["date"], conf.icon_url, conf.bundle_id, conf.tint_color
                     ))
             else:
                 logger.info("'%s' is already up to date (v%s)", conf.name, current_ver)
@@ -434,14 +361,17 @@ def update_manifest(
             if ann["identifier"] not in existing_ids:
                 existing_news.insert(0, ann)
 
-    # Strictly rebuild root manifest to match canonical SideStore v2 structure
+    # Strictly rebuild root manifest to match canonical SideStore structure
     canonical_manifest = {
-        "version": 2,
         "name": manifest.get("name", f"{GITHUB_OWNER} Apps"),
         "identifier": manifest.get("identifier", f"com.{GITHUB_OWNER.lower()}.source"),
         "sourceURL": manifest.get("sourceURL", f"https://{GITHUB_OWNER.lower()}.github.io/dexter-sources/sources.json"),
+        "iconURL": avatar_url,
+        "userinfo": manifest.get("userinfo") if isinstance(manifest.get("userinfo"), dict) else {},
         "apps": manifest.get("apps", []),
         "news": existing_news[:max_news],
+        "version": 1,
+        "apiVersion": "v1",
     }
 
     if dry_run:
@@ -489,7 +419,7 @@ def update_readme_table(readme_path: str = "README.md", manifest: Optional[Dict[
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        description="Synchronize GitHub releases into SideStore v2 sources.json manifest."
+        description="Synchronize GitHub releases into SideStore/AltStore sources.json manifest."
     )
     parser.add_argument(
         "-s", "--source", default="sources.json", help="Path to source manifest JSON file (default: sources.json)"
