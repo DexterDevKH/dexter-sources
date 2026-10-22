@@ -1298,15 +1298,16 @@ body {
     border-radius: 999px;
     font-size: 0.72rem;
     font-weight: 600;
-    background: #121826;
-    border: 1px solid #1e283d;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
     color: var(--text-muted);
     cursor: pointer;
     transition: all 0.2s ease;
 }
 
 .qr-tab:hover {
-    background: #161e30;
+    background: var(--card-hover-bg);
+    border-color: var(--card-hover-border);
     color: var(--text-primary);
 }
 
@@ -1716,6 +1717,39 @@ body {
     background: #f8fafc;
     border-color: #e2e8f0;
     box-shadow: 0 4px 14px rgba(15, 23, 42, 0.1);
+}
+
+/* Light Theme Overrides for QR Modal */
+[data-theme="light"] .qr-tab {
+    background: #f1f5f9;
+    border-color: #e2e8f0;
+    color: #64748b;
+}
+
+[data-theme="light"] .qr-tab:hover {
+    background: #e2e8f0;
+    border-color: #cbd5e1;
+    color: #0f172a;
+}
+
+[data-theme="light"] .qr-tab.active {
+    background: var(--accent-indigo);
+    color: #ffffff;
+    border-color: transparent;
+}
+
+[data-theme="light"] .qr-code-frame {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 4px 16px rgba(15, 23, 42, 0.08);
+}
+
+[data-theme="light"] .qr-footer-caption code {
+    background: #f1f5f9;
+    padding: 2px 6px;
+    border-radius: 4px;
+    border: 1px solid #e2e8f0;
+    color: #334155;
 }
 
 .toast-icon {
