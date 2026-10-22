@@ -381,11 +381,37 @@ def update_manifest(
     if not isinstance(existing_news, list):
         existing_news = []
 
-    if new_announcements and update_news and max_news > 0:
+    if update_news and max_news > 0:
         existing_ids = {n.get("identifier") for n in existing_news if isinstance(n, dict)}
         for ann in new_announcements:
             if ann["identifier"] not in existing_ids:
                 existing_news.insert(0, ann)
+                existing_ids.add(ann["identifier"])
+
+        # If existing_news is empty, generate news items for the latest release of each app
+        if not existing_news:
+            for conf in APP_CONFIGS:
+                app_entry = existing_apps_by_id.get(conf.bundle_id)
+                if not app_entry:
+                    continue
+                versions = app_entry.get("versions", [])
+                if versions:
+                    latest_v = versions[0]
+                    tint_color = conf.tint_color if conf.tint_color.startswith("#") else f"#{conf.tint_color}"
+                    rel_tag = latest_v.get("version", "")
+                    rel_url = f"https://github.com/{conf.repo}/releases/tag/v{rel_tag}"
+                    item = generate_news_item(
+                        app_name=conf.name,
+                        version=latest_v.get("version", "1.0"),
+                        date_str=latest_v.get("date", ""),
+                        icon_url=conf.icon_url,
+                        bundle_id=conf.bundle_id,
+                        tint_color=tint_color,
+                        url=rel_url,
+                    )
+                    existing_news.append(item)
+                    if len(existing_news) >= max_news:
+                        break
 
     # Rebuild canonical manifest in StikDebug format
     canonical_manifest = {

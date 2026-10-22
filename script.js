@@ -127,7 +127,28 @@
                 ]
             }
         ],
-        news: []
+        news: [
+            {
+                title: "DexTube v21.42.4 Released",
+                identifier: "release-com-google-ios-youtube-21-42-4",
+                caption: "Version 21.42.4 is now available with the latest features, enhancements, and iOS 18 fixes.",
+                tintColor: "#007AFF",
+                imageURL: "icons/dtlite.png",
+                url: "https://github.com/DexterDevKH/DTLite/releases/tag/v21.42.4",
+                date: "2026-10-22",
+                notify: true
+            },
+            {
+                title: "DexTube Music v9.42.2 Released",
+                identifier: "release-com-google-ios-youtubemusic-9-42-2",
+                caption: "Version 9.42.2 is now available with the latest features, enhancements, and iOS 18 fixes.",
+                tintColor: "#FF2D55",
+                imageURL: "icons/dtmusicultimate.png",
+                url: "https://github.com/DexterDevKH/DTMusicUltimate/releases/tag/v9.42.2",
+                date: "2026-10-19",
+                notify: true
+            }
+        ]
     };
 
     // Local icons map for flawless offline & web viewing
