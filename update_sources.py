@@ -45,6 +45,8 @@ class AppConfig:
     icon_url: str
     ipa_keyword: str = ".ipa"
     fallback_description: str = ""
+    beta: bool = False
+    permissions: List[Dict[str, str]] = field(default_factory=list)
 
 
 # Configured applications in DexterDevKH source
@@ -58,6 +60,17 @@ APP_CONFIGS: List[AppConfig] = [
         tint_color="007AFF",
         icon_url=f"https://raw.githubusercontent.com/{GITHUB_OWNER}/dexter-sources/main/icons/dtlite.png",
         fallback_description="Official iOS release of DTLite (DexTube) featuring ad-blocking, background playback, and SponsorBlock.",
+        beta=False,
+        permissions=[
+            {
+                "type": "background-audio",
+                "usageDescription": "Allows audio and video playback in background and Picture-in-Picture.",
+            },
+            {
+                "type": "background-fetch",
+                "usageDescription": "Allows background updates and download synchronization.",
+            },
+        ],
     ),
     AppConfig(
         bundle_id="com.google.ios.youtubemusic",
@@ -68,6 +81,17 @@ APP_CONFIGS: List[AppConfig] = [
         tint_color="FF2D55",
         icon_url=f"https://raw.githubusercontent.com/{GITHUB_OWNER}/dexter-sources/main/icons/dtmusicultimate.png",
         fallback_description="Official iOS release of DTMusicUltimate (DexTube Music) featuring background audio, ad-free listening, and lossless presets.",
+        beta=False,
+        permissions=[
+            {
+                "type": "background-audio",
+                "usageDescription": "Enables uninterrupted high-fidelity background music and lock screen playback controls.",
+            },
+            {
+                "type": "background-fetch",
+                "usageDescription": "Enables background sync and offline cache verification.",
+            },
+        ],
     ),
 ]
 
@@ -187,17 +211,27 @@ def save_source_manifest_atomic(path: str, data: Dict[str, Any]) -> None:
     logger.info("Successfully saved updated manifest to '%s'", path)
 
 
-def generate_news_item(app_name: str, version: str, date_str: str, icon_url: str, bundle_id: str, tint_color: str = "6366F1") -> Dict[str, Any]:
-    """Creates a news announcement entry for new releases."""
+def generate_news_item(
+    app_name: str,
+    version: str,
+    date_str: str,
+    icon_url: str,
+    bundle_id: str,
+    tint_color: str = "6366F1",
+    url: str = "",
+) -> Dict[str, Any]:
+    """Creates a news announcement entry for new releases matching SideStore specification."""
     formatted_date = date_str if date_str else datetime.now(timezone.utc).isoformat()
+    clean_tint = tint_color.lstrip("#")
+    news_url = url or f"https://dexterdevkh.github.io/dexter-sources/?app={bundle_id}"
     return {
         "title": f"{app_name} v{version} Released",
         "identifier": f"release-{bundle_id.replace('.', '-')}-{version.replace('.', '-')}",
         "caption": f"Version {version} is now available with the latest features, enhancements, and iOS 18 fixes.",
-        "date": formatted_date,
-        "tintColor": tint_color,
+        "tintColor": clean_tint,
         "imageURL": icon_url,
-        "appID": bundle_id,
+        "url": news_url,
+        "date": formatted_date,
         "notify": True,
     }
 
@@ -218,14 +252,11 @@ def update_manifest(
 
     # Refresh owner metadata
     avatar_url = get_profile_avatar(GITHUB_OWNER, token)
-    manifest["iconURL"] = avatar_url
-    manifest.setdefault("userinfo", {})
+    manifest["iconURL"] = avatar_url or manifest.get("iconURL", "https://avatars.githubusercontent.com/u/274127037?v=4")
     manifest.setdefault("news", [])
-    manifest.setdefault("version", 1)
-    manifest.setdefault("apiVersion", "v1")
 
     # Strip any non-standard root keys for strict SideStore compatibility
-    for key in ["headerURL", "website", "subtitle", "description", "tintColor"]:
+    for key in ["headerURL", "website", "subtitle", "description", "tintColor", "userinfo", "version", "apiVersion"]:
         manifest.pop(key, None)
 
     existing_apps_by_id: Dict[str, Dict[str, Any]] = {
@@ -269,10 +300,9 @@ def update_manifest(
             valid_versions.append({
                 "version": clean_ver,
                 "date": pub_date,
-                "downloadURL": ipa_asset.get("browser_download_url"),
                 "localizedDescription": changelog,
+                "downloadURL": ipa_asset.get("browser_download_url"),
                 "size": ipa_asset.get("size", 0),
-                "absoluteVersion": clean_ver,
             })
 
             if len(valid_versions) >= max_versions:
@@ -286,24 +316,28 @@ def update_manifest(
         app_entry = existing_apps_by_id.get(conf.bundle_id)
         is_new_app = app_entry is None
 
+        clean_tint = conf.tint_color.lstrip("#")
+        rel_tag = latest_version["version"]
+        rel_url = f"https://github.com/{conf.repo}/releases/tag/v{rel_tag}"
+
         if is_new_app:
             app_entry = {
                 "name": conf.name,
                 "bundleIdentifier": conf.bundle_id,
                 "developerName": GITHUB_OWNER,
                 "subtitle": conf.subtitle,
-                "localizedDescription": conf.fallback_description,
-                "iconURL": conf.icon_url,
-                "tintColor": conf.tint_color,
                 "version": latest_version["version"],
                 "versionDate": latest_version["date"],
                 "versionDescription": latest_version["localizedDescription"],
-                "downloadURL": latest_version["downloadURL"],
+                "beta": conf.beta,
                 "size": latest_version["size"],
+                "localizedDescription": conf.fallback_description,
+                "iconURL": conf.icon_url,
+                "tintColor": clean_tint,
+                "downloadURL": latest_version["downloadURL"],
                 "screenshotURLs": [],
-                "absoluteVersion": latest_version["absoluteVersion"],
-                "appID": conf.bundle_id,
                 "versions": valid_versions,
+                "permissions": conf.permissions,
             }
             manifest.setdefault("apps", []).append(app_entry)
             existing_apps_by_id[conf.bundle_id] = app_entry
@@ -311,7 +345,7 @@ def update_manifest(
             logger.info("Added new app '%s' [%s] version %s", conf.name, conf.bundle_id, latest_version["version"])
             if update_news and max_news > 0:
                 new_announcements.append(generate_news_item(
-                    conf.name, latest_version["version"], latest_version["date"], conf.icon_url, conf.bundle_id, conf.tint_color
+                    conf.name, latest_version["version"], latest_version["date"], conf.icon_url, conf.bundle_id, clean_tint, rel_url
                 ))
         else:
             current_ver = app_entry.get("version")
@@ -327,18 +361,18 @@ def update_manifest(
                 "bundleIdentifier": conf.bundle_id,
                 "developerName": GITHUB_OWNER,
                 "subtitle": conf.subtitle,
-                "localizedDescription": conf.fallback_description,
-                "iconURL": conf.icon_url,
-                "tintColor": conf.tint_color,
                 "version": latest_version["version"],
                 "versionDate": latest_version["date"],
                 "versionDescription": latest_version["localizedDescription"],
-                "downloadURL": latest_version["downloadURL"],
+                "beta": conf.beta,
                 "size": latest_version["size"],
+                "localizedDescription": conf.fallback_description,
+                "iconURL": conf.icon_url,
+                "tintColor": clean_tint,
+                "downloadURL": latest_version["downloadURL"],
                 "screenshotURLs": existing_apps_by_id.get(conf.bundle_id, {}).get("screenshotURLs") or [],
-                "absoluteVersion": latest_version["absoluteVersion"],
-                "appID": conf.bundle_id,
                 "versions": valid_versions,
+                "permissions": conf.permissions,
             })
 
             if changed:
@@ -346,7 +380,7 @@ def update_manifest(
                 logger.info("Updated '%s' from %s to %s", conf.name, current_ver, latest_version["version"])
                 if update_news and max_news > 0:
                     new_announcements.append(generate_news_item(
-                        conf.name, latest_version["version"], latest_version["date"], conf.icon_url, conf.bundle_id, conf.tint_color
+                        conf.name, latest_version["version"], latest_version["date"], conf.icon_url, conf.bundle_id, clean_tint, rel_url
                     ))
             else:
                 logger.info("'%s' is already up to date (v%s)", conf.name, current_ver)
@@ -366,12 +400,9 @@ def update_manifest(
         "name": manifest.get("name", f"{GITHUB_OWNER} Apps"),
         "identifier": manifest.get("identifier", f"com.{GITHUB_OWNER.lower()}.source"),
         "sourceURL": manifest.get("sourceURL", f"https://{GITHUB_OWNER.lower()}.github.io/dexter-sources/sources.json"),
-        "iconURL": avatar_url,
-        "userinfo": manifest.get("userinfo") if isinstance(manifest.get("userinfo"), dict) else {},
+        "iconURL": avatar_url or manifest.get("iconURL", "https://avatars.githubusercontent.com/u/274127037?v=4"),
         "apps": manifest.get("apps", []),
         "news": existing_news[:max_news],
-        "version": 1,
-        "apiVersion": "v1",
     }
 
     if dry_run:
