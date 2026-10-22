@@ -23,50 +23,44 @@ jobs:
           TARGET_RUN_ID: ${{ github.event.workflow_run.id }}
         run: |
           echo "::group::🧹 Auto-Purging Completed Workflow Runs"
-          # If triggered by workflow_run, target the completed run ID directly
+          # Disable immediate exit on non-zero exit code so 404s or missing items never fail the job
+          set +e
+
+          CURRENT_RUN="${{ github.run_id }}"
+
+          # If triggered by workflow_run, delete the trigger run directly
           if [ -n "$TARGET_RUN_ID" ]; then
-            echo "Deleting completed trigger run: $TARGET_RUN_ID"
-            gh api -X DELETE "repos/${{ github.repository }}/actions/runs/$TARGET_RUN_ID" || true
+            echo "Deleting trigger run: $TARGET_RUN_ID"
+            gh api -X DELETE "repos/${{ github.repository }}/actions/runs/$TARGET_RUN_ID" >/dev/null 2>&1 || true
           fi
 
-          # Purge any remaining completed runs of update-sources.yml
-          echo "Purging all completed runs of update-sources.yml..."
-          gh run list --repo "${{ github.repository }}" --workflow=update-sources.yml --status=completed -L 100 --json databaseId -q '.[].databaseId' | while read -r rid; do
-            if [ -n "$rid" ]; then
-              echo "Deleting completed update-sources.yml run $rid"
-              gh api -X DELETE "repos/${{ github.repository }}/actions/runs/$rid" || true
-            fi
-          done
-
-          # Purge any remaining completed runs of keep-alive.yml
-          echo "Purging all completed runs of keep-alive.yml..."
-          gh run list --repo "${{ github.repository }}" --workflow=keep-alive.yml --status=completed -L 100 --json databaseId -q '.[].databaseId' | while read -r rid; do
-            if [ -n "$rid" ]; then
-              echo "Deleting completed keep-alive.yml run $rid"
-              gh api -X DELETE "repos/${{ github.repository }}/actions/runs/$rid" || true
-            fi
-          done
-
-          # Purge any remaining completed runs of pages-build-deployment
-          echo "Purging all completed runs of pages-build-deployment..."
-          gh run list --repo "${{ github.repository }}" --workflow=pages-build-deployment --status=completed -L 100 --json databaseId -q '.[].databaseId' 2>/dev/null | while read -r rid; do
-            if [ -n "$rid" ]; then
-              echo "Deleting completed pages-build-deployment run $rid"
-              gh api -X DELETE "repos/${{ github.repository }}/actions/runs/$rid" || true
-            fi
-          done
-
-          # Purge past completed runs of this cleanup workflow itself
-          echo "Purging past completed runs of cleanup workflow..."
-          CURRENT_RUN="${{ github.run_id }}"
-          for wf in cleanup-workflows.yml cleanup.yml; do
-            gh run list --repo "${{ github.repository }}" --workflow="$wf" --status=completed -L 100 --json databaseId -q '.[].databaseId' 2>/dev/null | while read -r crid; do
-              if [ -n "$crid" ] && [ "$crid" != "$CURRENT_RUN" ]; then
-                echo "Deleting old cleanup run $crid"
-                gh api -X DELETE "repos/${{ github.repository }}/actions/runs/$crid" || true
+          # Function to purge completed runs for a specific workflow
+          purge_workflow() {
+            local wf="$1"
+            echo "Purging completed runs of $wf..."
+            gh run list --repo "${{ github.repository }}" --workflow="$wf" --status=completed -L 100 --json databaseId -q '.[].databaseId' 2>/dev/null | while read -r rid; do
+              if [ -n "$rid" ] && [ "$rid" != "$CURRENT_RUN" ]; then
+                echo "Deleting run $rid ($wf)"
+                gh api -X DELETE "repos/${{ github.repository }}/actions/runs/$rid" >/dev/null 2>&1 || true
               fi
             done
+          }
+
+          # Purge runs for individual workflows
+          purge_workflow "update-sources.yml"
+          purge_workflow "keep-alive.yml"
+          purge_workflow "pages-build-deployment"
+          purge_workflow "cleanup-workflows.yml"
+
+          # Final sweep for any remaining completed runs across repository
+          echo "Sweeping any remaining completed runs in repository..."
+          gh run list --repo "${{ github.repository }}" --status=completed -L 100 --json databaseId -q '.[].databaseId' 2>/dev/null | while read -r rid; do
+            if [ -n "$rid" ] && [ "$rid" != "$CURRENT_RUN" ]; then
+              echo "Deleting remaining run $rid"
+              gh api -X DELETE "repos/${{ github.repository }}/actions/runs/$rid" >/dev/null 2>&1 || true
+            fi
           done
 
           echo "✔ Complete: All completed run logs and history have been purged."
           echo "::endgroup::"
+          exit 0
