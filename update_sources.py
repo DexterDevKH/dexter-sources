@@ -45,8 +45,8 @@ class AppConfig:
     icon_url: str
     ipa_keyword: str = ".ipa"
     fallback_description: str = ""
-    beta: bool = False
-    permissions: List[Dict[str, str]] = field(default_factory=list)
+    min_os_version: str = "14.0"
+    app_permissions: Dict[str, Any] = field(default_factory=lambda: {"entitlements": [], "privacy": {}})
 
 
 # Configured applications in DexterDevKH source
@@ -57,20 +57,17 @@ APP_CONFIGS: List[AppConfig] = [
         name="DexTube",
         subtitle="Enhanced YouTube client with ad-blocking & background play",
         category="entertainment",
-        tint_color="007AFF",
+        tint_color="#007AFF",
         icon_url=f"https://raw.githubusercontent.com/{GITHUB_OWNER}/dexter-sources/main/icons/dtlite.png",
         fallback_description="Official iOS release of DTLite (DexTube) featuring ad-blocking, background playback, and SponsorBlock.",
-        beta=False,
-        permissions=[
-            {
-                "type": "background-audio",
-                "usageDescription": "Allows audio and video playback in background and Picture-in-Picture.",
+        min_os_version="14.0",
+        app_permissions={
+            "entitlements": [],
+            "privacy": {
+                "NSBackgroundAudioUsageDescription": "Allows audio and video playback in background and Picture-in-Picture.",
+                "NSBackgroundFetchUsageDescription": "Allows background updates and download synchronization.",
             },
-            {
-                "type": "background-fetch",
-                "usageDescription": "Allows background updates and download synchronization.",
-            },
-        ],
+        },
     ),
     AppConfig(
         bundle_id="com.google.ios.youtubemusic",
@@ -78,20 +75,17 @@ APP_CONFIGS: List[AppConfig] = [
         name="DexTube Music",
         subtitle="High-fidelity music streaming, background audio & lyrics",
         category="music",
-        tint_color="FF2D55",
+        tint_color="#FF2D55",
         icon_url=f"https://raw.githubusercontent.com/{GITHUB_OWNER}/dexter-sources/main/icons/dtmusicultimate.png",
         fallback_description="Official iOS release of DTMusicUltimate (DexTube Music) featuring background audio, ad-free listening, and lossless presets.",
-        beta=False,
-        permissions=[
-            {
-                "type": "background-audio",
-                "usageDescription": "Enables uninterrupted high-fidelity background music and lock screen playback controls.",
+        min_os_version="14.0",
+        app_permissions={
+            "entitlements": [],
+            "privacy": {
+                "NSBackgroundAudioUsageDescription": "Enables uninterrupted high-fidelity background music and lock screen playback controls.",
+                "NSBackgroundFetchUsageDescription": "Enables background sync and offline cache verification.",
             },
-            {
-                "type": "background-fetch",
-                "usageDescription": "Enables background sync and offline cache verification.",
-            },
-        ],
+        },
     ),
 ]
 
@@ -183,13 +177,14 @@ def load_source_manifest(path: str) -> Dict[str, Any]:
         return {
             "name": f"{GITHUB_OWNER} Apps",
             "identifier": f"com.{GITHUB_OWNER.lower()}.source",
-            "sourceURL": f"https://{GITHUB_OWNER.lower()}.github.io/dexter-sources/sources.json",
+            "website": f"https://{GITHUB_OWNER.lower()}.github.io/dexter-sources/",
+            "subtitle": "Official SideStore, Feather, and AltStore Source.",
+            "description": "High-performance curated iOS apps including DexTube and DexTube Music.",
+            "tintColor": "#007AFF",
             "iconURL": f"https://github.com/{GITHUB_OWNER}.png",
-            "userinfo": {},
+            "headerURL": f"https://github.com/{GITHUB_OWNER}.png",
             "apps": [],
             "news": [],
-            "version": 1,
-            "apiVersion": "v1",
         }
 
     with open(path, "r", encoding="utf-8") as f:
@@ -217,7 +212,7 @@ def generate_news_item(
     date_str: str,
     icon_url: str,
     bundle_id: str,
-    tint_color: str = "6366F1",
+    tint_color: str = "#007AFF",
     url: str = "",
 ) -> Dict[str, Any]:
     """Creates a news announcement entry for new releases matching SideStore specification."""
@@ -227,13 +222,13 @@ def generate_news_item(
         formatted_date = date_str[:10]
     else:
         formatted_date = datetime.now(timezone.utc).strftime("%Y-%m-%d")
-    clean_tint = tint_color.lstrip("#")
+    color = tint_color if tint_color.startswith("#") else f"#{tint_color}"
     news_url = url or f"https://dexterdevkh.github.io/dexter-sources/?app={bundle_id}"
     return {
         "title": f"{app_name} v{version} Released",
         "identifier": f"release-{bundle_id.replace('.', '-')}-{version.replace('.', '-')}",
         "caption": f"Version {version} is now available with the latest features, enhancements, and iOS 18 fixes.",
-        "tintColor": clean_tint,
+        "tintColor": color,
         "imageURL": icon_url,
         "url": news_url,
         "date": formatted_date,
@@ -258,11 +253,8 @@ def update_manifest(
     # Refresh owner metadata
     avatar_url = get_profile_avatar(GITHUB_OWNER, token)
     manifest["iconURL"] = avatar_url or manifest.get("iconURL", "https://avatars.githubusercontent.com/u/274127037?v=4")
+    manifest["headerURL"] = avatar_url or manifest.get("headerURL", manifest["iconURL"])
     manifest.setdefault("news", [])
-
-    # Strip any non-standard root keys for strict SideStore compatibility
-    for key in ["headerURL", "website", "subtitle", "description", "tintColor", "userinfo", "version", "apiVersion"]:
-        manifest.pop(key, None)
 
     existing_apps_by_id: Dict[str, Dict[str, Any]] = {
         app.get("bundleIdentifier"): app for app in manifest.get("apps", []) if isinstance(app, dict)
@@ -299,16 +291,27 @@ def update_manifest(
 
             tag_name = rel.get("tag_name") or ""
             clean_ver = sanitize_version(tag_name)
-            pub_date = rel.get("published_at") or datetime.now(timezone.utc).isoformat()
+            pub_date = rel.get("published_at")
+            if pub_date and "T" in pub_date:
+                clean_date = pub_date.split("T")[0]
+            elif pub_date:
+                clean_date = pub_date[:10]
+            else:
+                clean_date = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+
             changelog = clean_release_body(rel.get("body"), f"Version {clean_ver} release.")
 
-            valid_versions.append({
+            ver_dict: Dict[str, Any] = {
                 "version": clean_ver,
+                "date": clean_date,
                 "localizedDescription": changelog,
-                "date": pub_date,
                 "downloadURL": ipa_asset.get("browser_download_url"),
                 "size": ipa_asset.get("size", 0),
-            })
+            }
+            if conf.min_os_version:
+                ver_dict["minOSVersion"] = conf.min_os_version
+
+            valid_versions.append(ver_dict)
 
             if len(valid_versions) >= max_versions:
                 break
@@ -321,74 +324,58 @@ def update_manifest(
         app_entry = existing_apps_by_id.get(conf.bundle_id)
         is_new_app = app_entry is None
 
-        clean_tint = conf.tint_color.lstrip("#")
+        tint_color = conf.tint_color if conf.tint_color.startswith("#") else f"#{conf.tint_color}"
         rel_tag = latest_version["version"]
         rel_url = f"https://github.com/{conf.repo}/releases/tag/v{rel_tag}"
 
+        existing_screenshots = {}
+        if isinstance(app_entry, dict):
+            existing_screenshots = app_entry.get("screenshots") or {}
+        if not isinstance(existing_screenshots, dict) or "iphone" not in existing_screenshots:
+            existing_screenshots = {"iphone": []}
+
+        app_payload = {
+            "name": conf.name,
+            "bundleIdentifier": conf.bundle_id,
+            "developerName": GITHUB_OWNER,
+            "subtitle": conf.subtitle,
+            "localizedDescription": conf.fallback_description,
+            "iconURL": conf.icon_url,
+            "tintColor": tint_color,
+            "size": latest_version["size"],
+            "screenshots": existing_screenshots,
+            "appPermissions": conf.app_permissions,
+            "versions": valid_versions,
+        }
+
         if is_new_app:
-            app_entry = {
-                "name": conf.name,
-                "bundleIdentifier": conf.bundle_id,
-                "developerName": GITHUB_OWNER,
-                "subtitle": conf.subtitle,
-                "localizedDescription": conf.fallback_description,
-                "iconURL": conf.icon_url,
-                "tintColor": clean_tint,
-                "version": latest_version["version"],
-                "versionDate": latest_version["date"],
-                "versionDescription": latest_version["localizedDescription"],
-                "beta": conf.beta,
-                "downloadURL": latest_version["downloadURL"],
-                "size": latest_version["size"],
-                "screenshotURLs": [],
-                "versions": valid_versions,
-                "permissions": conf.permissions,
-            }
-            manifest.setdefault("apps", []).append(app_entry)
-            existing_apps_by_id[conf.bundle_id] = app_entry
+            manifest.setdefault("apps", []).append(app_payload)
+            existing_apps_by_id[conf.bundle_id] = app_payload
             updated_count += 1
             logger.info("Added new app '%s' [%s] version %s", conf.name, conf.bundle_id, latest_version["version"])
             if update_news and max_news > 0:
                 new_announcements.append(generate_news_item(
-                    conf.name, latest_version["version"], latest_version["date"], conf.icon_url, conf.bundle_id, clean_tint, rel_url
+                    conf.name, latest_version["version"], latest_version["date"], conf.icon_url, conf.bundle_id, tint_color, rel_url
                 ))
         else:
-            current_ver = app_entry.get("version")
-            current_url = app_entry.get("downloadURL")
+            old_versions = app_entry.get("versions", []) if isinstance(app_entry, dict) else []
+            old_ver = old_versions[0].get("version") if old_versions else app_entry.get("version")
+            old_url = old_versions[0].get("downloadURL") if old_versions else app_entry.get("downloadURL")
 
-            # Check if updated
-            changed = (current_ver != latest_version["version"]) or (current_url != latest_version["downloadURL"])
+            changed = (old_ver != latest_version["version"]) or (old_url != latest_version["downloadURL"])
 
-            # Ensure all schema fields match strict SideStore form
             app_entry.clear()
-            app_entry.update({
-                "name": conf.name,
-                "bundleIdentifier": conf.bundle_id,
-                "developerName": GITHUB_OWNER,
-                "subtitle": conf.subtitle,
-                "localizedDescription": conf.fallback_description,
-                "iconURL": conf.icon_url,
-                "tintColor": clean_tint,
-                "version": latest_version["version"],
-                "versionDate": latest_version["date"],
-                "versionDescription": latest_version["localizedDescription"],
-                "beta": conf.beta,
-                "downloadURL": latest_version["downloadURL"],
-                "size": latest_version["size"],
-                "screenshotURLs": existing_apps_by_id.get(conf.bundle_id, {}).get("screenshotURLs") or [],
-                "versions": valid_versions,
-                "permissions": conf.permissions,
-            })
+            app_entry.update(app_payload)
 
             if changed:
                 updated_count += 1
-                logger.info("Updated '%s' from %s to %s", conf.name, current_ver, latest_version["version"])
+                logger.info("Updated '%s' from %s to %s", conf.name, old_ver, latest_version["version"])
                 if update_news and max_news > 0:
                     new_announcements.append(generate_news_item(
-                        conf.name, latest_version["version"], latest_version["date"], conf.icon_url, conf.bundle_id, clean_tint, rel_url
+                        conf.name, latest_version["version"], latest_version["date"], conf.icon_url, conf.bundle_id, tint_color, rel_url
                     ))
             else:
-                logger.info("'%s' is already up to date (v%s)", conf.name, current_ver)
+                logger.info("'%s' is already up to date (v%s)", conf.name, old_ver)
 
     existing_news = manifest.get("news", [])
     if not isinstance(existing_news, list):
@@ -400,11 +387,16 @@ def update_manifest(
             if ann["identifier"] not in existing_ids:
                 existing_news.insert(0, ann)
 
-    # Strictly rebuild root manifest to match canonical SideStore structure
+    # Rebuild canonical manifest in StikDebug format
     canonical_manifest = {
         "name": manifest.get("name", f"{GITHUB_OWNER} Apps"),
         "identifier": manifest.get("identifier", f"com.{GITHUB_OWNER.lower()}.source"),
-        "sourceURL": manifest.get("sourceURL", f"https://{GITHUB_OWNER.lower()}.github.io/dexter-sources/sources.json"),
+        "website": manifest.get("website", f"https://{GITHUB_OWNER.lower()}.github.io/dexter-sources/"),
+        "subtitle": manifest.get("subtitle", "Official SideStore, Feather, and AltStore Source."),
+        "description": manifest.get("description", "High-performance curated iOS apps including DexTube and DexTube Music."),
+        "tintColor": manifest.get("tintColor", "#007AFF"),
+        "iconURL": avatar_url or manifest.get("iconURL", f"https://github.com/{GITHUB_OWNER}.png"),
+        "headerURL": manifest.get("headerURL", avatar_url or f"https://github.com/{GITHUB_OWNER}.png"),
         "apps": manifest.get("apps", []),
         "news": existing_news[:max_news],
     }
@@ -431,7 +423,8 @@ def update_readme_table(readme_path: str = "README.md", manifest: Optional[Dict[
     modified = False
     for app in manifest.get("apps", []):
         name = app.get("name")
-        version = app.get("version")
+        versions = app.get("versions", [])
+        version = app.get("version") or (versions[0].get("version") if versions else None)
         if not name or not version:
             continue
 

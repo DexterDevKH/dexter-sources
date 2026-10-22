@@ -27,7 +27,12 @@
     const FALLBACK_MANIFEST = {
         name: "DexterDevKH Apps",
         identifier: "com.dexterdevkh.source",
-        sourceURL: "https://dexterdevkh.github.io/dexter-sources/sources.json",
+        website: "https://dexterdevkh.github.io/dexter-sources/",
+        subtitle: "Official SideStore, Feather, and AltStore Source.",
+        description: "High-performance curated iOS apps including DexTube and DexTube Music.",
+        tintColor: "#007AFF",
+        iconURL: "https://avatars.githubusercontent.com/u/274127037?v=4",
+        headerURL: "https://avatars.githubusercontent.com/u/274127037?v=4",
         apps: [
             {
                 name: "DexTube",
@@ -36,45 +41,42 @@
                 subtitle: "Enhanced YouTube client with ad-blocking & background play",
                 localizedDescription: "Official iOS release of DTLite (DexTube) featuring ad-blocking, background playback, and SponsorBlock.",
                 iconURL: "icons/dtlite.png",
-                tintColor: "007AFF",
-                version: "21.42.4",
-                versionDate: "2026-10-22T05:36:58Z",
-                versionDescription: "Version 21.42.4 release.",
-                beta: false,
-                downloadURL: "https://github.com/DexterDevKH/DTLite/releases/download/ytp-v6.0.b2-21.42.4/DexTubePlus_v6.0.b2_21.42.4.ipa",
+                tintColor: "#007AFF",
                 size: 149422771,
-                screenshotURLs: [],
+                screenshots: {
+                    iphone: []
+                },
+                appPermissions: {
+                    entitlements: [],
+                    privacy: {
+                        NSBackgroundAudioUsageDescription: "Allows audio and video playback in background and Picture-in-Picture.",
+                        NSBackgroundFetchUsageDescription: "Allows background updates and download synchronization."
+                    }
+                },
                 versions: [
                     {
                         version: "21.42.4",
-                        date: "2026-10-22T05:36:58Z",
+                        date: "2026-10-22",
                         localizedDescription: "Version 21.42.4 release.",
                         downloadURL: "https://github.com/DexterDevKH/DTLite/releases/download/ytp-v6.0.b2-21.42.4/DexTubePlus_v6.0.b2_21.42.4.ipa",
-                        size: 149422771
+                        size: 149422771,
+                        minOSVersion: "14.0"
                     },
                     {
                         version: "21.41.5",
-                        date: "2026-10-17T13:45:30Z",
+                        date: "2026-10-17",
                         localizedDescription: "Version 21.41.5 release.",
                         downloadURL: "https://github.com/DexterDevKH/DTLite/releases/download/ytp-v6.0.b2-21.41.5/DexTubePlus_v6.0.b2_21.41.5.ipa",
-                        size: 148605386
+                        size: 148605386,
+                        minOSVersion: "14.0"
                     },
                     {
                         version: "21.40.5",
-                        date: "2026-10-06T09:36:22Z",
+                        date: "2026-10-06",
                         localizedDescription: "Version 21.40.5 release.",
                         downloadURL: "https://github.com/DexterDevKH/DTLite/releases/download/ytp-v6.0.b2-21.40.5/DexTubePlus_v6.0.b2_21.40.5.ipa",
-                        size: 147834744
-                    }
-                ],
-                permissions: [
-                    {
-                        type: "background-audio",
-                        usageDescription: "Allows audio and video playback in background and Picture-in-Picture."
-                    },
-                    {
-                        type: "background-fetch",
-                        usageDescription: "Allows background updates and download synchronization."
+                        size: 147834744,
+                        minOSVersion: "14.0"
                     }
                 ]
             },
@@ -85,71 +87,47 @@
                 subtitle: "High-fidelity music streaming, background audio & lyrics",
                 localizedDescription: "Official iOS release of DTMusicUltimate (DexTube Music) featuring background audio, ad-free listening, and lossless presets.",
                 iconURL: "icons/dtmusicultimate.png",
-                tintColor: "FF2D55",
-                version: "9.42.2",
-                versionDate: "2026-10-19T16:19:57Z",
-                versionDescription: "Version 9.42.2 release.",
-                beta: false,
-                downloadURL: "https://github.com/DexterDevKH/DTMusicUltimate/releases/download/dtm-9.42.2/DTMusicUltimate_9.42.2.ipa",
+                tintColor: "#FF2D55",
                 size: 107274691,
-                screenshotURLs: [],
+                screenshots: {
+                    iphone: []
+                },
+                appPermissions: {
+                    entitlements: [],
+                    privacy: {
+                        NSBackgroundAudioUsageDescription: "Enables uninterrupted high-fidelity background music and lock screen playback controls.",
+                        NSBackgroundFetchUsageDescription: "Enables background sync and offline cache verification."
+                    }
+                },
                 versions: [
                     {
                         version: "9.42.2",
-                        date: "2026-10-19T16:19:57Z",
+                        date: "2026-10-19",
                         localizedDescription: "Version 9.42.2 release.",
                         downloadURL: "https://github.com/DexterDevKH/DTMusicUltimate/releases/download/dtm-9.42.2/DTMusicUltimate_9.42.2.ipa",
-                        size: 107274691
+                        size: 107274691,
+                        minOSVersion: "14.0"
                     },
                     {
                         version: "9.41.2",
-                        date: "2026-10-18T09:41:27Z",
+                        date: "2026-10-18",
                         localizedDescription: "Version 9.41.2 release.",
                         downloadURL: "https://github.com/DexterDevKH/DTMusicUltimate/releases/download/dtm-9.41.2/DTMusicUltimate_9.41.2.ipa",
-                        size: 107008594
+                        size: 107008594,
+                        minOSVersion: "14.0"
                     },
                     {
                         version: "9.40.2",
-                        date: "2026-10-11T06:31:37Z",
+                        date: "2026-10-11",
                         localizedDescription: "Version 9.40.2 release.",
                         downloadURL: "https://github.com/DexterDevKH/DTMusicUltimate/releases/download/dtm-9.40.2/DTMusicUltimate_9.40.2.ipa",
-                        size: 106696986
-                    }
-                ],
-                permissions: [
-                    {
-                        type: "background-audio",
-                        usageDescription: "Enables uninterrupted high-fidelity background music and lock screen playback controls."
-                    },
-                    {
-                        type: "background-fetch",
-                        usageDescription: "Enables background sync and offline cache verification."
+                        size: 106696986,
+                        minOSVersion: "14.0"
                     }
                 ]
             }
         ],
-        news: [
-            {
-                title: "DexTube v21.42.4 Released",
-                identifier: "release-com-google-ios-youtube-21-42-4",
-                caption: "Version 21.42.4 is now available with the latest features, enhancements, and iOS 18 fixes.",
-                tintColor: "007AFF",
-                imageURL: "icons/dtlite.png",
-                url: "https://github.com/DexterDevKH/DTLite/releases/tag/ytp-v6.0.b2-21.42.4",
-                date: "2026-10-22",
-                notify: true
-            },
-            {
-                title: "DexTube Music v9.42.2 Released",
-                identifier: "release-com-google-ios-youtubemusic-9-42-2",
-                caption: "Version 9.42.2 is now available with the latest features, enhancements, and iOS 18 fixes.",
-                tintColor: "FF2D55",
-                imageURL: "icons/dtmusicultimate.png",
-                url: "https://github.com/DexterDevKH/DTMusicUltimate/releases/tag/dtm-9.42.2",
-                date: "2026-10-19",
-                notify: true
-            }
-        ]
+        news: []
     };
 
     // Local icons map for flawless offline & web viewing
@@ -365,8 +343,12 @@
         if (appsA.length !== appsB.length) return false;
         for (let i = 0; i < appsA.length; i++) {
             if (appsA[i].bundleIdentifier !== appsB[i].bundleIdentifier) return false;
-            if (appsA[i].version !== appsB[i].version) return false;
-            if (appsA[i].downloadURL !== appsB[i].downloadURL) return false;
+            const verA = (appsA[i].versions && appsA[i].versions[0]) ? appsA[i].versions[0].version : appsA[i].version;
+            const verB = (appsB[i].versions && appsB[i].versions[0]) ? appsB[i].versions[0].version : appsB[i].version;
+            if (verA !== verB) return false;
+            const urlA = (appsA[i].versions && appsA[i].versions[0]) ? appsA[i].versions[0].downloadURL : appsA[i].downloadURL;
+            const urlB = (appsB[i].versions && appsB[i].versions[0]) ? appsB[i].versions[0].downloadURL : appsB[i].downloadURL;
+            if (urlA !== urlB) return false;
         }
         const newsA = (a.news && a.news[0]) ? a.news[0].title : "";
         const newsB = (b.news && b.news[0]) ? b.news[0].title : "";
