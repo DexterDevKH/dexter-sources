@@ -471,6 +471,31 @@
         </div>
     </div>
 
+    <!-- Fullscreen Screenshot Lightbox Preview Modal -->
+    <div class="modal-overlay hidden" id="screenshotPreviewModal" role="dialog" aria-modal="true" aria-label="Screenshot Preview">
+        <div class="lightbox-container" id="lightboxContainer">
+            <button class="lightbox-close-btn" id="lightboxCloseBtn" type="button" aria-label="Close screenshot preview">×</button>
+            
+            <button class="lightbox-nav-btn prev" id="lightboxPrevBtn" type="button" aria-label="Previous screenshot">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="15 18 9 12 15 6"></polyline>
+                </svg>
+            </button>
+            
+            <div class="lightbox-media-wrap" id="lightboxMediaWrap">
+                <img class="lightbox-image" id="lightboxImage" src="" alt="Screenshot preview" />
+            </div>
+            
+            <button class="lightbox-nav-btn next" id="lightboxNextBtn" type="button" aria-label="Next screenshot">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="9 18 15 12 9 6"></polyline>
+                </svg>
+            </button>
+            
+            <div class="lightbox-counter" id="lightboxCounter">1 / 1</div>
+        </div>
+    </div>
+
     <!-- Floating Toast Notification -->
     <div class="toast-pill hidden" id="toastPill" role="status" aria-live="polite" style="white-space: nowrap;">
         <svg class="toast-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">

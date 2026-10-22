@@ -197,6 +197,9 @@
     let activeFilter = "all";
     let activeSearch = "";
     let activeQrTarget = "sidestore";
+    let activeScreenshotsList = [];
+    let currentScreenshotIndex = 0;
+    let currentScreenshotAppName = "";
 
     // 1. Instant Deep-link Redirection (?r=sidestore, ?r=feather, etc.)
     if (redirectKey && SCHEMES[redirectKey]) {
@@ -674,14 +677,29 @@
         const screenshotsContainer = document.getElementById("detailScreenshotsContainer");
         if (screenshotsSection && screenshotsContainer) {
             screenshotsContainer.replaceChildren();
-            const list = (app.screenshots && Array.isArray(app.screenshots.iphone)) ? app.screenshots.iphone : [];
-            if (list.length > 0) {
-                list.forEach((scr, idx) => {
+            const rawList = (app.screenshots && Array.isArray(app.screenshots.iphone)) ? app.screenshots.iphone : [];
+            const urlList = rawList.map(s => (typeof s === "string" ? s : (s && s.imageURL ? s.imageURL : ""))).filter(Boolean);
+
+            if (urlList.length > 0) {
+                urlList.forEach((url, idx) => {
                     const img = document.createElement("img");
                     img.className = "detail-screenshot-img";
-                    img.src = scr.imageURL || scr;
+                    img.src = url;
                     img.alt = `${app.name} Screenshot ${idx + 1}`;
+                    img.title = "Click to preview full screenshot";
                     img.loading = "lazy";
+                    img.setAttribute("role", "button");
+                    img.setAttribute("tabindex", "0");
+                    img.setAttribute("aria-label", `Preview screenshot ${idx + 1} of ${urlList.length}`);
+                    img.addEventListener("click", () => {
+                        openScreenshotLightbox(urlList, idx, app.name);
+                    });
+                    img.addEventListener("keydown", (e) => {
+                        if (e.key === "Enter" || e.key === " ") {
+                            e.preventDefault();
+                            openScreenshotLightbox(urlList, idx, app.name);
+                        }
+                    });
                     screenshotsContainer.appendChild(img);
                 });
                 screenshotsSection.classList.remove("hidden");
@@ -734,6 +752,67 @@
     }
 
     /**
+     * Open Fullscreen Screenshot Lightbox Preview
+     */
+    function openScreenshotLightbox(urls, initialIndex = 0, appName = "Screenshot") {
+        if (!urls || urls.length === 0) return;
+        activeScreenshotsList = urls;
+        currentScreenshotIndex = Math.max(0, Math.min(initialIndex, urls.length - 1));
+        currentScreenshotAppName = appName || "Screenshot";
+
+        const modal = document.getElementById("screenshotPreviewModal");
+        if (!modal) return;
+
+        updateScreenshotLightbox();
+        modal.classList.remove("hidden");
+    }
+
+    /**
+     * Close Screenshot Lightbox Preview
+     */
+    function closeScreenshotLightbox() {
+        const modal = document.getElementById("screenshotPreviewModal");
+        if (modal) modal.classList.add("hidden");
+    }
+
+    /**
+     * Update active screenshot image and controls in lightbox
+     */
+    function updateScreenshotLightbox() {
+        const img = document.getElementById("lightboxImage");
+        const counter = document.getElementById("lightboxCounter");
+        const prevBtn = document.getElementById("lightboxPrevBtn");
+        const nextBtn = document.getElementById("lightboxNextBtn");
+
+        if (!img || activeScreenshotsList.length === 0) return;
+
+        const currentUrl = activeScreenshotsList[currentScreenshotIndex];
+        img.src = currentUrl;
+        img.alt = `${currentScreenshotAppName} - Screenshot ${currentScreenshotIndex + 1} of ${activeScreenshotsList.length}`;
+
+        if (counter) {
+            counter.textContent = `${currentScreenshotIndex + 1} / ${activeScreenshotsList.length}`;
+            counter.style.display = activeScreenshotsList.length > 1 ? "block" : "none";
+        }
+
+        if (prevBtn) {
+            prevBtn.style.display = activeScreenshotsList.length > 1 ? "flex" : "none";
+        }
+        if (nextBtn) {
+            nextBtn.style.display = activeScreenshotsList.length > 1 ? "flex" : "none";
+        }
+    }
+
+    /**
+     * Navigate next/prev screenshot in lightbox
+     */
+    function stepScreenshotLightbox(step) {
+        if (activeScreenshotsList.length <= 1) return;
+        currentScreenshotIndex = (currentScreenshotIndex + step + activeScreenshotsList.length) % activeScreenshotsList.length;
+        updateScreenshotLightbox();
+    }
+
+    /**
      * Dynamically load QR Engine on-demand to save mobile bandwidth & load time
      */
     function loadQrEngine() {
@@ -754,7 +833,7 @@
     }
 
     /**
-     * Modals management (QR Code, App Details, Esc key listeners)
+     * Modals management (QR Code, App Details, Screenshot Lightbox, Esc key listeners)
      */
     function initModals() {
         const qrLauncherBtn = document.getElementById("qrLauncherBtn");
@@ -798,6 +877,64 @@
                 });
             });
         }
+
+        // Screenshot Lightbox Modal
+        const screenshotModal = document.getElementById("screenshotPreviewModal");
+        const lightboxCloseBtn = document.getElementById("lightboxCloseBtn");
+        const lightboxPrevBtn = document.getElementById("lightboxPrevBtn");
+        const lightboxNextBtn = document.getElementById("lightboxNextBtn");
+        const lightboxMediaWrap = document.getElementById("lightboxMediaWrap");
+        const lightboxContainer = document.getElementById("lightboxContainer");
+
+        if (lightboxCloseBtn) {
+            lightboxCloseBtn.addEventListener("click", closeScreenshotLightbox);
+        }
+
+        if (lightboxPrevBtn) {
+            lightboxPrevBtn.addEventListener("click", (e) => {
+                e.stopPropagation();
+                stepScreenshotLightbox(-1);
+            });
+        }
+
+        if (lightboxNextBtn) {
+            lightboxNextBtn.addEventListener("click", (e) => {
+                e.stopPropagation();
+                stepScreenshotLightbox(1);
+            });
+        }
+
+        if (screenshotModal) {
+            screenshotModal.addEventListener("click", (e) => {
+                if (e.target === screenshotModal || e.target === lightboxContainer || e.target === lightboxMediaWrap) {
+                    closeScreenshotLightbox();
+                }
+            });
+
+            // Touch Swipe navigation on mobile devices
+            let touchStartX = 0;
+            let touchStartY = 0;
+            screenshotModal.addEventListener("touchstart", (e) => {
+                if (e.touches && e.touches.length === 1) {
+                    touchStartX = e.touches[0].clientX;
+                    touchStartY = e.touches[0].clientY;
+                }
+            }, { passive: true });
+
+            screenshotModal.addEventListener("touchend", (e) => {
+                if (e.changedTouches && e.changedTouches.length === 1) {
+                    const diffX = e.changedTouches[0].clientX - touchStartX;
+                    const diffY = e.changedTouches[0].clientY - touchStartY;
+                    if (Math.abs(diffX) > 40 && Math.abs(diffX) > Math.abs(diffY)) {
+                        if (diffX < 0) {
+                            stepScreenshotLightbox(1); // Swipe left -> next
+                        } else {
+                            stepScreenshotLightbox(-1); // Swipe right -> prev
+                        }
+                    }
+                }
+            }, { passive: true });
+        }
     }
 
     /**
@@ -840,11 +977,26 @@
      */
     function initKeyboardShortcuts() {
         window.addEventListener("keydown", (e) => {
+            const screenshotModal = document.getElementById("screenshotPreviewModal");
+            const isScreenshotOpen = screenshotModal && !screenshotModal.classList.contains("hidden");
+
             if (e.key === "Escape") {
+                if (isScreenshotOpen) {
+                    closeScreenshotLightbox();
+                    return;
+                }
                 const qrModal = document.getElementById("qrModal");
                 const appModal = document.getElementById("appDetailsModal");
                 if (qrModal) qrModal.classList.add("hidden");
                 if (appModal) appModal.classList.add("hidden");
+            } else if (isScreenshotOpen) {
+                if (e.key === "ArrowLeft") {
+                    e.preventDefault();
+                    stepScreenshotLightbox(-1);
+                } else if (e.key === "ArrowRight") {
+                    e.preventDefault();
+                    stepScreenshotLightbox(1);
+                }
             } else if (e.key === "/" && document.activeElement.tagName !== "INPUT") {
                 e.preventDefault();
                 const searchInput = document.getElementById("appSearchInput");
