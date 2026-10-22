@@ -47,7 +47,6 @@ class AppConfig:
     fallback_description: str = ""
     beta: bool = False
     permissions: List[Dict[str, str]] = field(default_factory=list)
-    app_permissions: Dict[str, Any] = field(default_factory=dict)
 
 
 # Configured applications in DexterDevKH source
@@ -72,22 +71,6 @@ APP_CONFIGS: List[AppConfig] = [
                 "usageDescription": "Allows background updates and download synchronization.",
             },
         ],
-        app_permissions={
-            "entitlements": [
-                {"name": "com.apple.security.application-groups"},
-                {"name": "get-task-allow"},
-            ],
-            "privacy": [
-                {
-                    "name": "NSBackgroundAudioUsageDescription",
-                    "usageDescription": "Allows audio and video playback in background and Picture-in-Picture.",
-                },
-                {
-                    "name": "NSBackgroundFetchUsageDescription",
-                    "usageDescription": "Allows background updates and download synchronization.",
-                },
-            ],
-        },
     ),
     AppConfig(
         bundle_id="com.google.ios.youtubemusic",
@@ -109,22 +92,6 @@ APP_CONFIGS: List[AppConfig] = [
                 "usageDescription": "Enables background sync and offline cache verification.",
             },
         ],
-        app_permissions={
-            "entitlements": [
-                {"name": "com.apple.security.application-groups"},
-                {"name": "get-task-allow"},
-            ],
-            "privacy": [
-                {
-                    "name": "NSBackgroundAudioUsageDescription",
-                    "usageDescription": "Enables uninterrupted high-fidelity background music and lock screen playback controls.",
-                },
-                {
-                    "name": "NSBackgroundFetchUsageDescription",
-                    "usageDescription": "Enables background sync and offline cache verification.",
-                },
-            ],
-        },
     ),
 ]
 
@@ -254,7 +221,12 @@ def generate_news_item(
     url: str = "",
 ) -> Dict[str, Any]:
     """Creates a news announcement entry for new releases matching SideStore specification."""
-    formatted_date = date_str if date_str else datetime.now(timezone.utc).isoformat()
+    if date_str and "T" in date_str:
+        formatted_date = date_str.split("T")[0]
+    elif date_str:
+        formatted_date = date_str[:10]
+    else:
+        formatted_date = datetime.now(timezone.utc).strftime("%Y-%m-%d")
     clean_tint = tint_color.lstrip("#")
     news_url = url or f"https://dexterdevkh.github.io/dexter-sources/?app={bundle_id}"
     return {
@@ -359,23 +331,18 @@ def update_manifest(
                 "bundleIdentifier": conf.bundle_id,
                 "developerName": GITHUB_OWNER,
                 "subtitle": conf.subtitle,
+                "localizedDescription": conf.fallback_description,
                 "iconURL": conf.icon_url,
                 "tintColor": clean_tint,
-                "screenshotURLs": [],
                 "version": latest_version["version"],
-                "localizedDescription": conf.fallback_description or latest_version["localizedDescription"],
-                "date": latest_version["date"],
+                "versionDate": latest_version["date"],
+                "versionDescription": latest_version["localizedDescription"],
+                "beta": conf.beta,
                 "downloadURL": latest_version["downloadURL"],
                 "size": latest_version["size"],
+                "screenshotURLs": [],
                 "versions": valid_versions,
-                "releaseChannels": [
-                    {
-                        "track": "stable",
-                        "releases": valid_versions,
-                    }
-                ],
                 "permissions": conf.permissions,
-                "appPermissions": conf.app_permissions,
             }
             manifest.setdefault("apps", []).append(app_entry)
             existing_apps_by_id[conf.bundle_id] = app_entry
@@ -399,23 +366,18 @@ def update_manifest(
                 "bundleIdentifier": conf.bundle_id,
                 "developerName": GITHUB_OWNER,
                 "subtitle": conf.subtitle,
+                "localizedDescription": conf.fallback_description,
                 "iconURL": conf.icon_url,
                 "tintColor": clean_tint,
-                "screenshotURLs": existing_apps_by_id.get(conf.bundle_id, {}).get("screenshotURLs") or [],
                 "version": latest_version["version"],
-                "localizedDescription": conf.fallback_description or latest_version["localizedDescription"],
-                "date": latest_version["date"],
+                "versionDate": latest_version["date"],
+                "versionDescription": latest_version["localizedDescription"],
+                "beta": conf.beta,
                 "downloadURL": latest_version["downloadURL"],
                 "size": latest_version["size"],
+                "screenshotURLs": existing_apps_by_id.get(conf.bundle_id, {}).get("screenshotURLs") or [],
                 "versions": valid_versions,
-                "releaseChannels": [
-                    {
-                        "track": "stable",
-                        "releases": valid_versions,
-                    }
-                ],
                 "permissions": conf.permissions,
-                "appPermissions": conf.app_permissions,
             })
 
             if changed:
@@ -440,11 +402,9 @@ def update_manifest(
 
     # Strictly rebuild root manifest to match canonical SideStore structure
     canonical_manifest = {
-        "version": 2,
         "name": manifest.get("name", f"{GITHUB_OWNER} Apps"),
         "identifier": manifest.get("identifier", f"com.{GITHUB_OWNER.lower()}.source"),
         "sourceURL": manifest.get("sourceURL", f"https://{GITHUB_OWNER.lower()}.github.io/dexter-sources/sources.json"),
-        "iconURL": avatar_url or manifest.get("iconURL", "https://avatars.githubusercontent.com/u/274127037?v=4"),
         "apps": manifest.get("apps", []),
         "news": existing_news[:max_news],
     }
