@@ -5,9 +5,9 @@
 :root,
 [data-theme="dark"] {
     --bg-base: #060813;
-    --surface-glass: rgba(16, 20, 36, 0.68);
-    --surface-border: rgba(255, 255, 255, 0.09);
-    --surface-shine: linear-gradient(180deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.01) 100%);
+    --surface-glass: linear-gradient(180deg, rgba(20, 26, 46, 0.94) 0%, rgba(11, 15, 28, 0.96) 100%);
+    --surface-border: rgba(255, 255, 255, 0.1);
+    --surface-shine: linear-gradient(180deg, rgba(255, 255, 255, 0.14) 0%, rgba(255, 255, 255, 0.01) 100%);
     
     --card-bg: rgba(255, 255, 255, 0.038);
     --card-border: rgba(255, 255, 255, 0.08);
@@ -26,8 +26,8 @@
     --accent-glow: rgba(99, 102, 241, 0.35);
     --accent-soft: rgba(99, 102, 241, 0.12);
     
-    --portal-shadow: 0 32px 80px -16px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.06);
-    --modal-shadow: 0 40px 100px -20px rgba(0, 0, 0, 0.9), 0 0 0 1px rgba(255, 255, 255, 0.12);
+    --portal-shadow: 0 20px 48px -12px rgba(0, 0, 0, 0.65), 0 0 0 1px rgba(255, 255, 255, 0.06);
+    --modal-shadow: 0 24px 60px -16px rgba(0, 0, 0, 0.75), 0 0 0 1px rgba(255, 255, 255, 0.1);
     
     --shimmer-base: rgba(255, 255, 255, 0.035);
     --shimmer-highlight: rgba(255, 255, 255, 0.09);
@@ -39,10 +39,10 @@
 }
 
 [data-theme="light"] {
-    --bg-base: #f3f5fa;
-    --surface-glass: rgba(255, 255, 255, 0.78);
-    --surface-border: rgba(15, 23, 42, 0.08);
-    --surface-shine: linear-gradient(180deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.3) 100%);
+    --bg-base: #f0f3f8;
+    --surface-glass: linear-gradient(180deg, rgba(255, 255, 255, 0.96) 0%, rgba(244, 247, 252, 0.98) 100%);
+    --surface-border: rgba(15, 23, 42, 0.09);
+    --surface-shine: linear-gradient(180deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.2) 100%);
     
     --card-bg: rgba(255, 255, 255, 0.65);
     --card-border: rgba(15, 23, 42, 0.065);
@@ -61,8 +61,8 @@
     --accent-glow: rgba(79, 70, 229, 0.22);
     --accent-soft: rgba(79, 70, 229, 0.08);
     
-    --portal-shadow: 0 24px 60px -12px rgba(15, 23, 42, 0.12), 0 0 0 1px rgba(15, 23, 42, 0.05);
-    --modal-shadow: 0 32px 80px -16px rgba(15, 23, 42, 0.18), 0 0 0 1px rgba(15, 23, 42, 0.08);
+    --portal-shadow: 0 16px 40px -10px rgba(15, 23, 42, 0.1), 0 0 0 1px rgba(15, 23, 42, 0.05);
+    --modal-shadow: 0 20px 50px -12px rgba(15, 23, 42, 0.14), 0 0 0 1px rgba(15, 23, 42, 0.08);
     
     --shimmer-base: rgba(15, 23, 42, 0.04);
     --shimmer-highlight: rgba(15, 23, 42, 0.09);
@@ -150,34 +150,8 @@ body {
     opacity: calc(var(--orb-opacity) * 0.75);
 }
 
-/* Subtle, smooth float animation only on desktop to save mobile battery and prevent heating */
-@media (min-width: 769px) and (prefers-reduced-motion: no-preference) {
-    .ambient-orb {
-        animation: orb-float 26s ease-in-out infinite alternate;
-    }
-    .orb-primary { animation-duration: 28s; }
-    .orb-secondary { animation-duration: 24s; animation-delay: -8s; }
-    .orb-accent { animation-duration: 32s; animation-delay: -14s; }
-}
-
 .mesh-grid {
-    position: absolute;
-    inset: 0;
-    background-image: radial-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px);
-    background-size: 32px 32px;
-    opacity: 0.35;
-    pointer-events: none;
-}
-
-[data-theme="light"] .mesh-grid {
-    background-image: radial-gradient(rgba(15, 23, 42, 0.04) 1px, transparent 1px);
-    opacity: 0.5;
-}
-
-@keyframes orb-float {
-    0% { transform: translate3d(0, 0, 0) scale(1); }
-    50% { transform: translate3d(30px, -20px, 0) scale(1.05); }
-    100% { transform: translate3d(-20px, 20px, 0) scale(0.96); }
+    display: none;
 }
 
 /* ── App Viewport & Portal Card ── */
@@ -194,13 +168,11 @@ body {
     width: 100%;
     background: var(--surface-glass);
     border: 1px solid var(--surface-border);
-    backdrop-filter: blur(20px) saturate(160%);
-    -webkit-backdrop-filter: blur(20px) saturate(160%);
     border-radius: 32px;
     padding: 28px;
     box-shadow: var(--portal-shadow);
     overflow: hidden;
-    animation: portal-spring-in 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation: portal-spring-in 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 .portal-card::before {
@@ -256,25 +228,12 @@ body {
     height: 8px;
     border-radius: 50%;
     background: #10b981;
+    box-shadow: 0 0 8px rgba(16, 185, 129, 0.75);
     position: relative;
 }
 
 .pulse-ring {
-    position: absolute;
-    left: 14px;
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: #10b981;
-    pointer-events: none;
-    transform: translateZ(0);
-    animation: status-ring 2.4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-}
-
-@keyframes status-ring {
-    0% { transform: scale(1); opacity: 0.8; }
-    50% { transform: scale(2.4); opacity: 0; }
-    100% { transform: scale(2.4); opacity: 0; }
+    display: none;
 }
 
 .header-actions {
@@ -362,8 +321,8 @@ body {
     inset: -2px;
     border-radius: 26px;
     background: linear-gradient(135deg, #6366f1, #ec4899);
-    filter: blur(12px);
-    opacity: 0.4;
+    box-shadow: 0 0 20px rgba(99, 102, 241, 0.45);
+    opacity: 0.5;
     z-index: 0;
     transition: opacity 0.3s ease;
 }
@@ -498,36 +457,13 @@ body {
     height: 6px;
     border-radius: 50%;
     background: #ffffff;
-    box-shadow: 0 0 6px rgba(255, 255, 255, 0.9);
+    box-shadow: 0 0 6px rgba(255, 255, 255, 0.95);
     position: relative;
     flex-shrink: 0;
 }
 
 .news-tag-dot::after {
-    content: '';
-    position: absolute;
-    top: -3px;
-    left: -3px;
-    right: -3px;
-    bottom: -3px;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.6);
-    animation: news-pulse 2s cubic-bezier(0.24, 0, 0.38, 1) infinite;
-}
-
-@keyframes news-pulse {
-    0% {
-        transform: scale(0.8);
-        opacity: 0.8;
-    }
-    70% {
-        transform: scale(2.2);
-        opacity: 0;
-    }
-    100% {
-        transform: scale(2.2);
-        opacity: 0;
-    }
+    display: none;
 }
 
 .news-tag-text {
@@ -1314,29 +1250,27 @@ body {
 .modal-overlay {
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.65);
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
+    background: rgba(3, 6, 15, 0.85);
     z-index: 999;
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 20px;
-    animation: fade-in 0.25s ease both;
+    animation: fade-in 0.2s ease both;
 }
 
 .modal-card {
     position: relative;
     width: 100%;
     max-width: 440px;
-    background: var(--surface-glass);
+    background: var(--bg-base);
+    background: color-mix(in srgb, var(--surface-glass) 90%, var(--bg-base));
     border: 1px solid var(--surface-border);
-    backdrop-filter: blur(24px) saturate(175%);
-    -webkit-backdrop-filter: blur(24px) saturate(175%);
     border-radius: 28px;
     padding: 26px;
     box-shadow: var(--modal-shadow);
-    animation: modal-pop 0.3s cubic-bezier(0.16, 1, 0.3, 1) both;
+    contain: layout style;
+    animation: modal-pop 0.25s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 .modal-close-btn {
@@ -1690,10 +1624,8 @@ body {
     bottom: calc(env(safe-area-inset-bottom, 24px) + 24px);
     left: 50%;
     transform: translateX(-50%);
-    background: rgba(15, 20, 36, 0.92);
+    background: rgba(15, 20, 36, 0.96);
     border: 1px solid rgba(255, 255, 255, 0.16);
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
     color: #ffffff;
     padding: 10px 20px;
     border-radius: 999px;
