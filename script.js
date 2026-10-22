@@ -24,7 +24,9 @@
     };
 
     // Fallback source manifest for offline or direct file:// viewing
+    // Fallback source manifest for offline or direct file:// viewing
     const FALLBACK_MANIFEST = {
+        version: 2,
         name: "DexterDevKH Apps",
         identifier: "com.dexterdevkh.source",
         sourceURL: "https://dexterdevkh.github.io/dexter-sources/sources.json",
@@ -35,37 +37,63 @@
                 bundleIdentifier: "com.google.ios.youtube",
                 developerName: "DexterDevKH",
                 subtitle: "Enhanced YouTube client with ad-blocking & background play",
-                version: "21.42.4",
-                versionDate: "2026-10-22T05:36:58Z",
-                versionDescription: "Version 21.42.4 release.",
-                beta: false,
-                size: 149422771,
-                localizedDescription: "Official iOS release of DTLite (DexTube) featuring ad-blocking, background playback, and SponsorBlock.",
                 iconURL: "icons/dtlite.png",
                 tintColor: "007AFF",
-                downloadURL: "https://github.com/DexterDevKH/DTLite/releases/download/ytp-v6.0.b2-21.42.4/DexTubePlus_v6.0.b2_21.42.4.ipa",
                 screenshotURLs: [],
+                version: "21.42.4",
+                localizedDescription: "Official iOS release of DTLite (DexTube) featuring ad-blocking, background playback, and SponsorBlock.",
+                date: "2026-10-22T05:36:58Z",
+                downloadURL: "https://github.com/DexterDevKH/DTLite/releases/download/ytp-v6.0.b2-21.42.4/DexTubePlus_v6.0.b2_21.42.4.ipa",
+                size: 149422771,
                 versions: [
                     {
                         version: "21.42.4",
+                        localizedDescription: "Version 21.42.4 release.",
                         date: "2026-10-22T05:36:58Z",
                         downloadURL: "https://github.com/DexterDevKH/DTLite/releases/download/ytp-v6.0.b2-21.42.4/DexTubePlus_v6.0.b2_21.42.4.ipa",
-                        localizedDescription: "Version 21.42.4 release.",
                         size: 149422771
                     },
                     {
                         version: "21.41.5",
+                        localizedDescription: "Version 21.41.5 release.",
                         date: "2026-10-17T13:45:30Z",
                         downloadURL: "https://github.com/DexterDevKH/DTLite/releases/download/ytp-v6.0.b2-21.41.5/DexTubePlus_v6.0.b2_21.41.5.ipa",
-                        localizedDescription: "Version 21.41.5 release.",
                         size: 148605386
                     },
                     {
                         version: "21.40.5",
+                        localizedDescription: "Version 21.40.5 release.",
                         date: "2026-10-06T09:36:22Z",
                         downloadURL: "https://github.com/DexterDevKH/DTLite/releases/download/ytp-v6.0.b2-21.40.5/DexTubePlus_v6.0.b2_21.40.5.ipa",
-                        localizedDescription: "Version 21.40.5 release.",
                         size: 147834744
+                    }
+                ],
+                releaseChannels: [
+                    {
+                        "track": "stable",
+                        "releases": [
+                            {
+                                version: "21.42.4",
+                                localizedDescription: "Version 21.42.4 release.",
+                                date: "2026-10-22T05:36:58Z",
+                                downloadURL: "https://github.com/DexterDevKH/DTLite/releases/download/ytp-v6.0.b2-21.42.4/DexTubePlus_v6.0.b2_21.42.4.ipa",
+                                size: 149422771
+                            },
+                            {
+                                version: "21.41.5",
+                                localizedDescription: "Version 21.41.5 release.",
+                                date: "2026-10-17T13:45:30Z",
+                                downloadURL: "https://github.com/DexterDevKH/DTLite/releases/download/ytp-v6.0.b2-21.41.5/DexTubePlus_v6.0.b2_21.41.5.ipa",
+                                size: 148605386
+                            },
+                            {
+                                version: "21.40.5",
+                                localizedDescription: "Version 21.40.5 release.",
+                                date: "2026-10-06T09:36:22Z",
+                                downloadURL: "https://github.com/DexterDevKH/DTLite/releases/download/ytp-v6.0.b2-21.40.5/DexTubePlus_v6.0.b2_21.40.5.ipa",
+                                size: 147834744
+                            }
+                        ]
                     }
                 ],
                 permissions: [
@@ -77,44 +105,86 @@
                         type: "background-fetch",
                         usageDescription: "Allows background updates and download synchronization."
                     }
-                ]
+                ],
+                appPermissions: {
+                    entitlements: [
+                        { name: "com.apple.security.application-groups" },
+                        { name: "get-task-allow" }
+                    ],
+                    privacy: [
+                        {
+                            name: "NSBackgroundAudioUsageDescription",
+                            usageDescription: "Allows audio and video playback in background and Picture-in-Picture."
+                        },
+                        {
+                            name: "NSBackgroundFetchUsageDescription",
+                            usageDescription: "Allows background updates and download synchronization."
+                        }
+                    ]
+                }
             },
             {
                 name: "DexTube Music",
                 bundleIdentifier: "com.google.ios.youtubemusic",
                 developerName: "DexterDevKH",
                 subtitle: "High-fidelity music streaming, background audio & lyrics",
-                version: "9.42.2",
-                versionDate: "2026-10-19T16:19:57Z",
-                versionDescription: "Version 9.42.2 release.",
-                beta: false,
-                size: 107274691,
-                localizedDescription: "Official iOS release of DTMusicUltimate (DexTube Music) featuring background audio, ad-free listening, and lossless presets.",
                 iconURL: "icons/dtmusicultimate.png",
                 tintColor: "FF2D55",
-                downloadURL: "https://github.com/DexterDevKH/DTMusicUltimate/releases/download/dtm-9.42.2/DTMusicUltimate_9.42.2.ipa",
                 screenshotURLs: [],
+                version: "9.42.2",
+                localizedDescription: "Official iOS release of DTMusicUltimate (DexTube Music) featuring background audio, ad-free listening, and lossless presets.",
+                date: "2026-10-19T16:19:57Z",
+                downloadURL: "https://github.com/DexterDevKH/DTMusicUltimate/releases/download/dtm-9.42.2/DTMusicUltimate_9.42.2.ipa",
+                size: 107274691,
                 versions: [
                     {
                         version: "9.42.2",
+                        localizedDescription: "Version 9.42.2 release.",
                         date: "2026-10-19T16:19:57Z",
                         downloadURL: "https://github.com/DexterDevKH/DTMusicUltimate/releases/download/dtm-9.42.2/DTMusicUltimate_9.42.2.ipa",
-                        localizedDescription: "Version 9.42.2 release.",
                         size: 107274691
                     },
                     {
                         version: "9.41.2",
+                        localizedDescription: "Version 9.41.2 release.",
                         date: "2026-10-18T09:41:27Z",
                         downloadURL: "https://github.com/DexterDevKH/DTMusicUltimate/releases/download/dtm-9.41.2/DTMusicUltimate_9.41.2.ipa",
-                        localizedDescription: "Version 9.41.2 release.",
                         size: 107008594
                     },
                     {
                         version: "9.40.2",
+                        localizedDescription: "Version 9.40.2 release.",
                         date: "2026-10-11T06:31:37Z",
                         downloadURL: "https://github.com/DexterDevKH/DTMusicUltimate/releases/download/dtm-9.40.2/DTMusicUltimate_9.40.2.ipa",
-                        localizedDescription: "Version 9.40.2 release.",
                         size: 106696986
+                    }
+                ],
+                releaseChannels: [
+                    {
+                        "track": "stable",
+                        "releases": [
+                            {
+                                version: "9.42.2",
+                                localizedDescription: "Version 9.42.2 release.",
+                                date: "2026-10-19T16:19:57Z",
+                                downloadURL: "https://github.com/DexterDevKH/DTMusicUltimate/releases/download/dtm-9.42.2/DTMusicUltimate_9.42.2.ipa",
+                                size: 107274691
+                            },
+                            {
+                                version: "9.41.2",
+                                localizedDescription: "Version 9.41.2 release.",
+                                date: "2026-10-18T09:41:27Z",
+                                downloadURL: "https://github.com/DexterDevKH/DTMusicUltimate/releases/download/dtm-9.41.2/DTMusicUltimate_9.41.2.ipa",
+                                size: 107008594
+                            },
+                            {
+                                version: "9.40.2",
+                                localizedDescription: "Version 9.40.2 release.",
+                                date: "2026-10-11T06:31:37Z",
+                                downloadURL: "https://github.com/DexterDevKH/DTMusicUltimate/releases/download/dtm-9.40.2/DTMusicUltimate_9.40.2.ipa",
+                                size: 106696986
+                            }
+                        ]
                     }
                 ],
                 permissions: [
@@ -126,7 +196,23 @@
                         type: "background-fetch",
                         usageDescription: "Enables background sync and offline cache verification."
                     }
-                ]
+                ],
+                appPermissions: {
+                    entitlements: [
+                        { name: "com.apple.security.application-groups" },
+                        { name: "get-task-allow" }
+                    ],
+                    privacy: [
+                        {
+                            name: "NSBackgroundAudioUsageDescription",
+                            usageDescription: "Enables uninterrupted high-fidelity background music and lock screen playback controls."
+                        },
+                        {
+                            name: "NSBackgroundFetchUsageDescription",
+                            usageDescription: "Enables background sync and offline cache verification."
+                        }
+                    ]
+                }
             }
         ],
         news: [
