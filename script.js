@@ -44,7 +44,17 @@
                 tintColor: "#007AFF",
                 size: 149422771,
                 screenshots: {
-                    iphone: []
+                    iphone: [
+                        { width: 1242, height: 2556, imageURL: "https://raw.githubusercontent.com/DexterDevKH/DTLite/main/Resources/scr1.jpg" },
+                        { width: 1242, height: 2556, imageURL: "https://raw.githubusercontent.com/DexterDevKH/DTLite/main/Resources/scr2.jpg" },
+                        { width: 1242, height: 2556, imageURL: "https://raw.githubusercontent.com/DexterDevKH/DTLite/main/Resources/scr3.jpg" },
+                        { width: 1242, height: 2556, imageURL: "https://raw.githubusercontent.com/DexterDevKH/DTLite/main/Resources/scr4.jpg" },
+                        { width: 1242, height: 2556, imageURL: "https://raw.githubusercontent.com/DexterDevKH/DTLite/main/Resources/scr5.jpg" },
+                        { width: 1242, height: 2556, imageURL: "https://raw.githubusercontent.com/DexterDevKH/DTLite/main/Resources/scr6.jpg" },
+                        { width: 1242, height: 2556, imageURL: "https://raw.githubusercontent.com/DexterDevKH/DTLite/main/Resources/scr7.jpg" },
+                        { width: 1242, height: 2556, imageURL: "https://raw.githubusercontent.com/DexterDevKH/DTLite/main/Resources/scr8.jpg" },
+                        { width: 1242, height: 2556, imageURL: "https://raw.githubusercontent.com/DexterDevKH/DTLite/main/Resources/scr9.jpg" }
+                    ]
                 },
                 appPermissions: {
                     entitlements: [],
@@ -90,7 +100,13 @@
                 tintColor: "#FF2D55",
                 size: 107274691,
                 screenshots: {
-                    iphone: []
+                    iphone: [
+                        { width: 1000, height: 2060, imageURL: "https://raw.githubusercontent.com/DexterDevKH/DTMusicUltimate/main/Resources/scrn1.png" },
+                        { width: 1000, height: 2060, imageURL: "https://raw.githubusercontent.com/DexterDevKH/DTMusicUltimate/main/Resources/scrn2.png" },
+                        { width: 1000, height: 2060, imageURL: "https://raw.githubusercontent.com/DexterDevKH/DTMusicUltimate/main/Resources/scrn3.png" },
+                        { width: 1000, height: 2060, imageURL: "https://raw.githubusercontent.com/DexterDevKH/DTMusicUltimate/main/Resources/scrn4.png" },
+                        { width: 1000, height: 2060, imageURL: "https://raw.githubusercontent.com/DexterDevKH/DTMusicUltimate/main/Resources/scrn5.png" }
+                    ]
                 },
                 appPermissions: {
                     entitlements: [],
@@ -134,7 +150,7 @@
                 caption: "Version 21.42.4 is now available with the latest features, enhancements, and iOS 18 fixes.",
                 tintColor: "#007AFF",
                 imageURL: "icons/dtlite.png",
-                url: "https://github.com/DexterDevKH/DTLite/releases/tag/v21.42.4",
+                url: "https://github.com/DexterDevKH/DTLite/releases/tag/ytp-v6.0.b2-21.42.4",
                 date: "2026-10-22",
                 notify: true
             },
@@ -144,7 +160,7 @@
                 caption: "Version 9.42.2 is now available with the latest features, enhancements, and iOS 18 fixes.",
                 tintColor: "#FF2D55",
                 imageURL: "icons/dtmusicultimate.png",
-                url: "https://github.com/DexterDevKH/DTMusicUltimate/releases/tag/v9.42.2",
+                url: "https://github.com/DexterDevKH/DTMusicUltimate/releases/tag/dtm-9.42.2",
                 date: "2026-10-19",
                 notify: true
             }
@@ -652,6 +668,27 @@
 
         document.getElementById("detailDescription").textContent =
             app.localizedDescription || app.versionDescription || "No detailed description provided.";
+
+        // Populate screenshots gallery
+        const screenshotsSection = document.getElementById("detailScreenshotsSection");
+        const screenshotsContainer = document.getElementById("detailScreenshotsContainer");
+        if (screenshotsSection && screenshotsContainer) {
+            screenshotsContainer.replaceChildren();
+            const list = (app.screenshots && Array.isArray(app.screenshots.iphone)) ? app.screenshots.iphone : [];
+            if (list.length > 0) {
+                list.forEach((scr, idx) => {
+                    const img = document.createElement("img");
+                    img.className = "detail-screenshot-img";
+                    img.src = scr.imageURL || scr;
+                    img.alt = `${app.name} Screenshot ${idx + 1}`;
+                    img.loading = "lazy";
+                    screenshotsContainer.appendChild(img);
+                });
+                screenshotsSection.classList.remove("hidden");
+            } else {
+                screenshotsSection.classList.add("hidden");
+            }
+        }
 
         // Populate specifications
         document.getElementById("specBundleId").textContent = app.bundleIdentifier || "-";

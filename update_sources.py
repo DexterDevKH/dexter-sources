@@ -46,6 +46,7 @@ class AppConfig:
     ipa_keyword: str = ".ipa"
     fallback_description: str = ""
     min_os_version: str = "14.0"
+    screenshots: Dict[str, List[Dict[str, Any]]] = field(default_factory=lambda: {"iphone": []})
     app_permissions: Dict[str, Any] = field(default_factory=lambda: {"entitlements": [], "privacy": {}})
 
 
@@ -61,6 +62,16 @@ APP_CONFIGS: List[AppConfig] = [
         icon_url=f"https://raw.githubusercontent.com/{GITHUB_OWNER}/dexter-sources/main/icons/dtlite.png",
         fallback_description="Official iOS release of DTLite (DexTube) featuring ad-blocking, background playback, and SponsorBlock.",
         min_os_version="14.0",
+        screenshots={
+            "iphone": [
+                {
+                    "width": 1242,
+                    "height": 2556,
+                    "imageURL": f"https://raw.githubusercontent.com/{GITHUB_OWNER}/DTLite/main/Resources/scr{i}.jpg",
+                }
+                for i in range(1, 10)
+            ]
+        },
         app_permissions={
             "entitlements": [],
             "privacy": {
@@ -79,6 +90,16 @@ APP_CONFIGS: List[AppConfig] = [
         icon_url=f"https://raw.githubusercontent.com/{GITHUB_OWNER}/dexter-sources/main/icons/dtmusicultimate.png",
         fallback_description="Official iOS release of DTMusicUltimate (DexTube Music) featuring background audio, ad-free listening, and lossless presets.",
         min_os_version="14.0",
+        screenshots={
+            "iphone": [
+                {
+                    "width": 1000,
+                    "height": 2060,
+                    "imageURL": f"https://raw.githubusercontent.com/{GITHUB_OWNER}/DTMusicUltimate/main/Resources/scrn{i}.png",
+                }
+                for i in range(1, 6)
+            ]
+        },
         app_permissions={
             "entitlements": [],
             "privacy": {
@@ -150,6 +171,17 @@ def sanitize_version(tag_name: str) -> str:
         return match.group(0)
 
     return tag
+
+
+def extract_release_tag_url(repo: str, download_url: str, version: str) -> str:
+    """Extracts GitHub release tag web page URL from release assets or download URL."""
+    if download_url and "/releases/download/" in download_url:
+        try:
+            tag = download_url.split("/releases/download/")[1].split("/")[0]
+            return f"https://github.com/{repo}/releases/tag/{tag}"
+        except Exception:
+            pass
+    return f"https://github.com/{repo}/releases/tag/v{version}"
 
 
 def clean_release_body(body: Optional[str], default_text: str) -> str:
@@ -325,14 +357,13 @@ def update_manifest(
         is_new_app = app_entry is None
 
         tint_color = conf.tint_color if conf.tint_color.startswith("#") else f"#{conf.tint_color}"
-        rel_tag = latest_version["version"]
-        rel_url = f"https://github.com/{conf.repo}/releases/tag/v{rel_tag}"
+        rel_url = extract_release_tag_url(conf.repo, latest_version.get("downloadURL", ""), latest_version["version"])
 
         existing_screenshots = {}
         if isinstance(app_entry, dict):
             existing_screenshots = app_entry.get("screenshots") or {}
-        if not isinstance(existing_screenshots, dict) or "iphone" not in existing_screenshots:
-            existing_screenshots = {"iphone": []}
+        if not isinstance(existing_screenshots, dict) or not existing_screenshots.get("iphone"):
+            existing_screenshots = conf.screenshots or {"iphone": []}
 
         app_payload = {
             "name": conf.name,
@@ -398,8 +429,7 @@ def update_manifest(
                 if versions:
                     latest_v = versions[0]
                     tint_color = conf.tint_color if conf.tint_color.startswith("#") else f"#{conf.tint_color}"
-                    rel_tag = latest_v.get("version", "")
-                    rel_url = f"https://github.com/{conf.repo}/releases/tag/v{rel_tag}"
+                    rel_url = extract_release_tag_url(conf.repo, latest_v.get("downloadURL", ""), latest_v.get("version", ""))
                     item = generate_news_item(
                         app_name=conf.name,
                         version=latest_v.get("version", "1.0"),

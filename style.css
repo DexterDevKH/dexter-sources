@@ -1838,6 +1838,46 @@ body {
     }
 }
 
+/* Screenshots Carousel in Modal */
+.screenshots-carousel {
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    padding: 6px 2px 14px;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+}
+
+.screenshots-carousel::-webkit-scrollbar {
+    height: 6px;
+}
+
+.screenshots-carousel::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.screenshots-carousel::-webkit-scrollbar-thumb {
+    background: var(--card-border);
+    border-radius: 999px;
+}
+
+.detail-screenshot-img {
+    height: 230px;
+    width: auto;
+    border-radius: 14px;
+    scroll-snap-align: start;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+    border: 1px solid var(--card-border);
+    object-fit: cover;
+    flex-shrink: 0;
+    transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    background: var(--card-bg);
+}
+
+.detail-screenshot-img:hover {
+    transform: scale(1.02);
+}
+
 @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after {
         animation-duration: 0.01ms !important;
