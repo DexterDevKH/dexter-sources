@@ -20,7 +20,6 @@ jobs:
           GH_TOKEN: ${{ secrets.PAT || secrets.GITHUB_TOKEN }}
           GH_REPO: ${{ github.repository }}
           GH_NO_PROMPT: "1"
-          TARGET_RUN_ID: ${{ github.event.workflow_run.id }}
         run: |
           echo "::group::🧹 Auto-Purging Completed Workflow Runs"
           # Disable immediate exit on non-zero exit code so 404s or missing items never fail the job
@@ -28,39 +27,40 @@ jobs:
 
           CURRENT_RUN="${{ github.run_id }}"
 
-          # If triggered by workflow_run, delete the trigger run directly
-          if [ -n "$TARGET_RUN_ID" ]; then
-            echo "Deleting trigger run: $TARGET_RUN_ID"
-            gh api -X DELETE "repos/${{ github.repository }}/actions/runs/$TARGET_RUN_ID" >/dev/null 2>&1 || true
-          fi
-
-          # Function to purge completed runs for a specific workflow
+          # Function to purge older completed runs for a specific workflow (keeps the 1 newest run)
           purge_workflow() {
             local wf="$1"
-            echo "Purging completed runs of $wf..."
-            gh run list --repo "${{ github.repository }}" --workflow="$wf" --status=completed -L 100 --json databaseId -q '.[].databaseId' 2>/dev/null | while read -r rid; do
+            echo "Checking completed runs of $wf..."
+            local run_ids
+            run_ids=$(gh run list --repo "${{ github.repository }}" --workflow="$wf" --status=completed -L 150 --json databaseId -q '.[].databaseId' 2>/dev/null)
+
+            local count
+            count=$(echo "$run_ids" | grep -c . || true)
+
+            if [ -z "$run_ids" ] || [ "$count" -le 1 ]; then
+              echo "  Found $count completed run(s) for $wf. Keeping it."
+              return
+            fi
+
+            local newest_id
+            newest_id=$(echo "$run_ids" | head -n 1)
+            echo "  Preserving newest run: $newest_id"
+
+            # Delete older runs starting from the 2nd newest
+            echo "$run_ids" | tail -n +2 | while read -r rid; do
               if [ -n "$rid" ] && [ "$rid" != "$CURRENT_RUN" ]; then
-                echo "Deleting run $rid ($wf)"
+                echo "  Deleting older run $rid ($wf)"
                 gh api -X DELETE "repos/${{ github.repository }}/actions/runs/$rid" >/dev/null 2>&1 || true
               fi
             done
           }
 
-          # Purge runs for individual workflows
+          # Purge older runs for each workflow (keeping the 1 newest run of each)
           purge_workflow "update-sources.yml"
           purge_workflow "keep-alive.yml"
           purge_workflow "pages-build-deployment"
           purge_workflow "cleanup-workflows.yml"
 
-          # Final sweep for any remaining completed runs across repository
-          echo "Sweeping any remaining completed runs in repository..."
-          gh run list --repo "${{ github.repository }}" --status=completed -L 100 --json databaseId -q '.[].databaseId' 2>/dev/null | while read -r rid; do
-            if [ -n "$rid" ] && [ "$rid" != "$CURRENT_RUN" ]; then
-              echo "Deleting remaining run $rid"
-              gh api -X DELETE "repos/${{ github.repository }}/actions/runs/$rid" >/dev/null 2>&1 || true
-            fi
-          done
-
-          echo "✔ Complete: All completed run logs and history have been purged."
+          echo "✔ Complete: Retained the newest run for each workflow and purged older history."
           echo "::endgroup::"
           exit 0
