@@ -27,6 +27,18 @@
     --accent-soft: rgba(99, 102, 241, 0.14);
     --accent-border: rgba(99, 102, 241, 0.4);
     
+    --news-bg: #121828;
+    --news-border: #232d44;
+    --news-hover-bg: #151d2f;
+    --news-hover-border: #3b4b6e;
+    --news-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+    --news-close-bg: #1a2235;
+    --news-close-border: #243048;
+    --news-close-color: #94a3b8;
+    --news-close-hover-bg: #202a40;
+    --news-close-hover-color: #ffffff;
+    --news-close-hover-border: #33415e;
+    
     --portal-shadow: 0 24px 60px -12px rgba(0, 0, 0, 0.75);
     --modal-shadow: 0 28px 70px -12px rgba(0, 0, 0, 0.85);
     
@@ -59,6 +71,18 @@
     --accent-glow: rgba(79, 70, 229, 0.2);
     --accent-soft: rgba(79, 70, 229, 0.1);
     --accent-border: rgba(79, 70, 229, 0.3);
+    
+    --news-bg: rgba(99, 102, 241, 0.05);
+    --news-border: rgba(99, 102, 241, 0.22);
+    --news-hover-bg: rgba(99, 102, 241, 0.09);
+    --news-hover-border: rgba(99, 102, 241, 0.35);
+    --news-shadow: 0 4px 14px rgba(99, 102, 241, 0.06);
+    --news-close-bg: rgba(15, 23, 42, 0.06);
+    --news-close-border: rgba(15, 23, 42, 0.1);
+    --news-close-color: #64748b;
+    --news-close-hover-bg: rgba(15, 23, 42, 0.12);
+    --news-close-hover-color: #0f172a;
+    --news-close-hover-border: rgba(15, 23, 42, 0.18);
     
     --portal-shadow: 0 16px 40px -10px rgba(15, 23, 42, 0.08);
     --modal-shadow: 0 20px 50px -12px rgba(15, 23, 42, 0.12);
@@ -353,19 +377,19 @@ body {
     gap: 12px;
     padding: 13px 15px;
     border-radius: 18px;
-    background: #121828;
-    border: 1px solid #232d44;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+    background: var(--news-bg);
+    border: 1px solid var(--news-border);
+    box-shadow: var(--news-shadow);
     margin-bottom: 22px;
     position: relative;
     z-index: 2;
     animation: fade-in-down 0.3s cubic-bezier(0.16, 1, 0.3, 1) both;
-    transition: border-color 0.2s ease, background-color 0.2s ease;
+    transition: border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .news-banner:hover {
-    border-color: #3b4b6e;
-    background: #151d2f;
+    border-color: var(--news-hover-border);
+    background: var(--news-hover-bg);
 }
 
 .news-content {
@@ -433,7 +457,7 @@ body {
 
 .news-caption {
     font-size: 0.74rem;
-    color: var(--text-muted);
+    color: var(--text-secondary);
     line-height: 1.4;
     display: -webkit-box;
     -webkit-line-clamp: 2;
@@ -442,9 +466,9 @@ body {
 }
 
 .news-close-btn {
-    background: #1a2235;
-    border: 1px solid #243048;
-    color: #94a3b8;
+    background: var(--news-close-bg);
+    border: 1px solid var(--news-close-border);
+    color: var(--news-close-color);
     width: 26px;
     height: 26px;
     border-radius: 50%;
@@ -459,9 +483,9 @@ body {
 }
 
 .news-close-btn:hover {
-    background: #202a40;
-    color: #ffffff;
-    border-color: #33415e;
+    background: var(--news-close-hover-bg);
+    color: var(--news-close-hover-color);
+    border-color: var(--news-close-hover-border);
 }
 
 .news-close-btn:active {
@@ -1608,6 +1632,90 @@ body {
     border-color: #e2e8f0;
     color: #0f172a;
     box-shadow: 0 16px 40px rgba(15, 23, 42, 0.14);
+}
+
+/* Light Theme Overrides for Modals */
+[data-theme="light"] .modal-close-btn {
+    background: #f1f5f9;
+    border-color: #e2e8f0;
+    color: #64748b;
+}
+
+[data-theme="light"] .modal-close-btn:hover {
+    background: #e2e8f0;
+    color: #0f172a;
+    border-color: #cbd5e1;
+}
+
+[data-theme="light"] .modal-icon-badge {
+    background: rgba(99, 102, 241, 0.08);
+    border-color: rgba(99, 102, 241, 0.2);
+}
+
+[data-theme="light"] .meta-tag {
+    background: #f1f5f9;
+    border-color: #e2e8f0;
+    color: #64748b;
+}
+
+[data-theme="light"] .meta-tag.version {
+    background: rgba(99, 102, 241, 0.1);
+    border-color: rgba(99, 102, 241, 0.3);
+    color: #4f46e5;
+}
+
+[data-theme="light"] .modal-action-btn.secondary {
+    background: #f8fafc;
+    border-color: #e2e8f0;
+    color: #0f172a;
+}
+
+[data-theme="light"] .modal-action-btn.secondary:hover {
+    background: #f1f5f9;
+    border-color: #cbd5e1;
+}
+
+[data-theme="light"] .detail-icon {
+    background: #f8fafc;
+    border-color: #e2e8f0;
+    box-shadow: 0 4px 14px rgba(15, 23, 42, 0.1);
+}
+
+[data-theme="light"] .detail-description-text {
+    color: #334155;
+}
+
+[data-theme="light"] .changelog-entry {
+    background: #f8fafc;
+    border-color: #e2e8f0;
+}
+
+[data-theme="light"] .changelog-entry:hover {
+    background: #f1f5f9;
+    border-color: #cbd5e1;
+}
+
+[data-theme="light"] .changelog-version {
+    color: #0f172a;
+}
+
+[data-theme="light"] .changelog-body {
+    color: #475569;
+}
+
+[data-theme="light"] .spec-item {
+    background: #f8fafc;
+    border-color: #e2e8f0;
+}
+
+[data-theme="light"] .spec-item dd {
+    color: #0f172a;
+}
+
+[data-theme="light"] .detail-screenshot-img {
+    background: #f8fafc;
+    border-color: #e2e8f0;
+    box-shadow: 0 4px 14px rgba(15, 23, 42, 0.1);
 }
 
 .toast-icon {
