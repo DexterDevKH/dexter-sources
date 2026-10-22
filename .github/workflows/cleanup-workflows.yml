@@ -27,7 +27,7 @@ jobs:
 
           CURRENT_RUN="${{ github.run_id }}"
 
-          # Function to purge older completed runs for a specific workflow (keeps the 1 newest run)
+          # Function to purge older completed runs for a workflow (keeps the 1 newest run)
           purge_workflow() {
             local wf="$1"
             echo "Checking completed runs of $wf..."
@@ -55,11 +55,20 @@ jobs:
             done
           }
 
-          # Purge older runs for each workflow (keeping the 1 newest run of each)
+          # 1. Purge older runs for external workflows (keeping 1 newest of each)
           purge_workflow "update-sources.yml"
           purge_workflow "keep-alive.yml"
           purge_workflow "pages-build-deployment"
-          purge_workflow "cleanup-workflows.yml"
+
+          # 2. Purge all past completed runs of this cleanup workflow itself
+          # (Since CURRENT_RUN will finish and become the 1 newest run, delete all past runs)
+          echo "Purging past completed runs of cleanup-workflows.yml..."
+          gh run list --repo "${{ github.repository }}" --workflow=cleanup-workflows.yml --status=completed -L 150 --json databaseId -q '.[].databaseId' 2>/dev/null | while read -r rid; do
+            if [ -n "$rid" ] && [ "$rid" != "$CURRENT_RUN" ]; then
+              echo "  Deleting past cleanup run $rid"
+              gh api -X DELETE "repos/${{ github.repository }}/actions/runs/$rid" >/dev/null 2>&1 || true
+            fi
+          done
 
           echo "✔ Complete: Retained the newest run for each workflow and purged older history."
           echo "::endgroup::"
