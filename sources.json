@@ -16,7 +16,7 @@
       "localizedDescription": "Official iOS release of DTLite (DexTube) featuring ad-blocking, background playback, and SponsorBlock.",
       "iconURL": "https://raw.githubusercontent.com/DexterDevKH/dexter-sources/main/icons/dtlite.png",
       "tintColor": "#007AFF",
-      "size": 149833070,
+      "size": 149839375,
       "screenshots": {
         "iphone": [
           {
@@ -79,7 +79,7 @@
           "date": "2026-10-28",
           "localizedDescription": "Version 21.43.5 release.",
           "downloadURL": "https://github.com/DexterDevKH/DTLite/releases/download/ytp-v6.0.b2-21.43.5/DexTubePlus_v6.0.b2_21.43.5.ipa",
-          "size": 149833070,
+          "size": 149839375,
           "minOSVersion": "14.0"
         },
         {
