@@ -413,12 +413,20 @@ def update_manifest(
             if changed:
                 updated_count += 1
                 logger.info("Updated '%s' from %s to %s", conf.name, old_ver, latest_version["version"])
-                if update_news and max_news > 0:
+            else:
+                logger.info("'%s' is already up to date (v%s)", conf.name, old_ver)
+
+            # Ensure the latest release always has an announcement in the news list
+            if update_news and max_news > 0:
+                expected_news_id = f"release-{conf.bundle_id.replace('.', '-')}-{latest_version['version'].replace('.', '-')}"
+                has_announcement = any(
+                    isinstance(n, dict) and n.get("identifier") == expected_news_id
+                    for n in manifest.get("news", [])
+                )
+                if not has_announcement:
                     new_announcements.append(generate_news_item(
                         conf.name, latest_version["version"], latest_version["date"], conf.icon_url, conf.bundle_id, tint_color, rel_url
                     ))
-            else:
-                logger.info("'%s' is already up to date (v%s)", conf.name, old_ver)
 
     existing_news = manifest.get("news", [])
     if not isinstance(existing_news, list):

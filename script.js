@@ -65,27 +65,11 @@
                 },
                 versions: [
                     {
-                        version: "21.42.4",
-                        date: "2026-10-22",
-                        localizedDescription: "Version 21.42.4 release.",
-                        downloadURL: "https://github.com/DexterDevKH/DTLite/releases/download/ytp-v6.0.b2-21.42.4/DexTubePlus_v6.0.b2_21.42.4.ipa",
-                        size: 149422771,
-                        minOSVersion: "16.0"
-                    },
-                    {
-                        version: "21.41.5",
-                        date: "2026-10-17",
-                        localizedDescription: "Version 21.41.5 release.",
-                        downloadURL: "https://github.com/DexterDevKH/DTLite/releases/download/ytp-v6.0.b2-21.41.5/DexTubePlus_v6.0.b2_21.41.5.ipa",
-                        size: 148605386,
-                        minOSVersion: "16.0"
-                    },
-                    {
-                        version: "21.40.5",
-                        date: "2026-10-06",
-                        localizedDescription: "Version 21.40.5 release.",
-                        downloadURL: "https://github.com/DexterDevKH/DTLite/releases/download/ytp-v6.0.b2-21.40.5/DexTubePlus_v6.0.b2_21.40.5.ipa",
-                        size: 147834744,
+                        version: "21.44.4",
+                        date: "2026-11-03",
+                        localizedDescription: "Version 21.44.4 release.",
+                        downloadURL: "https://github.com/DexterDevKH/DTLite/releases/download/ytp-v6.0-21.44.4/DexTubePlus_v6.0_21.44.4.ipa",
+                        size: 151151314,
                         minOSVersion: "16.0"
                     }
                 ]
@@ -117,6 +101,14 @@
                 },
                 versions: [
                     {
+                        version: "9.43.2",
+                        date: "2026-10-26",
+                        localizedDescription: "Version 9.43.2 release.",
+                        downloadURL: "https://github.com/DexterDevKH/DTMusicUltimate/releases/download/dtm-9.43.2/DTMusicUltimate_9.43.2.ipa",
+                        size: 107672160,
+                        minOSVersion: "16.0"
+                    },
+                    {
                         version: "9.42.2",
                         date: "2026-10-19",
                         localizedDescription: "Version 9.42.2 release.",
@@ -131,37 +123,29 @@
                         downloadURL: "https://github.com/DexterDevKH/DTMusicUltimate/releases/download/dtm-9.41.2/DTMusicUltimate_9.41.2.ipa",
                         size: 107008594,
                         minOSVersion: "16.0"
-                    },
-                    {
-                        version: "9.40.2",
-                        date: "2026-10-11",
-                        localizedDescription: "Version 9.40.2 release.",
-                        downloadURL: "https://github.com/DexterDevKH/DTMusicUltimate/releases/download/dtm-9.40.2/DTMusicUltimate_9.40.2.ipa",
-                        size: 106696986,
-                        minOSVersion: "16.0"
                     }
                 ]
             }
         ],
         news: [
             {
-                title: "DexTube v21.42.4 Released",
-                identifier: "release-com-google-ios-youtube-21-42-4",
-                caption: "Version 21.42.4 is now available with the latest features, enhancements, and iOS 18 fixes.",
+                title: "DexTube v21.44.4 Released",
+                identifier: "release-com-google-ios-youtube-21-44-4",
+                caption: "Version 21.44.4 is now available with the latest features, enhancements, and iOS 18 fixes.",
                 tintColor: "#007AFF",
                 imageURL: "icons/dtlite.png",
-                url: "https://github.com/DexterDevKH/DTLite/releases/tag/ytp-v6.0.b2-21.42.4",
-                date: "2026-10-22",
+                url: "https://github.com/DexterDevKH/DTLite/releases/tag/ytp-v6.0-21.44.4",
+                date: "2026-11-03",
                 notify: true
             },
             {
-                title: "DexTube Music v9.42.2 Released",
-                identifier: "release-com-google-ios-youtubemusic-9-42-2",
-                caption: "Version 9.42.2 is now available with the latest features, enhancements, and iOS 18 fixes.",
+                title: "DexTube Music v9.43.2 Released",
+                identifier: "release-com-google-ios-youtubemusic-9-43-2",
+                caption: "Version 9.43.2 is now available with the latest features, enhancements, and iOS 18 fixes.",
                 tintColor: "#FF2D55",
                 imageURL: "icons/dtmusicultimate.png",
-                url: "https://github.com/DexterDevKH/DTMusicUltimate/releases/tag/dtm-9.42.2",
-                date: "2026-10-19",
+                url: "https://github.com/DexterDevKH/DTMusicUltimate/releases/tag/dtm-9.43.2",
+                date: "2026-10-26",
                 notify: true
             }
         ]
@@ -351,9 +335,10 @@
      */
     function fetchLiveManifest() {
         const isWeb = window.location.protocol === "http:" || window.location.protocol === "https:";
-        const targetUrl = urlParams.has("url") ? sourceUrl : (isWeb ? "sources.json" : sourceUrl);
+        const baseTarget = urlParams.has("url") ? sourceUrl : (isWeb ? "sources.json" : sourceUrl);
+        const cacheBustUrl = baseTarget + (baseTarget.includes("?") ? "&" : "?") + "_t=" + Date.now();
 
-        fetch(targetUrl)
+        fetch(cacheBustUrl, { cache: "no-cache" })
             .then((res) => {
                 if (!res.ok) throw new Error("HTTP status " + res.status);
                 return res.json();
