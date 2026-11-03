@@ -91,11 +91,11 @@
           "minOSVersion": "14.0"
         },
         {
-          "version": "21.41.5",
-          "date": "2026-10-17",
-          "localizedDescription": "Version 21.41.5 release.",
-          "downloadURL": "https://github.com/DexterDevKH/DTLite/releases/download/ytp-v6.0.b2-21.41.5/DexTubePlus_v6.0.b2_21.41.5.ipa",
-          "size": 148605386,
+          "version": "21.44.4",
+          "date": "2026-11-03",
+          "localizedDescription": "Version 21.44.4 release.",
+          "downloadURL": "https://github.com/DexterDevKH/DTLite/releases/download/ytp-v6.0-21.44.4/DexTubePlus_v6.0_21.44.4.ipa",
+          "size": 151151314,
           "minOSVersion": "14.0"
         }
       ]
