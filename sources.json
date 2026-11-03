@@ -16,7 +16,7 @@
       "localizedDescription": "Official iOS release of DTLite (DexTube) featuring ad-blocking, background playback, and SponsorBlock.",
       "iconURL": "https://raw.githubusercontent.com/DexterDevKH/dexter-sources/main/icons/dtlite.png",
       "tintColor": "#007AFF",
-      "size": 149839375,
+      "size": 151151314,
       "screenshots": {
         "iphone": [
           {
@@ -136,6 +136,22 @@
           "localizedDescription": "Version 9.43.2 release.",
           "downloadURL": "https://github.com/DexterDevKH/DTMusicUltimate/releases/download/dtm-9.43.2/DTMusicUltimate_9.43.2.ipa",
           "size": 107672160,
+          "minOSVersion": "14.0"
+        },
+        {
+          "version": "9.42.2",
+          "date": "2026-10-19",
+          "localizedDescription": "Version 9.42.2 release.",
+          "downloadURL": "https://github.com/DexterDevKH/DTMusicUltimate/releases/download/dtm-9.42.2/DTMusicUltimate_9.42.2.ipa",
+          "size": 107274691,
+          "minOSVersion": "14.0"
+        },
+        {
+          "version": "9.41.2",
+          "date": "2026-10-18",
+          "localizedDescription": "Version 9.41.2 release.",
+          "downloadURL": "https://github.com/DexterDevKH/DTMusicUltimate/releases/download/dtm-9.41.2/DTMusicUltimate_9.41.2.ipa",
+          "size": 107008594,
           "minOSVersion": "14.0"
         }
       ]
