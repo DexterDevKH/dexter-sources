@@ -14,7 +14,7 @@ on:
       max_versions:
         description: 'Max historical versions to keep'
         required: false
-        default: '3'
+        default: '1'
         type: string
       max_news:
         description: 'Max news announcements to keep'
