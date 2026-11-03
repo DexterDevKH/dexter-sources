@@ -45,7 +45,7 @@ class AppConfig:
     icon_url: str
     ipa_keyword: str = ".ipa"
     fallback_description: str = ""
-    min_os_version: str = "14.0"
+    min_os_version: str = "16.0"
     screenshots: Dict[str, List[Dict[str, Any]]] = field(default_factory=lambda: {"iphone": []})
     app_permissions: Dict[str, Any] = field(default_factory=lambda: {"entitlements": [], "privacy": {}})
 
@@ -61,7 +61,7 @@ APP_CONFIGS: List[AppConfig] = [
         tint_color="#007AFF",
         icon_url=f"https://raw.githubusercontent.com/{GITHUB_OWNER}/dexter-sources/main/icons/dtlite.png",
         fallback_description="Official iOS release of DTLite (DexTube) featuring ad-blocking, background playback, and SponsorBlock.",
-        min_os_version="14.0",
+        min_os_version="16.0",
         screenshots={
             "iphone": [
                 {
@@ -89,7 +89,7 @@ APP_CONFIGS: List[AppConfig] = [
         tint_color="#FF2D55",
         icon_url=f"https://raw.githubusercontent.com/{GITHUB_OWNER}/dexter-sources/main/icons/dtmusicultimate.png",
         fallback_description="Official iOS release of DTMusicUltimate (DexTube Music) featuring background audio, ad-free listening, and lossless presets.",
-        min_os_version="14.0",
+        min_os_version="16.0",
         screenshots={
             "iphone": [
                 {

@@ -70,7 +70,7 @@
                         localizedDescription: "Version 21.42.4 release.",
                         downloadURL: "https://github.com/DexterDevKH/DTLite/releases/download/ytp-v6.0.b2-21.42.4/DexTubePlus_v6.0.b2_21.42.4.ipa",
                         size: 149422771,
-                        minOSVersion: "14.0"
+                        minOSVersion: "16.0"
                     },
                     {
                         version: "21.41.5",
@@ -78,7 +78,7 @@
                         localizedDescription: "Version 21.41.5 release.",
                         downloadURL: "https://github.com/DexterDevKH/DTLite/releases/download/ytp-v6.0.b2-21.41.5/DexTubePlus_v6.0.b2_21.41.5.ipa",
                         size: 148605386,
-                        minOSVersion: "14.0"
+                        minOSVersion: "16.0"
                     },
                     {
                         version: "21.40.5",
@@ -86,7 +86,7 @@
                         localizedDescription: "Version 21.40.5 release.",
                         downloadURL: "https://github.com/DexterDevKH/DTLite/releases/download/ytp-v6.0.b2-21.40.5/DexTubePlus_v6.0.b2_21.40.5.ipa",
                         size: 147834744,
-                        minOSVersion: "14.0"
+                        minOSVersion: "16.0"
                     }
                 ]
             },
@@ -122,7 +122,7 @@
                         localizedDescription: "Version 9.42.2 release.",
                         downloadURL: "https://github.com/DexterDevKH/DTMusicUltimate/releases/download/dtm-9.42.2/DTMusicUltimate_9.42.2.ipa",
                         size: 107274691,
-                        minOSVersion: "14.0"
+                        minOSVersion: "16.0"
                     },
                     {
                         version: "9.41.2",
@@ -130,7 +130,7 @@
                         localizedDescription: "Version 9.41.2 release.",
                         downloadURL: "https://github.com/DexterDevKH/DTMusicUltimate/releases/download/dtm-9.41.2/DTMusicUltimate_9.41.2.ipa",
                         size: 107008594,
-                        minOSVersion: "14.0"
+                        minOSVersion: "16.0"
                     },
                     {
                         version: "9.40.2",
@@ -138,7 +138,7 @@
                         localizedDescription: "Version 9.40.2 release.",
                         downloadURL: "https://github.com/DexterDevKH/DTMusicUltimate/releases/download/dtm-9.40.2/DTMusicUltimate_9.40.2.ipa",
                         size: 106696986,
-                        minOSVersion: "14.0"
+                        minOSVersion: "16.0"
                     }
                 ]
             }
