@@ -81,7 +81,7 @@
           "downloadURL": "https://github.com/DexterDevKH/DTLite/releases/download/ytp-v6.0-21.44.4/DexTubePlus_v6.0_21.44.4.ipa",
           "size": 151151314,
           "minOSVersion": "14.0"
-        },
+        }
       ]
     },
     {
@@ -137,7 +137,7 @@
           "downloadURL": "https://github.com/DexterDevKH/DTMusicUltimate/releases/download/dtm-9.43.2/DTMusicUltimate_9.43.2.ipa",
           "size": 107672160,
           "minOSVersion": "14.0"
-        },
+        }
       ]
     }
   ],

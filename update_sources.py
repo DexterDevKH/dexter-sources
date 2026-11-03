@@ -220,10 +220,22 @@ def load_source_manifest(path: str) -> Dict[str, Any]:
         }
 
     with open(path, "r", encoding="utf-8") as f:
-        data = json.load(f)
-        if not isinstance(data, dict):
-            raise ValueError(f"Invalid format in {path}: root must be a JSON object.")
-        return data
+        raw_text = f.read()
+
+    try:
+        data = json.loads(raw_text)
+    except json.JSONDecodeError as err:
+        # Gracefully handle common manual editing errors (e.g. trailing commas before ] or })
+        cleaned = re.sub(r",\s*([\]\}])", r"\1", raw_text)
+        try:
+            data = json.loads(cleaned)
+            logger.warning("Automatically repaired trailing commas in '%s'", path)
+        except json.JSONDecodeError:
+            raise err
+
+    if not isinstance(data, dict):
+        raise ValueError(f"Invalid format in {path}: root must be a JSON object.")
+    return data
 
 
 def save_source_manifest_atomic(path: str, data: Dict[str, Any]) -> None:
