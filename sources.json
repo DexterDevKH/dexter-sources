@@ -75,29 +75,13 @@
       },
       "versions": [
         {
-          "version": "21.43.5",
-          "date": "2026-10-28",
-          "localizedDescription": "Version 21.43.5 release.",
-          "downloadURL": "https://github.com/DexterDevKH/DTLite/releases/download/ytp-v6.0.b2-21.43.5/DexTubePlus_v6.0.b2_21.43.5.ipa",
-          "size": 149839375,
-          "minOSVersion": "14.0"
-        },
-        {
-          "version": "21.42.4",
-          "date": "2026-10-22",
-          "localizedDescription": "Version 21.42.4 release.",
-          "downloadURL": "https://github.com/DexterDevKH/DTLite/releases/download/ytp-v6.0.b2-21.42.4/DexTubePlus_v6.0.b2_21.42.4.ipa",
-          "size": 149422771,
-          "minOSVersion": "14.0"
-        },
-        {
           "version": "21.44.4",
           "date": "2026-11-03",
           "localizedDescription": "Version 21.44.4 release.",
           "downloadURL": "https://github.com/DexterDevKH/DTLite/releases/download/ytp-v6.0-21.44.4/DexTubePlus_v6.0_21.44.4.ipa",
           "size": 151151314,
           "minOSVersion": "14.0"
-        }
+        },
       ]
     },
     {
@@ -154,22 +138,6 @@
           "size": 107672160,
           "minOSVersion": "14.0"
         },
-        {
-          "version": "9.42.2",
-          "date": "2026-10-19",
-          "localizedDescription": "Version 9.42.2 release.",
-          "downloadURL": "https://github.com/DexterDevKH/DTMusicUltimate/releases/download/dtm-9.42.2/DTMusicUltimate_9.42.2.ipa",
-          "size": 107274691,
-          "minOSVersion": "14.0"
-        },
-        {
-          "version": "9.41.2",
-          "date": "2026-10-18",
-          "localizedDescription": "Version 9.41.2 release.",
-          "downloadURL": "https://github.com/DexterDevKH/DTMusicUltimate/releases/download/dtm-9.41.2/DTMusicUltimate_9.41.2.ipa",
-          "size": 107008594,
-          "minOSVersion": "14.0"
-        }
       ]
     }
   ],
