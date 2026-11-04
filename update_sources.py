@@ -55,12 +55,12 @@ APP_CONFIGS: List[AppConfig] = [
     AppConfig(
         bundle_id="com.google.ios.youtube",
         repo=f"{GITHUB_OWNER}/DTLite",
-        name="DexTube",
+        name="DTLite Plus",
         subtitle="Enhanced YouTube client with ad-blocking & background play",
         category="entertainment",
         tint_color="#007AFF",
         icon_url=f"https://raw.githubusercontent.com/{GITHUB_OWNER}/dexter-sources/main/icons/dtlite.png",
-        fallback_description="Official iOS release of DTLite (DexTube) featuring ad-blocking, background playback, and SponsorBlock.",
+        fallback_description="Official iOS release of DTLite Plus featuring ad-blocking, background playback, and SponsorBlock.",
         min_os_version="16.0",
         screenshots={
             "iphone": [
@@ -105,6 +105,54 @@ APP_CONFIGS: List[AppConfig] = [
             "privacy": {
                 "NSBackgroundAudioUsageDescription": "Enables uninterrupted high-fidelity background music and lock screen playback controls.",
                 "NSBackgroundFetchUsageDescription": "Enables background sync and offline cache verification.",
+            },
+        },
+    ),
+    AppConfig(
+        bundle_id="com.google.ios.youtube.dtkace",
+        repo=f"{GITHUB_OWNER}/DTKACE",
+        name="DTKACE",
+        subtitle="Enhanced YouTube with YTKACE tweak engine & 13 modular extensions",
+        category="entertainment",
+        tint_color="#E36678",
+        icon_url=f"https://raw.githubusercontent.com/{GITHUB_OWNER}/dexter-sources/main/icons/dtkace.png",
+        fallback_description="Official iOS release of DTKACE (DexTube) featuring YTKACE, up to 4K media downloads, Picture-in-Picture, SponsorBlock, dislike restoration, and pure dark OLED mode.",
+        min_os_version="15.0",
+        screenshots={
+            "iphone": [
+                {
+                    "width": 923,
+                    "height": 2000,
+                    "imageURL": "https://raw.githubusercontent.com/itzzace/ytkace/main/screenshots/source/glass-home.jpg",
+                },
+                {
+                    "width": 923,
+                    "height": 2000,
+                    "imageURL": "https://raw.githubusercontent.com/itzzace/ytkace/main/screenshots/source/video-player.png",
+                },
+                {
+                    "width": 923,
+                    "height": 2000,
+                    "imageURL": "https://raw.githubusercontent.com/itzzace/ytkace/main/screenshots/source/download-library.jpg",
+                },
+                {
+                    "width": 923,
+                    "height": 2000,
+                    "imageURL": "https://raw.githubusercontent.com/itzzace/ytkace/main/screenshots/source/glass-settings.jpg",
+                },
+                {
+                    "width": 923,
+                    "height": 2000,
+                    "imageURL": "https://raw.githubusercontent.com/itzzace/ytkace/main/screenshots/source/sponsorblock-settings.jpg",
+                },
+            ]
+        },
+        app_permissions={
+            "entitlements": [],
+            "privacy": {
+                "NSBackgroundAudioUsageDescription": "Allows audio and video playback in background and Picture-in-Picture.",
+                "NSBackgroundFetchUsageDescription": "Allows background updates and download synchronization.",
+                "NSFaceIDUsageDescription": "Face ID is required to authenticate.",
             },
         },
     ),
@@ -211,7 +259,7 @@ def load_source_manifest(path: str) -> Dict[str, Any]:
             "identifier": f"com.{GITHUB_OWNER.lower()}.source",
             "website": f"https://{GITHUB_OWNER.lower()}.github.io/dexter-sources/",
             "subtitle": "Official SideStore, Feather, and AltStore Source.",
-            "description": "High-performance curated iOS apps including DexTube and DexTube Music.",
+            "description": "High-performance curated iOS apps including DTLite Plus, DexTube Music, and DTKACE.",
             "tintColor": "#007AFF",
             "iconURL": f"https://github.com/{GITHUB_OWNER}.png",
             "headerURL": f"https://github.com/{GITHUB_OWNER}.png",
@@ -283,7 +331,7 @@ def generate_news_item(
 def update_manifest(
     source_path: str = "sources.json",
     max_versions: int = 3,
-    max_news: int = 2,
+    max_news: int = 3,
     token: str = "",
     dry_run: bool = False,
     update_news: bool = True,
@@ -469,7 +517,7 @@ def update_manifest(
         "identifier": manifest.get("identifier", f"com.{GITHUB_OWNER.lower()}.source"),
         "website": manifest.get("website", f"https://{GITHUB_OWNER.lower()}.github.io/dexter-sources/"),
         "subtitle": manifest.get("subtitle", "Official SideStore, Feather, and AltStore Source."),
-        "description": manifest.get("description", "High-performance curated iOS apps including DexTube and DexTube Music."),
+        "description": manifest.get("description", "High-performance curated iOS apps including DTLite Plus, DexTube Music, and DTKACE."),
         "tintColor": manifest.get("tintColor", "#007AFF"),
         "iconURL": avatar_url or manifest.get("iconURL", f"https://github.com/{GITHUB_OWNER}.png"),
         "headerURL": manifest.get("headerURL", avatar_url or f"https://github.com/{GITHUB_OWNER}.png"),
@@ -532,7 +580,7 @@ def parse_args() -> argparse.Namespace:
         "-m", "--max-versions", type=int, default=3, help="Maximum number of historical versions to keep (default: 3)"
     )
     parser.add_argument(
-        "-n", "--max-news", type=int, default=2, help="Maximum number of news announcements to keep (default: 2)"
+        "-n", "--max-news", type=int, default=3, help="Maximum number of news announcements to keep (default: 3)"
     )
     parser.add_argument(
         "-t", "--token", default="", help="GitHub Personal Access Token for higher API rate limits"
