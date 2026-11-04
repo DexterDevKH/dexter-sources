@@ -279,7 +279,7 @@ def load_source_manifest(path: str) -> Dict[str, Any]:
             "identifier": f"com.{GITHUB_OWNER.lower()}.source",
             "website": f"https://{GITHUB_OWNER.lower()}.github.io/dexter-sources/",
             "subtitle": "Official SideStore, Feather, and AltStore Source.",
-            "description": "High-performance curated iOS apps including DTLite Plus and DexTube Music.",
+            "description": "High-performance curated iOS apps including DTLite Plus, DexTube Music, and DTKACE.",
             "tintColor": "#007AFF",
             "iconURL": f"https://github.com/{GITHUB_OWNER}.png",
             "headerURL": f"https://github.com/{GITHUB_OWNER}.png",
@@ -583,7 +583,7 @@ def update_manifest(
         default_identifier = f"com.{GITHUB_OWNER.lower()}.source"
         default_website = f"https://{GITHUB_OWNER.lower()}.github.io/dexter-sources/"
         default_subtitle = "Official SideStore, Feather, and AltStore Source."
-        default_desc = "High-performance curated iOS apps including DTLite Plus and DexTube Music."
+        default_desc = "High-performance curated iOS apps including DTLite Plus, DexTube Music, and DTKACE."
         default_tint = "#007AFF"
         default_icon = avatar_url or f"https://github.com/{GITHUB_OWNER}.png"
 
