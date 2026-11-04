@@ -1,21 +1,15 @@
 <div align="center">
 
-# ⚡ DexterDevKH Apps
+# ⚡ DexterDevKH Sources
 
-**Official SideStore, Feather, AltStore, LiveContainer & TrollStore Sources**
+**Official SideStore, Feather, AltStore, LiveContainer & TrollStore Repositories**
 
 A high-performance, curated repository distributing optimized, feature-packed iOS applications with automated release synchronization.
 
 <br>
 
-[![Add to SideStore](https://img.shields.io/badge/✨_Add_to_SideStore-6366f1?style=for-the-badge&logo=apple&logoColor=white)](https://dexterdevkh.github.io/dexter-sources/?r=sidestore)
-[![Add to Feather](https://img.shields.io/badge/🌸_Add_to_Feather-ec4899?style=for-the-badge&logo=apple&logoColor=white)](https://dexterdevkh.github.io/dexter-sources/?r=feather)
-[![Add to AltStore](https://img.shields.io/badge/🌿_Add_to_AltStore-10b981?style=for-the-badge&logo=apple&logoColor=white)](https://dexterdevkh.github.io/dexter-sources/?r=altstore)
-[![Add to LiveContainer](https://img.shields.io/badge/💙_Add_to_LiveContainer-3b82f6?style=for-the-badge&logo=apple&logoColor=white)](https://dexterdevkh.github.io/dexter-sources/?r=livecontainer)
-
-<br>
-
-[![Web Portal](https://img.shields.io/badge/🌐_Open_Web_Portal-0f172a?style=for-the-badge&logo=safari&logoColor=white)](https://dexterdevkh.github.io/dexter-sources/)
+[![Web Portal](https://img.shields.io/badge/🌐_Interactive_Web_Portal-0f172a?style=for-the-badge&logo=safari&logoColor=white)](https://dexterdevkh.github.io/dexter-sources/)
+[![Sync Status](https://img.shields.io/github/actions/workflow/status/DexterDevKH/dexter-sources/update-sources.yml?branch=main&style=for-the-badge&label=Sync%20Status)](https://github.com/DexterDevKH/dexter-sources/actions)
 
 </div>
 
@@ -33,29 +27,77 @@ A high-performance, curated repository distributing optimized, feature-packed iO
 
 ## 🚀 One-Tap Installation
 
-Choose the source manifest corresponding to the apps you want to install:
+Choose the source manifest corresponding to the apps you want to install.
 
-### 1️⃣ Primary Source (DTLite Plus & DexTube Music)
-* 📱 **[SideStore](https://dexterdevkh.github.io/dexter-sources/?r=sidestore)**
-* 🪶 **[Feather](https://dexterdevkh.github.io/dexter-sources/?r=feather)**
-* 🌿 **[AltStore](https://dexterdevkh.github.io/dexter-sources/?r=altstore)**
-* 💙 **[LiveContainer](https://dexterdevkh.github.io/dexter-sources/?r=livecontainer)**
-* ⚡ **[TrollApps](https://dexterdevkh.github.io/dexter-sources/?r=trollapps)**
+> [!NOTE]
+> **Why are there two separate sources?**
+> Both **DTLite Plus** and **DTKACE Plus** are enhanced modifications of the official YouTube iOS client sharing the bundle identifier `com.google.ios.youtube`. AltStore and SideStore require unique bundle IDs per source manifest. DTKACE Plus is hosted on its own dedicated source so you can choose whichever modification you prefer without repository conflicts.
 
+<br>
+
+### 1️⃣ Primary Source — DTLite Plus & DexTube Music
+
+Includes **DTLite Plus** (ad-free YouTube with PiP & SponsorBlock) and **DexTube Music** (ad-free YouTube Music with offline audio & lossless EQ).
+
+#### One-Tap Add Buttons
+[![Add to SideStore](https://img.shields.io/badge/SideStore-6366f1?style=for-the-badge&logo=apple&logoColor=white)](https://dexterdevkh.github.io/dexter-sources/?r=sidestore)
+[![Add to Feather](https://img.shields.io/badge/Feather-ec4899?style=for-the-badge&logo=apple&logoColor=white)](https://dexterdevkh.github.io/dexter-sources/?r=feather)
+[![Add to AltStore](https://img.shields.io/badge/AltStore-10b981?style=for-the-badge&logo=apple&logoColor=white)](https://dexterdevkh.github.io/dexter-sources/?r=altstore)
+[![Add to LiveContainer](https://img.shields.io/badge/LiveContainer-3b82f6?style=for-the-badge&logo=apple&logoColor=white)](https://dexterdevkh.github.io/dexter-sources/?r=livecontainer)
+[![Add to TrollApps](https://img.shields.io/badge/TrollApps-f59e0b?style=for-the-badge&logo=apple&logoColor=white)](https://dexterdevkh.github.io/dexter-sources/?r=trollapps)
+
+#### Manifest URL
 ```text
 https://dexterdevkh.github.io/dexter-sources/sources.json
 ```
 
-### 2️⃣ DTKACE Plus Source (Dedicated Source for DTKACE)
-* 📱 **[SideStore](https://dexterdevkh.github.io/dexter-sources/?source=dtkace&r=sidestore)**
-* 🪶 **[Feather](https://dexterdevkh.github.io/dexter-sources/?source=dtkace&r=feather)**
-* 🌿 **[AltStore](https://dexterdevkh.github.io/dexter-sources/?source=dtkace&r=altstore)**
-* 💙 **[LiveContainer](https://dexterdevkh.github.io/dexter-sources/?source=dtkace&r=livecontainer)**
-* ⚡ **[TrollApps](https://dexterdevkh.github.io/dexter-sources/?source=dtkace&r=trollapps)**
+---
 
+### 2️⃣ DTKACE Plus Source — DTKACE Plus (YouTube Mod)
+
+Dedicated source for **DTKACE Plus** (featuring the YTKACE tweak engine, up to 4K media downloads, PiP, SponsorBlock, dislike restoration, and 12 modular tweaks).
+
+#### One-Tap Add Buttons
+[![Add to SideStore](https://img.shields.io/badge/SideStore-6366f1?style=for-the-badge&logo=apple&logoColor=white)](https://dexterdevkh.github.io/dexter-sources/?source=dtkace&r=sidestore)
+[![Add to Feather](https://img.shields.io/badge/Feather-ec4899?style=for-the-badge&logo=apple&logoColor=white)](https://dexterdevkh.github.io/dexter-sources/?source=dtkace&r=feather)
+[![Add to AltStore](https://img.shields.io/badge/AltStore-10b981?style=for-the-badge&logo=apple&logoColor=white)](https://dexterdevkh.github.io/dexter-sources/?source=dtkace&r=altstore)
+[![Add to LiveContainer](https://img.shields.io/badge/LiveContainer-3b82f6?style=for-the-badge&logo=apple&logoColor=white)](https://dexterdevkh.github.io/dexter-sources/?source=dtkace&r=livecontainer)
+[![Add to TrollApps](https://img.shields.io/badge/TrollApps-f59e0b?style=for-the-badge&logo=apple&logoColor=white)](https://dexterdevkh.github.io/dexter-sources/?source=dtkace&r=trollapps)
+
+#### Manifest URL
 ```text
 https://dexterdevkh.github.io/dexter-sources/dtkace.json
 ```
+
+---
+
+## 📲 Manual Source Addition
+
+If you prefer to add sources manually in your sideloading manager:
+
+1. **SideStore / AltStore**:
+   - Open **SideStore** or **AltStore**.
+   - Tap the **Sources** tab.
+   - Tap the **+** button in the top right corner.
+   - Paste the chosen source URL from above and tap **Add**.
+2. **Feather**:
+   - Open **Feather**, go to **Sources** > **Add Source**.
+   - Paste the source URL and confirm.
+3. **LiveContainer**:
+   - Open **LiveContainer**, tap **Sources**, and add the manifest URL.
+4. **QR Code Scanning**:
+   - Open the [Interactive Web Portal](https://dexterdevkh.github.io/dexter-sources/) on your PC, iPad, or Mac.
+   - Toggle between **DTLite Plus & Music** and **DTKACE Plus**.
+   - Scan the on-screen QR code with your iPhone camera to trigger one-tap import into SideStore or AltStore instantly.
+
+---
+
+## ⚙️ Automated Synchronization
+
+This repository uses automated GitHub Actions workflows:
+- Upstream releases from `DexterDevKH/DTLite`, `DexterDevKH/DTMusicUltimate`, and `DexterDevKH/DTKACE` are checked automatically every 6 hours and on dispatch.
+- Downloads IPA sizes, hashes, release notes, and tags.
+- Keeps version numbers in `sources.json`, `dtkace.json`, and `README.md` continuously synchronized.
 
 ---
 
