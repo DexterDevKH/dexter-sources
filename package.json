@@ -1,0 +1,17 @@
+{
+  "name": "dexter-sources",
+  "version": "2.0.0",
+  "description": "Official SideStore, Feather, AltStore, LiveContainer & TrollStore Repositories by DexterDevKH",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "bun run ./server.ts",
+    "build": "bun run ./build.ts",
+    "preview": "bun run ./server.ts --preview",
+    "typecheck": "bun x tsc --noEmit"
+  },
+  "devDependencies": {
+    "@types/bun": "^1.4.4",
+    "typescript": "^7.0.2"
+  }
+}

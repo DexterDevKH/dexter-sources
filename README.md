@@ -101,6 +101,29 @@ This repository uses automated GitHub Actions workflows:
 
 ---
 
+## 💻 Local Development (Bun)
+
+This interactive web portal is remade using **[Bun](https://bun.sh/)** and modular TypeScript.
+
+```bash
+# Install dependencies
+bun install
+
+# Start local dev server with hot reload
+bun dev
+
+# Build optimized production bundle
+bun run build
+
+# Run type-checking
+bun run typecheck
+
+# Preview production build locally
+bun run preview
+```
+
+---
+
 ## 🛠️ Credits & Attribution
 
 - Built & Maintained by **[DexterDevKH](https://github.com/DexterDevKH)**

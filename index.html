@@ -3,12 +3,12 @@
 
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=5.0" />
     <title>DexterDevKH Apps — iOS Sideloading Source</title>
     <meta name="description"
         content="Official SideStore, Feather, AltStore, and LiveContainer repository by DexterDevKH. Install enhanced DTLite Plus, DexTube Music, and DTKACE Plus with one tap." />
-    <meta name="theme-color" content="#080b12" media="(prefers-color-scheme: dark)" />
-    <meta name="theme-color" content="#f1f4f9" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#050814" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#f2f4f8" media="(prefers-color-scheme: light)" />
 
     <!-- OpenGraph / Social Meta -->
     <meta property="og:type" content="website" />
@@ -19,59 +19,72 @@
     <meta property="og:image"
         content="https://raw.githubusercontent.com/DexterDevKH/dexter-sources/main/icons/dtlite.png" />
 
-    <!-- Favicon -->
+    <!-- Favicon & Touch Icons -->
     <link rel="icon" type="image/png" href="icons/profile.png" />
     <link rel="apple-touch-icon" href="icons/profile.png" />
 
-    <!-- Typography: Essential Outfit & Inter from Google Fonts -->
+    <!-- Typography: Inter & Outfit & JetBrains Mono -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@700;800&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@600;700;800;900&family=JetBrains+Mono:wght@500;600&display=swap"
         rel="stylesheet" />
 
-    <!-- Stylesheet -->
+    <!-- Core Stylesheet -->
     <link rel="stylesheet" href="style.css" />
 </head>
 
 <body>
 
-    <!-- Ambient Liquid Glass Background Orbs -->
+    <!-- Ambient Liquid Glass Gradient Backing -->
     <div class="ambient-canvas" aria-hidden="true">
         <div class="ambient-orb orb-primary"></div>
         <div class="ambient-orb orb-secondary"></div>
         <div class="ambient-orb orb-accent"></div>
-        <div class="mesh-grid"></div>
+        <div class="ambient-mesh"></div>
     </div>
 
-    <!-- Main Glass Container -->
+    <!-- Main Mobile & Desktop Glass Container -->
     <div class="app-viewport">
-        <main class="portal-card" id="mainPortal">
 
-            <!-- Top Navigation / Status Header -->
-            <header class="top-header">
-                <div class="status-indicator" id="repoStatus">
-                    <span class="pulse-ring"></span>
-                    <span class="status-dot"></span>
-                    <span class="status-text" id="statusLabel">Live Repository</span>
+        <!-- Floating Dynamic Island Top Navigation Bar -->
+        <header class="island-nav" role="banner">
+            <div class="nav-content">
+                <div class="nav-brand">
+                    <div class="nav-avatar-ring">
+                        <img src="icons/profile.png" alt="DexterDevKH Apps" id="heroAvatarImg" class="nav-avatar-img"
+                            onerror="this.onerror=null; this.src='https://github.com/DexterDevKH.png';" />
+                    </div>
+                    <div class="nav-meta">
+                        <div class="nav-title-row">
+                            <span class="nav-brand-title">DexterDevKH</span>
+                            <span class="nav-verified-badge" title="Official Verified Repository">
+                                <svg viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z" />
+                                </svg>
+                            </span>
+                        </div>
+                        <div class="nav-status-row">
+                            <span class="status-indicator-dot"></span>
+                            <span class="nav-status-text" id="statusLabel">Live Repository</span>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="header-actions">
-                    <button class="header-action-btn" id="qrLauncherBtn" type="button" aria-label="Show QR Code"
-                        title="Scan on iPhone / iPad">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
-                            <rect x="3" y="3" width="7" height="7"></rect>
-                            <rect x="14" y="3" width="7" height="7"></rect>
-                            <rect x="14" y="14" width="7" height="7"></rect>
-                            <rect x="3" y="14" width="7" height="7"></rect>
+                <div class="nav-actions">
+                    <button class="nav-action-pill" id="qrLauncherBtn" type="button" aria-label="Show QR Code" title="Scan QR Code on iPhone or iPad">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="3" width="7" height="7" rx="1.5"></rect>
+                            <rect x="14" y="3" width="7" height="7" rx="1.5"></rect>
+                            <rect x="14" y="14" width="7" height="7" rx="1.5"></rect>
+                            <rect x="3" y="14" width="7" height="7" rx="1.5"></rect>
+                            <path d="M7 7h.01M17 7h.01M7 17h.01M17 17h.01"></path>
                         </svg>
+                        <span class="nav-pill-label">Scan</span>
                     </button>
 
-                    <button class="header-action-btn" id="themeToggleBtn" type="button" aria-label="Toggle Theme"
-                        title="Switch Dark/Light Theme">
-                        <svg class="theme-icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <button class="nav-action-pill icon-only" id="themeToggleBtn" type="button" aria-label="Toggle Dark and Light Theme" title="Toggle Appearance">
+                        <svg class="theme-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <circle cx="12" cy="12" r="5"></circle>
                             <line x1="12" y1="1" x2="12" y2="3"></line>
                             <line x1="12" y1="21" x2="12" y2="23"></line>
@@ -82,365 +95,313 @@
                             <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
                             <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
                         </svg>
-                        <svg class="theme-icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <svg class="theme-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
                         </svg>
                     </button>
                 </div>
-            </header>
+            </div>
+        </header>
+
+        <!-- Main Scrolling Content Feed -->
+        <main class="content-feed" id="mainPortal">
 
             <!-- Hero Section -->
-            <section class="hero-section" aria-label="Source Identity">
-                <div class="avatar-squircle" id="heroAvatar">
-                    <img src="icons/profile.png" alt="DexterDevKH Apps" id="heroAvatarImg"
-                        onerror="this.onerror=null; this.src='https://github.com/DexterDevKH.png';" />
-                    <div class="avatar-glow"></div>
+            <section class="hero-card" aria-label="Repository Overview">
+                <div class="hero-top-chip">
+                    <span class="chip-spark">✦</span>
+                    <span>OFFICIAL SIDELOAD REPO</span>
                 </div>
+                <h1 class="hero-title" id="sourceTitle">DexterDevKH Apps</h1>
+                <p class="hero-desc" id="sourceDescription">
+                    Curated ad-free YouTube and high-fidelity music streaming for iOS. One-tap install into SideStore, Feather, AltStore, LiveContainer &amp; TrollStore.
+                </p>
 
-                <div class="hero-text-wrap">
-                    <div class="hero-title-row">
-                        <h1 class="hero-title" id="sourceTitle">DexterDevKH Apps</h1>
-                        <span class="verified-badge" title="Official Verified Source" aria-label="Verified Source">
-                            <svg viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z" />
-                            </svg>
-                        </span>
+                <!-- Live Quick Metric Pills -->
+                <div class="hero-stats-strip">
+                    <div class="metric-pill accent-live">
+                        <span class="metric-dot"></span>
+                        <span class="metric-value" id="appCountText">3 Apps Available</span>
                     </div>
-                    <p class="hero-subtitle" id="sourceDescription">
-                        Official SideStore, Feather, AltStore, LiveContainer &amp; TrollStore repository. Tap your
-                        preferred sideloader below to import with one click.
-                    </p>
-                </div>
-
-                <!-- Live Quick Stats Bar -->
-                <div class="stats-pills-row">
-                    <div class="stat-pill">
-                        <span class="stat-pill-dot" style="background:#6366f1;"></span>
-                        <span class="stat-pill-label">SideStore Ready</span>
+                    <div class="metric-pill">
+                        <span class="metric-icon">⚡</span>
+                        <span class="metric-label">SideStore Ready</span>
                     </div>
-                    <div class="stat-pill">
-                        <span class="stat-pill-dot" style="background:#10b981;"></span>
-                        <span class="stat-pill-label" id="appCountText">3 Apps Available</span>
-                    </div>
-                    <div class="stat-pill">
-                        <span class="stat-pill-dot" style="background:#06b6d4;"></span>
-                        <span class="stat-pill-label">iOS 16.0 — 27.x</span>
+                    <div class="metric-pill">
+                        <span class="metric-icon">🛡️</span>
+                        <span class="metric-label">iOS 16.0 — 27.x</span>
                     </div>
                 </div>
             </section>
 
-            <!-- News & Announcements Banner -->
-            <section class="news-banner hidden" id="newsBanner" aria-label="Latest News">
-                <div class="news-content">
-                    <span class="news-tag">
-                        <span class="news-tag-dot" aria-hidden="true"></span>
-                        <span class="news-tag-text">UPDATE</span>
-                    </span>
-                    <div class="news-text-group">
-                        <strong class="news-headline" id="newsHeadline">Latest Announcement</strong>
-                        <p class="news-caption" id="newsCaption">Latest builds and release updates.</p>
+            <!-- News & Upstream Update Announcement Banner -->
+            <section class="announcement-banner hidden" id="newsBanner" aria-label="Latest Release Announcements">
+                <div class="banner-body">
+                    <span class="banner-tag">SYNC</span>
+                    <div class="banner-text">
+                        <strong class="banner-headline" id="newsHeadline">Latest Announcement</strong>
+                        <p class="banner-caption" id="newsCaption">Latest builds and release updates.</p>
                     </div>
                 </div>
-                <button class="news-close-btn" id="newsCloseBtn" aria-label="Dismiss banner">
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                        <line x1="18" y1="6" x2="6" y2="18"></line>
-                        <line x1="6" y1="6" x2="18" y2="18"></line>
-                    </svg>
-                </button>
+                <button class="banner-close" id="newsCloseBtn" aria-label="Dismiss banner" type="button">×</button>
             </section>
 
-            <!-- Source Selection Tabs -->
-            <section class="source-selector-section" aria-label="Select Source Manifest">
-                <div class="section-heading">
-                    <span class="heading-title">Choose Source</span>
-                    <span class="heading-sub">Select manifest to install</span>
-                </div>
-                <div class="source-selector-tabs" id="sourceSelectorTabs" role="tablist">
-                    <button class="source-selector-tab active" id="tabSourceMain" data-source="main" role="tab" aria-selected="true" type="button">
-                        <div class="tab-header-row">
-                            <span class="tab-dot dot-main"></span>
-                            <span class="tab-title">DTLite Plus &amp; Music</span>
-                        </div>
-                        <span class="tab-sub">Primary Source &bull; sources.json</span>
+            <!-- Native iOS 18 Segmented Control (Source Manifest Switcher) -->
+            <section class="source-switch-section" aria-label="Choose Source Manifest">
+                <div class="segmented-control source-selector-tabs" id="sourceSelectorTabs" role="tablist">
+                    <button class="segmented-tab source-selector-tab active" id="tabSourceMain" data-source="main" role="tab" aria-selected="true" type="button">
+                        <span class="tab-indicator dot-main"></span>
+                        <span class="tab-text">DTLite Plus &amp; Music</span>
                     </button>
-                    <button class="source-selector-tab" id="tabSourceDtkace" data-source="dtkace" role="tab" aria-selected="false" type="button">
-                        <div class="tab-header-row">
-                            <span class="tab-dot dot-dtkace"></span>
-                            <span class="tab-title">DTKACE Plus</span>
-                        </div>
-                        <span class="tab-sub">Secondary Source &bull; dtkace.json</span>
+                    <button class="segmented-tab source-selector-tab" id="tabSourceDtkace" data-source="dtkace" role="tab" aria-selected="false" type="button">
+                        <span class="tab-indicator dot-dtkace"></span>
+                        <span class="tab-text">DTKACE Plus</span>
                     </button>
                 </div>
             </section>
 
-            <!-- Bento Client Installation Grid -->
-            <section class="bento-container" aria-label="One-Tap Sideloading Installation">
-                <div class="section-heading">
-                    <span class="heading-title">One-Tap Install</span>
-                    <span class="heading-sub">Choose your client</span>
+            <!-- 1-Tap Client Installation Section -->
+            <section class="clients-section" aria-label="One-Tap Installation">
+                <div class="section-header-compact">
+                    <h2 class="section-eyebrow">ONE-TAP INSTALLATION</h2>
+                    <span class="section-subnote">Choose your sideload manager</span>
                 </div>
 
-                <!-- Featured: SideStore -->
-                <a class="bento-card featured-card" id="btn-sidestore" data-key="sidestore" href="#">
-                    <div class="card-leading">
-                        <div class="badge-icon badge-sidestore">
-                            <img src="icons/clients/sidestore.png" alt="SideStore Logo" class="badge-icon-img" width="40" height="40" />
+                <!-- Featured: SideStore Large Card -->
+                <a class="client-hero-card bento-card" id="btn-sidestore" data-key="sidestore" href="#" aria-label="Add Source to SideStore">
+                    <div class="client-hero-left">
+                        <div class="client-hero-icon-wrap">
+                            <img src="icons/clients/sidestore.png" alt="SideStore Logo" class="client-img" width="48" height="48" />
                         </div>
-                        <div class="card-info">
-                            <div class="card-badge-row">
-                                <span class="card-title">Add to SideStore</span>
-                                <span class="mini-tag">Recommended</span>
+                        <div class="client-hero-text">
+                            <div class="client-hero-name-row">
+                                <span class="client-hero-name">Add to SideStore</span>
+                                <span class="rec-badge">Recommended</span>
                             </div>
-                            <span class="card-desc">No-computer wireless refresh &amp; install</span>
+                            <span class="client-hero-desc">No computer required &bull; Auto on-device Wi-Fi refresh</span>
                         </div>
                     </div>
-                    <div class="card-arrow">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
-                            stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M7 17l9.2-9.2M17 17V8H8" />
+                    <div class="client-hero-arrow">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M5 12h14"></path>
+                            <path d="M12 5l7 7-7 7"></path>
                         </svg>
                     </div>
                 </a>
 
-                <!-- Bento Secondary Grid -->
-                <div class="bento-grid">
-                    <!-- Feather -->
-                    <a class="bento-card" id="btn-feather" data-key="feather" href="#">
-                        <div class="card-leading">
-                            <div class="badge-icon badge-feather">
-                                <img src="icons/clients/feather.png" alt="Feather Logo" class="badge-icon-img" width="40" height="40" />
-                            </div>
-                            <div class="card-info">
-                                <span class="card-title">Feather</span>
-                                <span class="card-desc">Direct Repository</span>
-                            </div>
-                        </div>
-                        <div class="card-arrow">↗</div>
+                <!-- Secondary Clients 2x2 Grid -->
+                <div class="clients-grid">
+                    <a class="client-chip bento-card" id="btn-feather" data-key="feather" href="#" aria-label="Add Source to Feather">
+                        <img src="icons/clients/feather.png" alt="Feather" class="client-chip-icon" width="28" height="28" />
+                        <span class="client-chip-name">Feather</span>
+                        <span class="chip-arrow">↗</span>
                     </a>
 
-                    <!-- AltStore -->
-                    <a class="bento-card" id="btn-altstore" data-key="altstore" href="#">
-                        <div class="card-leading">
-                            <div class="badge-icon badge-altstore">
-                                <img src="icons/clients/altstore.png" alt="AltStore Logo" class="badge-icon-img" width="40" height="40" />
-                            </div>
-                            <div class="card-info">
-                                <span class="card-title">AltStore</span>
-                                <span class="card-desc">Classic &amp; PAL</span>
-                            </div>
-                        </div>
-                        <div class="card-arrow">↗</div>
+                    <a class="client-chip bento-card" id="btn-altstore" data-key="altstore" href="#" aria-label="Add Source to AltStore">
+                        <img src="icons/clients/altstore.png" alt="AltStore" class="client-chip-icon" width="28" height="28" />
+                        <span class="client-chip-name">AltStore</span>
+                        <span class="chip-arrow">↗</span>
                     </a>
 
-                    <!-- LiveContainer -->
-                    <a class="bento-card" id="btn-livecontainer" data-key="livecontainer" href="#">
-                        <div class="card-leading">
-                            <div class="badge-icon badge-livecontainer">
-                                <img src="icons/clients/livecontainer.png" alt="LiveContainer Logo" class="badge-icon-img" width="40" height="40" />
-                            </div>
-                            <div class="card-info">
-                                <span class="card-title">LiveContainer</span>
-                                <span class="card-desc">JIT App Container</span>
-                            </div>
-                        </div>
-                        <div class="card-arrow">↗</div>
+                    <a class="client-chip bento-card" id="btn-livecontainer" data-key="livecontainer" href="#" aria-label="Add Source to LiveContainer">
+                        <img src="icons/clients/livecontainer.png" alt="LiveContainer" class="client-chip-icon" width="28" height="28" />
+                        <span class="client-chip-name">LiveContainer</span>
+                        <span class="chip-arrow">↗</span>
                     </a>
 
-                    <!-- TrollApps / TrollStore -->
-                    <a class="bento-card" id="btn-trollapps" data-key="trollapps" href="#">
-                        <div class="card-leading">
-                            <div class="badge-icon badge-trollapps">
-                                <img src="icons/clients/trollstore.png" alt="TrollStore Logo" class="badge-icon-img" width="40" height="40" />
-                            </div>
-                            <div class="card-info">
-                                <span class="card-title">TrollApps</span>
-                                <span class="card-desc">TrollStore Manager</span>
-                            </div>
-                        </div>
-                        <div class="card-arrow">↗</div>
+                    <a class="client-chip bento-card" id="btn-trollapps" data-key="trollapps" href="#" aria-label="Add Source to TrollApps">
+                        <img src="icons/clients/trollstore.png" alt="TrollApps" class="client-chip-icon" width="28" height="28" />
+                        <span class="client-chip-name">TrollApps</span>
+                        <span class="chip-arrow">↗</span>
                     </a>
                 </div>
             </section>
 
-            <!-- Source Manifest URL Bar -->
-            <section class="url-card-section" aria-label="Manual Source URL">
-                <div class="section-heading">
-                    <span class="heading-title">Source JSON URL</span>
-                    <span class="heading-sub">For manual entry</span>
-                </div>
-
-                <div class="url-input-container">
-                    <div class="url-field">
-                        <svg class="url-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
-                            <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
-                        </svg>
-                        <code class="url-string"
-                            id="sourceUrlCode">https://dexterdevkh.github.io/dexter-sources/sources.json</code>
+            <!-- Compact Manifest URL Bar -->
+            <section class="manifest-pill-section" aria-label="Source Manifest URL">
+                <div class="manifest-glass-box">
+                    <div class="manifest-text-wrap">
+                        <span class="manifest-tag">SOURCE URL</span>
+                        <code class="manifest-url-string" id="sourceUrlCode">https://dexterdevkh.github.io/dexter-sources/sources.json</code>
                     </div>
-                    <div class="url-button-group">
-                        <button class="pill-btn primary" id="copyUrlBtn" type="button">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                stroke-linecap="round" stroke-linejoin="round">
+                    <div class="manifest-btns">
+                        <button class="action-btn copy-btn" id="copyUrlBtn" type="button" aria-label="Copy Source URL">
+                            <svg class="copy-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
                                 <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
                             </svg>
                             <span id="copyBtnText">Copy</span>
                         </button>
-                        <a class="pill-btn secondary" id="viewJsonBtn" href="sources.json" target="_blank"
-                            rel="noopener">
-                            JSON
+                        <a class="action-btn json-btn" id="viewJsonBtn" href="sources.json" target="_blank" rel="noopener" aria-label="View raw manifest JSON">
+                            <span>JSON</span>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12">
+                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                                <polyline points="15 3 21 3 21 9"></polyline>
+                                <line x1="10" y1="14" x2="21" y2="3"></line>
+                            </svg>
                         </a>
                     </div>
                 </div>
             </section>
 
-            <!-- Applications Showcase Section -->
-            <section class="apps-container" aria-label="Included Applications">
-                <div class="apps-header-row">
-                    <div class="section-heading">
-                        <span class="heading-title">Featured Apps</span>
+            <!-- Applications Feed Section -->
+            <section class="apps-section" aria-label="Available Applications">
+                <div class="apps-toolbar">
+                    <div class="section-header-compact">
+                        <h2 class="section-title-large">Applications</h2>
                     </div>
 
-                    <!-- Search & Filter Controls -->
-                    <div class="apps-search-wrap">
-                        <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <!-- Clean Spotlight Search Input -->
+                    <div class="search-glass-field">
+                        <svg class="search-glass-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <circle cx="11" cy="11" r="8"></circle>
                             <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
                         </svg>
-                        <input type="text" id="appSearchInput" placeholder="Filter apps... (/)"
-                            aria-label="Search apps" />
-                        <button class="search-clear-btn hidden" id="searchClearBtn" aria-label="Clear search">×</button>
+                        <input type="text" id="appSearchInput" placeholder="Search apps, features... (/)" aria-label="Search applications" autocomplete="off" spellcheck="false" />
+                        <button class="search-clear-cross hidden" id="searchClearBtn" aria-label="Clear search" type="button">×</button>
+                    </div>
+
+                    <!-- Category Filter Chips -->
+                    <div class="filter-strip" id="filterTabs">
+                        <button class="filter-tab active" data-filter="all" type="button">All Apps</button>
+                        <button class="filter-tab" data-filter="entertainment" type="button">Video &amp; Media</button>
+                        <button class="filter-tab" data-filter="music" type="button">Music</button>
                     </div>
                 </div>
 
-                <!-- Category Pills -->
-                <div class="filter-tabs" id="filterTabs">
-                    <button class="filter-tab active" data-filter="all">All</button>
-                    <button class="filter-tab" data-filter="entertainment">Video & Media</button>
-                    <button class="filter-tab" data-filter="music">Music</button>
-                </div>
-
-                <!-- Dynamic Apps List -->
-                <div class="apps-grid" id="appsListContainer">
-                    <!-- Populated dynamically via script.js -->
+                <!-- Dynamic Apps List Container (Populated via AppCard.ts) -->
+                <div class="apps-collection" id="appsListContainer">
+                    <!-- Populated dynamically via AppCard.ts -->
                 </div>
             </section>
 
-            <!-- FAQ & Quick Guide Accordion -->
-            <section class="faq-container" aria-label="Frequently Asked Questions">
-                <details class="faq-accordion">
-                    <summary class="faq-summary">
-                        <span>How do I add this source to SideStore?</span>
-                        <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <polyline points="6 9 12 15 18 9"></polyline>
-                        </svg>
-                    </summary>
-                    <div class="faq-body">
-                        <p>Simply tap the <strong>Add to SideStore</strong> button at the top of this page while
-                            browsing on your iPhone or iPad. SideStore will launch and prompt you to accept adding this
-                            repository. Alternatively, copy the Source JSON URL, open SideStore &gt; <em>Sources</em>
-                            &gt; tap <em>+</em> &gt; paste the URL.</p>
-                    </div>
-                </details>
+            <!-- Native iOS Inset Grouped FAQ Section -->
+            <section class="faq-section" aria-label="Frequently Asked Questions">
+                <div class="section-header-compact">
+                    <span class="section-eyebrow">HELP &amp; FREQUENTLY ASKED QUESTIONS</span>
+                </div>
 
-                <details class="faq-accordion">
-                    <summary class="faq-summary">
-                        <span>How to fix "Untrusted Developer" error?</span>
-                        <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <polyline points="6 9 12 15 18 9"></polyline>
-                        </svg>
-                    </summary>
-                    <div class="faq-body">
-                        <p>On your iOS device, navigate to <strong>Settings &gt; General &gt; VPN &amp; Device
-                                Management</strong>. Select your Apple ID / developer certificate under <em>Developer
-                                App</em>, and tap <strong>Trust</strong>.</p>
-                    </div>
-                </details>
+                <div class="faq-group">
+                    <details class="faq-row">
+                        <summary class="faq-question">
+                            <span>How do I add this source to SideStore?</span>
+                            <svg class="faq-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </summary>
+                        <div class="faq-answer">
+                            <p>Simply tap the <strong>Add to SideStore</strong> button above. SideStore will open automatically and prompt you to import the repository. You can also copy the Source URL manually, open SideStore &gt; <em>Sources</em> &gt; tap <em>+</em> &gt; paste the URL.</p>
+                        </div>
+                    </details>
+
+                    <details class="faq-row">
+                        <summary class="faq-question">
+                            <span>Why are there two separate sources?</span>
+                            <svg class="faq-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </summary>
+                        <div class="faq-answer">
+                            <p>Both <strong>DTLite Plus</strong> and <strong>DTKACE Plus</strong> are modifications of YouTube sharing the bundle ID <code>com.google.ios.youtube</code>. SideStore and AltStore require unique bundle IDs per source manifest. DTKACE Plus is hosted on its own manifest so you can install either tweak mod without repository identifier collisions.</p>
+                        </div>
+                    </details>
+
+                    <details class="faq-row">
+                        <summary class="faq-question">
+                            <span>How to fix "Untrusted Developer" error?</span>
+                            <svg class="faq-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </summary>
+                        <div class="faq-answer">
+                            <p>On your iOS device, navigate to <strong>Settings &gt; General &gt; VPN &amp; Device Management</strong>. Under <em>Developer App</em>, select your Apple ID or signing certificate, then tap <strong>Trust</strong>.</p>
+                        </div>
+                    </details>
+                </div>
             </section>
 
-            <!-- Footer -->
-            <footer class="portal-footer">
-                <div class="footer-copy">
-                    <span>Maintained with care by <a href="https://github.com/DexterDevKH" target="_blank"
-                            rel="noopener">DexterDevKH</a></span>
-                    <span class="footer-sep">•</span>
+            <!-- Minimalist Footer -->
+            <footer class="footer-wrap">
+                <div class="footer-links-row">
+                    <span>Maintained by <a href="https://github.com/DexterDevKH" target="_blank" rel="noopener">DexterDevKH</a></span>
+                    <span class="footer-dot">&bull;</span>
                     <a href="https://github.com/DexterDevKH/dexter-sources" target="_blank" rel="noopener">GitHub</a>
+                    <span class="footer-dot">&bull;</span>
+                    <a href="https://github.com/DexterDevKH/dexter-sources/actions" target="_blank" rel="noopener">Sync Status</a>
                 </div>
-                <div class="footer-license">
-                    <span>Compatible with SideStore, Feather, AltStore, LiveContainer &amp; TrollStore</span>
+                <div class="footer-tagline">
+                    Built for SideStore, Feather, AltStore, LiveContainer &amp; TrollStore
                 </div>
             </footer>
 
         </main>
     </div>
 
-    <!-- QR Code Scan Modal (VisionOS Frosted Glass) -->
-    <div class="modal-overlay hidden" id="qrModal" role="dialog" aria-modal="true" aria-labelledby="qrModalTitle">
-        <div class="modal-card">
-            <button class="modal-close-btn" id="qrModalCloseBtn" aria-label="Close modal">×</button>
-            <div class="modal-header">
-                <div class="modal-icon-badge">
+    <!-- VisionOS Frosted Glass QR Scan Modal -->
+    <div class="modal-backdrop hidden" id="qrModal" role="dialog" aria-modal="true" aria-labelledby="qrModalTitle">
+        <div class="modal-box qr-modal-box">
+            <button class="modal-close-cross" id="qrModalCloseBtn" aria-label="Close modal" type="button">×</button>
+            <div class="modal-heading-group">
+                <div class="modal-glyph">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <rect x="3" y="3" width="7" height="7"></rect>
-                        <rect x="14" y="3" width="7" height="7"></rect>
-                        <rect x="14" y="14" width="7" height="7"></rect>
-                        <rect x="3" y="14" width="7" height="7"></rect>
+                        <rect x="3" y="3" width="7" height="7" rx="1.5"></rect>
+                        <rect x="14" y="3" width="7" height="7" rx="1.5"></rect>
+                        <rect x="14" y="14" width="7" height="7" rx="1.5"></rect>
+                        <rect x="3" y="14" width="7" height="7" rx="1.5"></rect>
                     </svg>
                 </div>
-                <h3 class="modal-title" id="qrModalTitle">Install on iOS</h3>
-                <p class="modal-subtitle">Point your iPhone or iPad Camera at the code below to import this source
-                    directly.</p>
+                <h3 class="modal-title" id="qrModalTitle">Install on iOS Device</h3>
+                <p class="modal-sub">Scan this QR code with your iPhone or iPad Camera to import directly.</p>
             </div>
 
-            <!-- Client Selector Tabs inside QR Modal -->
-            <div class="qr-target-tabs" id="qrTargetTabs">
-                <button class="qr-tab active" data-target="sidestore">SideStore</button>
-                <button class="qr-tab" data-target="altstore">AltStore</button>
-                <button class="qr-tab" data-target="livecontainer">LiveContainer</button>
-                <button class="qr-tab" data-target="portal">Web Portal</button>
+            <!-- Target Selection Tabs inside QR Modal -->
+            <div class="qr-target-pills" id="qrTargetTabs">
+                <button class="qr-tab active" data-target="sidestore" type="button">SideStore</button>
+                <button class="qr-tab" data-target="altstore" type="button">AltStore</button>
+                <button class="qr-tab" data-target="livecontainer" type="button">LiveContainer</button>
+                <button class="qr-tab" data-target="portal" type="button">Web Portal</button>
             </div>
 
-            <div class="qr-code-frame">
+            <div class="qr-canvas-holder">
                 <canvas id="qrCanvas" width="280" height="280"></canvas>
             </div>
 
-            <div class="qr-footer-caption" id="qrCaptionText">
+            <div class="qr-caption-note" id="qrCaptionText">
                 Scans directly to: <code>SideStore Source</code>
             </div>
         </div>
     </div>
 
-    <!-- App Details Bottom Sheet / Modal -->
-    <div class="modal-overlay hidden" id="appDetailsModal" role="dialog" aria-modal="true"
-        aria-labelledby="detailAppTitle">
-        <div class="modal-card app-detail-card">
-            <button class="modal-close-btn" id="appModalCloseBtn" aria-label="Close modal">×</button>
+    <!-- Native iOS Bottom Sheet Drawer (App Specifications & Changelog Modal) -->
+    <div class="modal-backdrop hidden" id="appDetailsModal" role="dialog" aria-modal="true" aria-labelledby="detailAppTitle">
+        <div class="modal-box sheet-box">
+            <div class="sheet-drag-handle" aria-hidden="true"></div>
+            <button class="modal-close-cross" id="appModalCloseBtn" aria-label="Close modal" type="button">×</button>
 
-            <div class="detail-header">
-                <img class="detail-icon" id="detailAppIcon" src="" alt="App Icon" />
-                <div class="detail-header-info">
-                    <h3 class="detail-title" id="detailAppTitle">App Name</h3>
-                    <div class="detail-subtitle" id="detailAppSubtitle">Subtitle</div>
-                    <div class="detail-meta-tags" id="detailMetaTags">
-                        <span class="meta-tag" id="detailBundleId">com.example</span>
-                        <span class="meta-tag version" id="detailVersion">v1.0.0</span>
+            <!-- App Sheet Header -->
+            <div class="sheet-header">
+                <img class="sheet-app-icon" id="detailAppIcon" src="icons/profile.png" alt="App Icon" />
+                <div class="sheet-title-col">
+                    <h3 class="sheet-app-title" id="detailAppTitle">App Name</h3>
+                    <div class="sheet-app-sub" id="detailAppSubtitle">App Subtitle</div>
+                    <div class="sheet-tags-row">
+                        <span class="sheet-tag bundle" id="detailBundleId">com.example</span>
+                        <span class="sheet-tag ver" id="detailVersion">v1.0.0</span>
                     </div>
                 </div>
             </div>
 
-            <div class="detail-actions-row">
-                <a class="modal-action-btn primary" id="detailDownloadBtn" href="#" target="_blank" rel="noopener">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"
-                        stroke-linejoin="round">
+            <!-- Action Buttons: Download IPA & Copy Link -->
+            <div class="sheet-actions">
+                <a class="sheet-btn primary-btn" id="detailDownloadBtn" href="#" target="_blank" rel="noopener">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
                         <polyline points="7 10 12 15 17 10"></polyline>
                         <line x1="12" y1="15" x2="12" y2="3"></line>
                     </svg>
                     <span>Download IPA</span>
                 </a>
-                <button class="modal-action-btn secondary" id="detailCopyIpaBtn" type="button">
+                <button class="sheet-btn secondary-btn" id="detailCopyIpaBtn" type="button">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
                         <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
@@ -449,42 +410,43 @@
                 </button>
             </div>
 
-            <div class="detail-body-scroll">
-                <div class="detail-section">
-                    <h4 class="detail-heading">About Application</h4>
-                    <p class="detail-description-text" id="detailDescription">Description text...</p>
+            <!-- Scrollable Content Body -->
+            <div class="sheet-scroll-body">
+                <div class="sheet-section">
+                    <h4 class="sheet-section-title">About Application</h4>
+                    <p class="sheet-desc-text" id="detailDescription">Description text...</p>
                 </div>
 
-                <div class="detail-section hidden" id="detailScreenshotsSection">
-                    <h4 class="detail-heading">Screenshots</h4>
-                    <div class="screenshots-carousel" id="detailScreenshotsContainer">
+                <div class="sheet-section hidden" id="detailScreenshotsSection">
+                    <h4 class="sheet-section-title">Screenshots</h4>
+                    <div class="sheet-screenshots-strip" id="detailScreenshotsContainer">
                         <!-- Populated dynamically -->
                     </div>
                 </div>
 
-                <div class="detail-section">
-                    <h4 class="detail-heading">Version History &amp; Changelog</h4>
-                    <div class="changelog-list" id="detailChangelogList">
+                <div class="sheet-section">
+                    <h4 class="sheet-section-title">Version History &amp; Changelog</h4>
+                    <div class="changelog-cards-col" id="detailChangelogList">
                         <!-- Populated dynamically -->
                     </div>
                 </div>
 
-                <div class="detail-section">
-                    <h4 class="detail-heading">Technical Specifications</h4>
-                    <dl class="specs-grid">
-                        <div class="spec-item">
+                <div class="sheet-section">
+                    <h4 class="sheet-section-title">Technical Specifications</h4>
+                    <dl class="specs-table">
+                        <div class="spec-cell">
                             <dt>Bundle Identifier</dt>
                             <dd id="specBundleId">-</dd>
                         </div>
-                        <div class="spec-item">
+                        <div class="spec-cell">
                             <dt>Developer</dt>
                             <dd id="specDev">-</dd>
                         </div>
-                        <div class="spec-item">
+                        <div class="spec-cell">
                             <dt>Package Size</dt>
                             <dd id="specSize">-</dd>
                         </div>
-                        <div class="spec-item">
+                        <div class="spec-cell">
                             <dt>Latest Release Date</dt>
                             <dd id="specDate">-</dd>
                         </div>
@@ -494,42 +456,41 @@
         </div>
     </div>
 
-    <!-- Fullscreen Screenshot Lightbox Preview Modal -->
-    <div class="modal-overlay hidden" id="screenshotPreviewModal" role="dialog" aria-modal="true" aria-label="Screenshot Preview">
-        <div class="lightbox-container" id="lightboxContainer">
-            <button class="lightbox-close-btn" id="lightboxCloseBtn" type="button" aria-label="Close screenshot preview">×</button>
+    <!-- Fullscreen Screenshot Lightbox Viewer -->
+    <div class="modal-backdrop hidden" id="screenshotPreviewModal" role="dialog" aria-modal="true" aria-label="Screenshot Preview">
+        <div class="lightbox-wrap" id="lightboxContainer">
+            <button class="lightbox-close" id="lightboxCloseBtn" type="button" aria-label="Close screenshot preview">×</button>
             
-            <button class="lightbox-nav-btn prev" id="lightboxPrevBtn" type="button" aria-label="Previous screenshot">
+            <button class="lightbox-nav-arrow prev" id="lightboxPrevBtn" type="button" aria-label="Previous screenshot">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                     <polyline points="15 18 9 12 15 6"></polyline>
                 </svg>
             </button>
             
-            <div class="lightbox-media-wrap" id="lightboxMediaWrap">
-                <img class="lightbox-image" id="lightboxImage" src="" alt="Screenshot preview" />
+            <div class="lightbox-frame" id="lightboxMediaWrap">
+                <img class="lightbox-img" id="lightboxImage" src="" alt="Screenshot preview" />
             </div>
             
-            <button class="lightbox-nav-btn next" id="lightboxNextBtn" type="button" aria-label="Next screenshot">
+            <button class="lightbox-nav-arrow next" id="lightboxNextBtn" type="button" aria-label="Next screenshot">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                     <polyline points="9 18 15 12 9 6"></polyline>
                 </svg>
             </button>
             
-            <div class="lightbox-counter" id="lightboxCounter">1 / 1</div>
+            <div class="lightbox-counter-pill" id="lightboxCounter">1 / 1</div>
         </div>
     </div>
 
-    <!-- Floating Toast Notification -->
-    <div class="toast-pill hidden" id="toastPill" role="status" aria-live="polite" style="white-space: nowrap;">
-        <svg class="toast-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+    <!-- Floating Native Toast Notification -->
+    <div class="floating-toast hidden" id="toastPill" role="status" aria-live="polite">
+        <svg class="toast-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
             <polyline points="20 6 9 17 4 12"></polyline>
         </svg>
-        <span class="toast-message" id="toastMessage" style="white-space: nowrap;">Source URL copied to
-            clipboard!</span>
+        <span class="toast-txt" id="toastMessage">Source URL copied to clipboard!</span>
     </div>
 
-    <!-- Main Application Logic (Deferred for fastest load time) -->
-    <script src="script.js" defer></script>
+    <!-- Main Compiled TypeScript Application Logic (Bun) -->
+    <script src="dist/app.min.js" defer></script>
 </body>
 
 </html>
