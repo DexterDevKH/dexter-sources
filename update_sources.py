@@ -55,12 +55,12 @@ APP_CONFIGS: List[AppConfig] = [
     AppConfig(
         bundle_id="com.google.ios.youtube",
         repo=f"{GITHUB_OWNER}/DTLite",
-        name="DTLite Plus",
+        name="DexTube",
         subtitle="Enhanced YouTube client with ad-blocking & background play",
         category="entertainment",
         tint_color="#007AFF",
         icon_url=f"https://raw.githubusercontent.com/{GITHUB_OWNER}/dexter-sources/main/icons/dtlite.png",
-        fallback_description="Official iOS release of DTLite Plus featuring ad-blocking, background playback, and SponsorBlock.",
+        fallback_description="Official iOS release of DTLite (DexTube) featuring ad-blocking, background playback, and SponsorBlock.",
         min_os_version="16.0",
         screenshots={
             "iphone": [
@@ -105,54 +105,6 @@ APP_CONFIGS: List[AppConfig] = [
             "privacy": {
                 "NSBackgroundAudioUsageDescription": "Enables uninterrupted high-fidelity background music and lock screen playback controls.",
                 "NSBackgroundFetchUsageDescription": "Enables background sync and offline cache verification.",
-            },
-        },
-    ),
-    AppConfig(
-        bundle_id="com.google.ios.youtube",
-        repo=f"{GITHUB_OWNER}/DTKACE",
-        name="DTKACE",
-        subtitle="Enhanced YouTube with YTKACE tweak engine & 12 modular extensions",
-        category="entertainment",
-        tint_color="#E36678",
-        icon_url=f"https://raw.githubusercontent.com/{GITHUB_OWNER}/dexter-sources/main/icons/dtkace.png",
-        fallback_description="Official iOS release of DTKACE (DexTube) featuring YTKACE, up to 4K media downloads, Picture-in-Picture, SponsorBlock, dislike restoration, and pure dark OLED mode.",
-        min_os_version="15.0",
-        screenshots={
-            "iphone": [
-                {
-                    "width": 923,
-                    "height": 2000,
-                    "imageURL": "https://raw.githubusercontent.com/itzzace/ytkace/main/screenshots/source/glass-home.jpg",
-                },
-                {
-                    "width": 923,
-                    "height": 2000,
-                    "imageURL": "https://raw.githubusercontent.com/itzzace/ytkace/main/screenshots/source/video-player.png",
-                },
-                {
-                    "width": 923,
-                    "height": 2000,
-                    "imageURL": "https://raw.githubusercontent.com/itzzace/ytkace/main/screenshots/source/download-library.jpg",
-                },
-                {
-                    "width": 923,
-                    "height": 2000,
-                    "imageURL": "https://raw.githubusercontent.com/itzzace/ytkace/main/screenshots/source/glass-settings.jpg",
-                },
-                {
-                    "width": 923,
-                    "height": 2000,
-                    "imageURL": "https://raw.githubusercontent.com/itzzace/ytkace/main/screenshots/source/sponsorblock-settings.jpg",
-                },
-            ]
-        },
-        app_permissions={
-            "entitlements": [],
-            "privacy": {
-                "NSBackgroundAudioUsageDescription": "Allows audio and video playback in background and Picture-in-Picture.",
-                "NSBackgroundFetchUsageDescription": "Allows background updates and download synchronization.",
-                "NSFaceIDUsageDescription": "Face ID is required to authenticate.",
             },
         },
     ),
@@ -259,7 +211,7 @@ def load_source_manifest(path: str) -> Dict[str, Any]:
             "identifier": f"com.{GITHUB_OWNER.lower()}.source",
             "website": f"https://{GITHUB_OWNER.lower()}.github.io/dexter-sources/",
             "subtitle": "Official SideStore, Feather, and AltStore Source.",
-            "description": "High-performance curated iOS apps including DTLite Plus, DexTube Music, and DTKACE.",
+            "description": "High-performance curated iOS apps including DexTube and DexTube Music.",
             "tintColor": "#007AFF",
             "iconURL": f"https://github.com/{GITHUB_OWNER}.png",
             "headerURL": f"https://github.com/{GITHUB_OWNER}.png",
@@ -315,17 +267,10 @@ def generate_news_item(
     else:
         formatted_date = datetime.now(timezone.utc).strftime("%Y-%m-%d")
     color = tint_color if tint_color.startswith("#") else f"#{tint_color}"
-    clean_bundle = bundle_id.replace(".", "-")
-    clean_ver = version.replace(".", "-")
-    if "kace" in app_name.lower():
-        news_id = f"release-{clean_bundle}-dtkace-{clean_ver}"
-        news_url = url or "https://dexterdevkh.github.io/dexter-sources/?app=dtkace"
-    else:
-        news_id = f"release-{clean_bundle}-{clean_ver}"
-        news_url = url or f"https://dexterdevkh.github.io/dexter-sources/?app={bundle_id}"
+    news_url = url or f"https://dexterdevkh.github.io/dexter-sources/?app={bundle_id}"
     return {
         "title": f"{app_name} v{version} Released",
-        "identifier": news_id,
+        "identifier": f"release-{bundle_id.replace('.', '-')}-{version.replace('.', '-')}",
         "caption": f"Version {version} is now available with the latest features, enhancements, and iOS 18 fixes.",
         "tintColor": color,
         "imageURL": icon_url,
@@ -338,7 +283,7 @@ def generate_news_item(
 def update_manifest(
     source_path: str = "sources.json",
     max_versions: int = 3,
-    max_news: int = 3,
+    max_news: int = 2,
     token: str = "",
     dry_run: bool = False,
     update_news: bool = True,
@@ -355,11 +300,9 @@ def update_manifest(
     manifest["headerURL"] = avatar_url or manifest.get("headerURL", manifest["iconURL"])
     manifest.setdefault("news", [])
 
-    def find_app_entry(apps: List[Dict[str, Any]], bundle_id: str, name: str) -> Optional[Dict[str, Any]]:
-        for app in apps:
-            if isinstance(app, dict) and app.get("bundleIdentifier") == bundle_id and app.get("name") == name:
-                return app
-        return None
+    existing_apps_by_id: Dict[str, Dict[str, Any]] = {
+        app.get("bundleIdentifier"): app for app in manifest.get("apps", []) if isinstance(app, dict)
+    }
 
     updated_count = 0
     new_announcements: List[Dict[str, Any]] = []
@@ -422,7 +365,7 @@ def update_manifest(
             continue
 
         latest_version = valid_versions[0]
-        app_entry = find_app_entry(manifest.get("apps", []), conf.bundle_id, conf.name)
+        app_entry = existing_apps_by_id.get(conf.bundle_id)
         is_new_app = app_entry is None
 
         tint_color = conf.tint_color if conf.tint_color.startswith("#") else f"#{conf.tint_color}"
@@ -450,6 +393,7 @@ def update_manifest(
 
         if is_new_app:
             manifest.setdefault("apps", []).append(app_payload)
+            existing_apps_by_id[conf.bundle_id] = app_payload
             updated_count += 1
             logger.info("Added new app '%s' [%s] version %s", conf.name, conf.bundle_id, latest_version["version"])
             if update_news and max_news > 0:
@@ -474,19 +418,9 @@ def update_manifest(
 
             # Ensure the latest release always has an announcement in the news list
             if update_news and max_news > 0:
-                clean_bundle = conf.bundle_id.replace(".", "-")
-                clean_ver = latest_version['version'].replace('.', '-')
-                if "kace" in conf.name.lower():
-                    expected_news_ids = {
-                        f"release-{clean_bundle}-dtkace-{clean_ver}",
-                        f"release-dtkace-{clean_ver}",
-                    }
-                else:
-                    expected_news_ids = {
-                        f"release-{clean_bundle}-{clean_ver}",
-                    }
+                expected_news_id = f"release-{conf.bundle_id.replace('.', '-')}-{latest_version['version'].replace('.', '-')}"
                 has_announcement = any(
-                    isinstance(n, dict) and n.get("identifier") in expected_news_ids
+                    isinstance(n, dict) and n.get("identifier") == expected_news_id
                     for n in manifest.get("news", [])
                 )
                 if not has_announcement:
@@ -508,7 +442,7 @@ def update_manifest(
         # If existing_news is empty, generate news items for the latest release of each app
         if not existing_news:
             for conf in APP_CONFIGS:
-                app_entry = find_app_entry(manifest.get("apps", []), conf.bundle_id, conf.name)
+                app_entry = existing_apps_by_id.get(conf.bundle_id)
                 if not app_entry:
                     continue
                 versions = app_entry.get("versions", [])
@@ -535,7 +469,7 @@ def update_manifest(
         "identifier": manifest.get("identifier", f"com.{GITHUB_OWNER.lower()}.source"),
         "website": manifest.get("website", f"https://{GITHUB_OWNER.lower()}.github.io/dexter-sources/"),
         "subtitle": manifest.get("subtitle", "Official SideStore, Feather, and AltStore Source."),
-        "description": manifest.get("description", "High-performance curated iOS apps including DTLite Plus, DexTube Music, and DTKACE."),
+        "description": manifest.get("description", "High-performance curated iOS apps including DexTube and DexTube Music."),
         "tintColor": manifest.get("tintColor", "#007AFF"),
         "iconURL": avatar_url or manifest.get("iconURL", f"https://github.com/{GITHUB_OWNER}.png"),
         "headerURL": manifest.get("headerURL", avatar_url or f"https://github.com/{GITHUB_OWNER}.png"),
@@ -598,7 +532,7 @@ def parse_args() -> argparse.Namespace:
         "-m", "--max-versions", type=int, default=3, help="Maximum number of historical versions to keep (default: 3)"
     )
     parser.add_argument(
-        "-n", "--max-news", type=int, default=3, help="Maximum number of news announcements to keep (default: 3)"
+        "-n", "--max-news", type=int, default=2, help="Maximum number of news announcements to keep (default: 2)"
     )
     parser.add_argument(
         "-t", "--token", default="", help="GitHub Personal Access Token for higher API rate limits"
