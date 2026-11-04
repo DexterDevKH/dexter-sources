@@ -590,22 +590,16 @@
      * Apply manifest metadata to DOM
      */
     function applyManifest(data) {
-        const titleEl = document.getElementById("sourceTitle");
-        const descEl = document.getElementById("sourceDescription");
+        // Hero title & description remain static ("make this don't change")
         const avatarImg = document.getElementById("heroAvatarImg");
         const appCountText = document.getElementById("appCountText");
 
-        if (data.name && titleEl) titleEl.textContent = data.name;
-        if ((data.description || data.subtitle) && descEl) {
-            descEl.textContent = data.description || data.subtitle;
-        }
-
         if (avatarImg) {
             avatarImg.src = "icons/profile.png";
-            avatarImg.alt = data.name || "DexterDevKH";
+            avatarImg.alt = "DexterDevKH Apps";
             avatarImg.onerror = function () {
                 this.onerror = null;
-                this.src = data.iconURL || "https://github.com/DexterDevKH.png";
+                this.src = (data && data.iconURL) || "https://github.com/DexterDevKH.png";
             };
         }
 
