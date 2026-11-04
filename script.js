@@ -590,7 +590,7 @@
      * Apply manifest metadata to DOM
      */
     function applyManifest(data) {
-        // Hero title & description remain static ("DexterDevKH Apps")
+        // Hero avatar, title ("DexterDevKH Apps") & verified badge remain permanently static
         const avatarImg = document.getElementById("heroAvatarImg");
         const appCountText = document.getElementById("appCountText");
 
@@ -599,7 +599,7 @@
             avatarImg.alt = "DexterDevKH Apps";
             avatarImg.onerror = function () {
                 this.onerror = null;
-                this.src = (data && data.iconURL) || "https://github.com/DexterDevKH.png";
+                this.src = "https://github.com/DexterDevKH.png";
             };
         }
 
