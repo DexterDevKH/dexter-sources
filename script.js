@@ -163,7 +163,7 @@
             identifier: "com.dexterdevkh.source",
             website: "https://dexterdevkh.github.io/dexter-sources/",
             subtitle: "Official SideStore, Feather, and AltStore Source.",
-            description: "High-performance curated iOS apps including DTLite Plus, DexTube Music, and DTKACE.",
+            description: "High-performance curated iOS apps including DTLite Plus and DexTube Music.",
             tintColor: "#007AFF",
             iconURL: "https://avatars.githubusercontent.com/u/274127037?v=4",
             headerURL: "https://avatars.githubusercontent.com/u/274127037?v=4",
@@ -192,7 +192,7 @@
             ]
         },
         dtkace: {
-            name: "DexterDevKH DTKACE Apps",
+            name: "DexterDevKH Apps (DTKACE)",
             identifier: "com.dexterdevkh.dtkace.source",
             website: "https://dexterdevkh.github.io/dexter-sources/?source=dtkace",
             subtitle: "Official SideStore, Feather, and AltStore Source for DTKACE Plus.",
@@ -590,7 +590,7 @@
      * Apply manifest metadata to DOM
      */
     function applyManifest(data) {
-        // Hero title & description remain static ("make this don't change")
+        // Hero title & description remain static ("DexterDevKH Apps")
         const avatarImg = document.getElementById("heroAvatarImg");
         const appCountText = document.getElementById("appCountText");
 
