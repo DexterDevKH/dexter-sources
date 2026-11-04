@@ -109,10 +109,10 @@ APP_CONFIGS: List[AppConfig] = [
         },
     ),
     AppConfig(
-        bundle_id="com.google.ios.youtube.dtkace",
+        bundle_id="com.google.ios.youtube",
         repo=f"{GITHUB_OWNER}/DTKACE",
         name="DTKACE",
-        subtitle="Enhanced YouTube with YTKACE tweak engine & 13 modular extensions",
+        subtitle="Enhanced YouTube with YTKACE tweak engine & 12 modular extensions",
         category="entertainment",
         tint_color="#E36678",
         icon_url=f"https://raw.githubusercontent.com/{GITHUB_OWNER}/dexter-sources/main/icons/dtkace.png",
@@ -315,10 +315,17 @@ def generate_news_item(
     else:
         formatted_date = datetime.now(timezone.utc).strftime("%Y-%m-%d")
     color = tint_color if tint_color.startswith("#") else f"#{tint_color}"
-    news_url = url or f"https://dexterdevkh.github.io/dexter-sources/?app={bundle_id}"
+    clean_bundle = bundle_id.replace(".", "-")
+    clean_ver = version.replace(".", "-")
+    if "kace" in app_name.lower():
+        news_id = f"release-{clean_bundle}-dtkace-{clean_ver}"
+        news_url = url or "https://dexterdevkh.github.io/dexter-sources/?app=dtkace"
+    else:
+        news_id = f"release-{clean_bundle}-{clean_ver}"
+        news_url = url or f"https://dexterdevkh.github.io/dexter-sources/?app={bundle_id}"
     return {
         "title": f"{app_name} v{version} Released",
-        "identifier": f"release-{bundle_id.replace('.', '-')}-{version.replace('.', '-')}",
+        "identifier": news_id,
         "caption": f"Version {version} is now available with the latest features, enhancements, and iOS 18 fixes.",
         "tintColor": color,
         "imageURL": icon_url,
@@ -348,9 +355,11 @@ def update_manifest(
     manifest["headerURL"] = avatar_url or manifest.get("headerURL", manifest["iconURL"])
     manifest.setdefault("news", [])
 
-    existing_apps_by_id: Dict[str, Dict[str, Any]] = {
-        app.get("bundleIdentifier"): app for app in manifest.get("apps", []) if isinstance(app, dict)
-    }
+    def find_app_entry(apps: List[Dict[str, Any]], bundle_id: str, name: str) -> Optional[Dict[str, Any]]:
+        for app in apps:
+            if isinstance(app, dict) and app.get("bundleIdentifier") == bundle_id and app.get("name") == name:
+                return app
+        return None
 
     updated_count = 0
     new_announcements: List[Dict[str, Any]] = []
@@ -413,7 +422,7 @@ def update_manifest(
             continue
 
         latest_version = valid_versions[0]
-        app_entry = existing_apps_by_id.get(conf.bundle_id)
+        app_entry = find_app_entry(manifest.get("apps", []), conf.bundle_id, conf.name)
         is_new_app = app_entry is None
 
         tint_color = conf.tint_color if conf.tint_color.startswith("#") else f"#{conf.tint_color}"
@@ -441,7 +450,6 @@ def update_manifest(
 
         if is_new_app:
             manifest.setdefault("apps", []).append(app_payload)
-            existing_apps_by_id[conf.bundle_id] = app_payload
             updated_count += 1
             logger.info("Added new app '%s' [%s] version %s", conf.name, conf.bundle_id, latest_version["version"])
             if update_news and max_news > 0:
@@ -466,9 +474,19 @@ def update_manifest(
 
             # Ensure the latest release always has an announcement in the news list
             if update_news and max_news > 0:
-                expected_news_id = f"release-{conf.bundle_id.replace('.', '-')}-{latest_version['version'].replace('.', '-')}"
+                clean_bundle = conf.bundle_id.replace(".", "-")
+                clean_ver = latest_version['version'].replace('.', '-')
+                if "kace" in conf.name.lower():
+                    expected_news_ids = {
+                        f"release-{clean_bundle}-dtkace-{clean_ver}",
+                        f"release-dtkace-{clean_ver}",
+                    }
+                else:
+                    expected_news_ids = {
+                        f"release-{clean_bundle}-{clean_ver}",
+                    }
                 has_announcement = any(
-                    isinstance(n, dict) and n.get("identifier") == expected_news_id
+                    isinstance(n, dict) and n.get("identifier") in expected_news_ids
                     for n in manifest.get("news", [])
                 )
                 if not has_announcement:
@@ -490,7 +508,7 @@ def update_manifest(
         # If existing_news is empty, generate news items for the latest release of each app
         if not existing_news:
             for conf in APP_CONFIGS:
-                app_entry = existing_apps_by_id.get(conf.bundle_id)
+                app_entry = find_app_entry(manifest.get("apps", []), conf.bundle_id, conf.name)
                 if not app_entry:
                     continue
                 versions = app_entry.get("versions", [])

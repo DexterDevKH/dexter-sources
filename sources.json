@@ -158,9 +158,9 @@
     },
     {
       "name": "DTKACE",
-      "bundleIdentifier": "com.google.ios.youtube.dtkace",
+      "bundleIdentifier": "com.google.ios.youtube",
       "developerName": "DexterDevKH",
-      "subtitle": "Enhanced YouTube with YTKACE tweak engine & 13 modular extensions",
+      "subtitle": "Enhanced YouTube with YTKACE tweak engine & 12 modular extensions",
       "localizedDescription": "Official iOS release of DTKACE (DexTube) featuring YTKACE, up to 4K media downloads, Picture-in-Picture, SponsorBlock, dislike restoration, and pure dark OLED mode.",
       "iconURL": "https://raw.githubusercontent.com/DexterDevKH/dexter-sources/main/icons/dtkace.png",
       "tintColor": "#E36678",

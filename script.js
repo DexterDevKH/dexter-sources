@@ -128,9 +128,9 @@
             },
             {
                 name: "DTKACE",
-                bundleIdentifier: "com.google.ios.youtube.dtkace",
+                bundleIdentifier: "com.google.ios.youtube",
                 developerName: "DexterDevKH",
-                subtitle: "Enhanced YouTube with YTKACE tweak engine & 13 modular extensions",
+                subtitle: "Enhanced YouTube with YTKACE tweak engine & 12 modular extensions",
                 localizedDescription: "Official iOS release of DTKACE (DexTube) featuring YTKACE, up to 4K media downloads, Picture-in-Picture, SponsorBlock, dislike restoration, and pure dark OLED mode.",
                 iconURL: "icons/dtkace.png",
                 tintColor: "#E36678",
@@ -200,13 +200,15 @@
 
     // Local icons map for flawless offline & web viewing
     const LOCAL_APP_ICONS = {
-        "com.google.ios.youtube": "icons/dtlite.png",
         "com.google.ios.youtubemusic": "icons/dtmusicultimate.png",
-        "com.google.ios.youtube.dtkace": "icons/dtkace.png"
+        "com.google.ios.youtube": "icons/dtlite.png"
     };
 
     function getAppIconUrl(app) {
         if (!app) return "icons/dtlite.png";
+        if (app.name && app.name.toLowerCase().includes("kace")) {
+            return "icons/dtkace.png";
+        }
         if (app.bundleIdentifier && LOCAL_APP_ICONS[app.bundleIdentifier]) {
             return LOCAL_APP_ICONS[app.bundleIdentifier];
         }
@@ -217,7 +219,7 @@
         if (!app) return "";
         if (app.category) return app.category;
         if (app.bundleIdentifier === "com.google.ios.youtubemusic") return "music";
-        if (app.bundleIdentifier === "com.google.ios.youtube" || app.bundleIdentifier === "com.google.ios.youtube.dtkace") return "entertainment";
+        if (app.bundleIdentifier === "com.google.ios.youtube") return "entertainment";
         return "";
     }
 
@@ -415,6 +417,7 @@
         const appsB = b.apps || [];
         if (appsA.length !== appsB.length) return false;
         for (let i = 0; i < appsA.length; i++) {
+            if (appsA[i].name !== appsB[i].name) return false;
             if (appsA[i].bundleIdentifier !== appsB[i].bundleIdentifier) return false;
             const verA = (appsA[i].versions && appsA[i].versions[0]) ? appsA[i].versions[0].version : appsA[i].version;
             const verB = (appsB[i].versions && appsB[i].versions[0]) ? appsB[i].versions[0].version : appsB[i].version;
@@ -569,12 +572,12 @@
         icon.alt = app.name || "App Icon";
         icon.loading = "lazy";
         icon.onerror = function () {
-            if (app.iconURL && this.src !== app.iconURL) {
-                this.src = app.iconURL;
+            if (app.name && app.name.toLowerCase().includes("kace")) {
+                this.src = "icons/dtkace.png";
             } else if (app.bundleIdentifier === "com.google.ios.youtubemusic") {
                 this.src = "icons/dtmusicultimate.png";
-            } else if (app.bundleIdentifier === "com.google.ios.youtube.dtkace") {
-                this.src = "icons/dtkace.png";
+            } else if (app.iconURL && this.src !== app.iconURL) {
+                this.src = app.iconURL;
             } else {
                 this.src = "icons/dtlite.png";
             }
@@ -677,10 +680,12 @@
             detailIcon.src = getAppIconUrl(app);
             detailIcon.alt = app.name || "App Icon";
             detailIcon.onerror = function () {
-                if (app.iconURL && this.src !== app.iconURL) {
-                    this.src = app.iconURL;
+                if (app.name && app.name.toLowerCase().includes("kace")) {
+                    this.src = "icons/dtkace.png";
                 } else if (app.bundleIdentifier === "com.google.ios.youtubemusic") {
                     this.src = "icons/dtmusicultimate.png";
+                } else if (app.iconURL && this.src !== app.iconURL) {
+                    this.src = app.iconURL;
                 } else {
                     this.src = "icons/dtlite.png";
                 }
