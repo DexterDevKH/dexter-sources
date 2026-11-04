@@ -71,11 +71,17 @@ export class QrModal {
             this.modal = document.getElementById('qrModal');
         }
         this.modal?.classList.remove('hidden');
+        document.body.classList.add('modal-open');
         this.renderQr();
     }
 
     public static close(): void {
         this.modal?.classList.add('hidden');
+        setTimeout(() => {
+            if (!document.querySelector('.modal-backdrop:not(.hidden)')) {
+                document.body.classList.remove('modal-open');
+            }
+        }, 10);
     }
 
     public static isOpen(): boolean {

@@ -7,6 +7,7 @@ export class LightboxModal {
 
     private static images: string[] = [];
     private static currentIndex: number = 0;
+    private static currentTitle: string = 'Screenshot';
     private static touchStartX: number = 0;
 
     public static init(): void {
@@ -24,7 +25,7 @@ export class LightboxModal {
 
         if (this.modal) {
             this.modal.addEventListener('click', (e) => {
-                if (e.target === this.modal) {
+                if (e.target === this.modal || e.target === document.getElementById('lightboxContainer')) {
                     this.close();
                 }
             });
@@ -88,14 +89,21 @@ export class LightboxModal {
     public static open(urls: string[], initialIndex: number = 0, title: string = 'Screenshot'): void {
         if (!urls || urls.length === 0) return;
         this.images = urls;
+        this.currentTitle = title;
         this.currentIndex = Math.max(0, Math.min(initialIndex, urls.length - 1));
 
-        this.renderImage(title);
+        this.renderImage();
         this.modal?.classList.remove('hidden');
+        document.body.classList.add('modal-open');
     }
 
     public static close(): void {
         this.modal?.classList.add('hidden');
+        setTimeout(() => {
+            if (!document.querySelector('.modal-backdrop:not(.hidden)')) {
+                document.body.classList.remove('modal-open');
+            }
+        }, 10);
     }
 
     public static isOpen(): boolean {
@@ -114,11 +122,11 @@ export class LightboxModal {
         this.renderImage();
     }
 
-    private static renderImage(title: string = 'Screenshot'): void {
+    private static renderImage(): void {
         if (!this.imageEl) return;
         const url = this.images[this.currentIndex];
         this.imageEl.src = url;
-        this.imageEl.alt = `${title} (${this.currentIndex + 1} of ${this.images.length})`;
+        this.imageEl.alt = `${this.currentTitle} (${this.currentIndex + 1} of ${this.images.length})`;
 
         if (this.counterEl) {
             this.counterEl.textContent = `${this.currentIndex + 1} / ${this.images.length}`;
@@ -130,4 +138,3 @@ export class LightboxModal {
         if (this.nextBtn) this.nextBtn.style.display = hasMultiple ? '' : 'none';
     }
 }
-

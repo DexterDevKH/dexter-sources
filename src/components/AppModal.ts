@@ -1,5 +1,6 @@
 import type { ManifestApp } from '../types';
 import { formatBytes, formatDate, getAppIconUrl } from '../utils/formatters';
+import { enableHorizontalScroll } from '../utils/scrollHelper';
 import { store } from '../state/store';
 import { UrlService } from '../services/urlService';
 import { Toast } from './Toast';
@@ -100,7 +101,16 @@ export class AppModal {
         const screenshotsContainer = document.getElementById('detailScreenshotsContainer');
         if (screenshotsSection && screenshotsContainer) {
             screenshotsContainer.replaceChildren();
-            const rawList = app.screenshots && Array.isArray(app.screenshots.iphone) ? app.screenshots.iphone : [];
+            let rawList: any[] = [];
+            if (Array.isArray(app.screenshots)) {
+                rawList = app.screenshots;
+            } else if (app.screenshots && typeof app.screenshots === 'object') {
+                if (Array.isArray(app.screenshots.iphone) && app.screenshots.iphone.length > 0) {
+                    rawList = app.screenshots.iphone;
+                } else if (Array.isArray(app.screenshots.ipad) && app.screenshots.ipad.length > 0) {
+                    rawList = app.screenshots.ipad;
+                }
+            }
             const urlList = rawList
                 .map((s) => (typeof s === 'string' ? s : s?.imageURL ? s.imageURL : ''))
                 .filter(Boolean);
@@ -131,6 +141,7 @@ export class AppModal {
 
                     screenshotsContainer.appendChild(img);
                 });
+                enableHorizontalScroll(screenshotsContainer);
                 screenshotsSection.classList.remove('hidden');
             } else {
                 screenshotsSection.classList.add('hidden');
@@ -184,10 +195,16 @@ export class AppModal {
         }
 
         this.modal.classList.remove('hidden');
+        document.body.classList.add('modal-open');
     }
 
     public static close(): void {
         this.modal?.classList.add('hidden');
+        setTimeout(() => {
+            if (!document.querySelector('.modal-backdrop:not(.hidden)')) {
+                document.body.classList.remove('modal-open');
+            }
+        }, 10);
     }
 
     public static isOpen(): boolean {

@@ -1,5 +1,6 @@
 import type { ManifestApp } from '../types';
 import { formatBytes, formatDate, getAppCategory, getAppIconUrl } from '../utils/formatters';
+import { enableHorizontalScroll } from '../utils/scrollHelper';
 import { store } from '../state/store';
 
 // Curated feature highlights for Dexter's apps
@@ -102,7 +103,16 @@ export class AppCard {
         }
 
         // Screenshots list
-        const rawScreenshots = app.screenshots?.iphone || [];
+        let rawScreenshots: any[] = [];
+        if (Array.isArray(app.screenshots)) {
+            rawScreenshots = app.screenshots;
+        } else if (app.screenshots && typeof app.screenshots === 'object') {
+            if (Array.isArray(app.screenshots.iphone) && app.screenshots.iphone.length > 0) {
+                rawScreenshots = app.screenshots.iphone;
+            } else if (Array.isArray(app.screenshots.ipad) && app.screenshots.ipad.length > 0) {
+                rawScreenshots = app.screenshots.ipad;
+            }
+        }
         const screenshotUrls = rawScreenshots
             .map((s) => (typeof s === 'string' ? s : s?.imageURL ? s.imageURL : ''))
             .filter(Boolean);
@@ -234,6 +244,11 @@ export class AppCard {
         }
 
         // Thumbnail click opens lightbox
+        const carousel = card.querySelector<HTMLElement>('.app-screenshot-carousel');
+        if (carousel) {
+            enableHorizontalScroll(carousel);
+        }
+
         const slides = card.querySelectorAll<HTMLElement>('.screenshot-slide');
         slides.forEach((slide) => {
             const idx = parseInt(slide.getAttribute('data-idx') || '0', 10);
