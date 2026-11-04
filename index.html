@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <title>DexterDevKH Apps — iOS Sideloading Source</title>
     <meta name="description"
-        content="Official SideStore, Feather, AltStore, and LiveContainer repository by DexterDevKH. Install enhanced DTLite Plus, DexTube Music, and DTKACE with one tap." />
+        content="Official SideStore, Feather, AltStore, and LiveContainer repository by DexterDevKH. Install enhanced DTLite Plus, DexTube Music, and DTKACE Plus with one tap." />
     <meta name="theme-color" content="#080b12" media="(prefers-color-scheme: dark)" />
     <meta name="theme-color" content="#f1f4f9" media="(prefers-color-scheme: light)" />
 
@@ -14,7 +14,7 @@
     <meta property="og:type" content="website" />
     <meta property="og:title" content="DexterDevKH Apps — iOS Sideloading Source" />
     <meta property="og:description"
-        content="Install DTLite Plus, DexTube Music, and DTKACE directly into SideStore, Feather, AltStore, LiveContainer, and TrollStore." />
+        content="Install DTLite Plus, DexTube Music, and DTKACE Plus directly into SideStore, Feather, AltStore, LiveContainer, and TrollStore." />
     <meta property="og:url" content="https://dexterdevkh.github.io/dexter-sources/" />
     <meta property="og:image"
         content="https://raw.githubusercontent.com/DexterDevKH/dexter-sources/main/icons/dtlite.png" />
@@ -150,6 +150,30 @@
                 </button>
             </section>
 
+            <!-- Source Selection Tabs -->
+            <section class="source-selector-section" aria-label="Select Source Manifest">
+                <div class="section-heading">
+                    <span class="heading-title">Choose Source</span>
+                    <span class="heading-sub">Select manifest to install</span>
+                </div>
+                <div class="source-selector-tabs" id="sourceSelectorTabs" role="tablist">
+                    <button class="source-selector-tab active" id="tabSourceMain" data-source="main" role="tab" aria-selected="true" type="button">
+                        <div class="tab-header-row">
+                            <span class="tab-dot dot-main"></span>
+                            <span class="tab-title">DTLite Plus &amp; Music</span>
+                        </div>
+                        <span class="tab-sub">Primary Source &bull; sources.json</span>
+                    </button>
+                    <button class="source-selector-tab" id="tabSourceDtkace" data-source="dtkace" role="tab" aria-selected="false" type="button">
+                        <div class="tab-header-row">
+                            <span class="tab-dot dot-dtkace"></span>
+                            <span class="tab-title">DTKACE Plus</span>
+                        </div>
+                        <span class="tab-sub">Secondary Source &bull; dtkace.json</span>
+                    </button>
+                </div>
+            </section>
+
             <!-- Bento Client Installation Grid -->
             <section class="bento-container" aria-label="One-Tap Sideloading Installation">
                 <div class="section-heading">
@@ -277,7 +301,6 @@
                 <div class="apps-header-row">
                     <div class="section-heading">
                         <span class="heading-title">Featured Apps</span>
-                        <span class="heading-sub">Direct IPAs & Updates</span>
                     </div>
 
                     <!-- Search & Filter Controls -->

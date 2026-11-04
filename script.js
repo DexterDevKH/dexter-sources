@@ -23,180 +23,208 @@
         esign: (url) => `esign://source?url=${encodeURIComponent(url)}`
     };
 
-    // Fallback source manifest for offline or direct file:// viewing
-    const FALLBACK_MANIFEST = {
-        name: "DexterDevKH Apps",
-        identifier: "com.dexterdevkh.source",
-        website: "https://dexterdevkh.github.io/dexter-sources/",
-        subtitle: "Official SideStore, Feather, and AltStore Source.",
-        description: "High-performance curated iOS apps including DTLite Plus, DexTube Music, and DTKACE.",
+    // Fallback applications data
+    const APP_DTLITE = {
+        name: "DTLite Plus",
+        bundleIdentifier: "com.google.ios.youtube",
+        developerName: "DexterDevKH",
+        subtitle: "Enhanced YouTube client with ad-blocking & background play",
+        localizedDescription: "Official iOS release of DTLite Plus featuring ad-blocking, background playback, and SponsorBlock.",
+        iconURL: "icons/dtlite.png",
         tintColor: "#007AFF",
-        iconURL: "https://avatars.githubusercontent.com/u/274127037?v=4",
-        headerURL: "https://avatars.githubusercontent.com/u/274127037?v=4",
-        apps: [
-            {
-                name: "DTLite Plus",
-                bundleIdentifier: "com.google.ios.youtube",
-                developerName: "DexterDevKH",
-                subtitle: "Enhanced YouTube client with ad-blocking & background play",
-                localizedDescription: "Official iOS release of DTLite Plus featuring ad-blocking, background playback, and SponsorBlock.",
-                iconURL: "icons/dtlite.png",
-                tintColor: "#007AFF",
-                size: 149422771,
-                screenshots: {
-                    iphone: [
-                        { width: 1242, height: 2556, imageURL: "https://raw.githubusercontent.com/DexterDevKH/DTLite/main/Resources/scr1.jpg" },
-                        { width: 1242, height: 2556, imageURL: "https://raw.githubusercontent.com/DexterDevKH/DTLite/main/Resources/scr2.jpg" },
-                        { width: 1242, height: 2556, imageURL: "https://raw.githubusercontent.com/DexterDevKH/DTLite/main/Resources/scr3.jpg" },
-                        { width: 1242, height: 2556, imageURL: "https://raw.githubusercontent.com/DexterDevKH/DTLite/main/Resources/scr4.jpg" },
-                        { width: 1242, height: 2556, imageURL: "https://raw.githubusercontent.com/DexterDevKH/DTLite/main/Resources/scr5.jpg" },
-                        { width: 1242, height: 2556, imageURL: "https://raw.githubusercontent.com/DexterDevKH/DTLite/main/Resources/scr6.jpg" },
-                        { width: 1242, height: 2556, imageURL: "https://raw.githubusercontent.com/DexterDevKH/DTLite/main/Resources/scr7.jpg" },
-                        { width: 1242, height: 2556, imageURL: "https://raw.githubusercontent.com/DexterDevKH/DTLite/main/Resources/scr8.jpg" },
-                        { width: 1242, height: 2556, imageURL: "https://raw.githubusercontent.com/DexterDevKH/DTLite/main/Resources/scr9.jpg" }
-                    ]
-                },
-                appPermissions: {
-                    entitlements: [],
-                    privacy: {
-                        NSBackgroundAudioUsageDescription: "Allows audio and video playback in background and Picture-in-Picture.",
-                        NSBackgroundFetchUsageDescription: "Allows background updates and download synchronization."
-                    }
-                },
-                versions: [
-                    {
-                        version: "21.44.4",
-                        date: "2026-11-03",
-                        localizedDescription: "Version 21.44.4 release.",
-                        downloadURL: "https://github.com/DexterDevKH/DTLite/releases/download/ytp-v6.0-21.44.4/DexTubePlus_v6.0_21.44.4.ipa",
-                        size: 151151314,
-                        minOSVersion: "16.0"
-                    }
-                ]
-            },
-            {
-                name: "DexTube Music",
-                bundleIdentifier: "com.google.ios.youtubemusic",
-                developerName: "DexterDevKH",
-                subtitle: "High-fidelity music streaming, background audio & lyrics",
-                localizedDescription: "Official iOS release of DTMusicUltimate (DexTube Music) featuring background audio, ad-free listening, and lossless presets.",
-                iconURL: "icons/dtmusicultimate.png",
-                tintColor: "#FF2D55",
-                size: 107274691,
-                screenshots: {
-                    iphone: [
-                        { width: 1000, height: 2060, imageURL: "https://raw.githubusercontent.com/DexterDevKH/DTMusicUltimate/main/Resources/scrn1.png" },
-                        { width: 1000, height: 2060, imageURL: "https://raw.githubusercontent.com/DexterDevKH/DTMusicUltimate/main/Resources/scrn2.png" },
-                        { width: 1000, height: 2060, imageURL: "https://raw.githubusercontent.com/DexterDevKH/DTMusicUltimate/main/Resources/scrn3.png" },
-                        { width: 1000, height: 2060, imageURL: "https://raw.githubusercontent.com/DexterDevKH/DTMusicUltimate/main/Resources/scrn4.png" },
-                        { width: 1000, height: 2060, imageURL: "https://raw.githubusercontent.com/DexterDevKH/DTMusicUltimate/main/Resources/scrn5.png" }
-                    ]
-                },
-                appPermissions: {
-                    entitlements: [],
-                    privacy: {
-                        NSBackgroundAudioUsageDescription: "Enables uninterrupted high-fidelity background music and lock screen playback controls.",
-                        NSBackgroundFetchUsageDescription: "Enables background sync and offline cache verification."
-                    }
-                },
-                versions: [
-                    {
-                        version: "9.43.2",
-                        date: "2026-10-26",
-                        localizedDescription: "Version 9.43.2 release.",
-                        downloadURL: "https://github.com/DexterDevKH/DTMusicUltimate/releases/download/dtm-9.43.2/DTMusicUltimate_9.43.2.ipa",
-                        size: 107672160,
-                        minOSVersion: "16.0"
-                    },
-                    {
-                        version: "9.42.2",
-                        date: "2026-10-19",
-                        localizedDescription: "Version 9.42.2 release.",
-                        downloadURL: "https://github.com/DexterDevKH/DTMusicUltimate/releases/download/dtm-9.42.2/DTMusicUltimate_9.42.2.ipa",
-                        size: 107274691,
-                        minOSVersion: "16.0"
-                    },
-                    {
-                        version: "9.41.2",
-                        date: "2026-10-18",
-                        localizedDescription: "Version 9.41.2 release.",
-                        downloadURL: "https://github.com/DexterDevKH/DTMusicUltimate/releases/download/dtm-9.41.2/DTMusicUltimate_9.41.2.ipa",
-                        size: 107008594,
-                        minOSVersion: "16.0"
-                    }
-                ]
-            },
-            {
-                name: "DTKACE",
-                bundleIdentifier: "com.google.ios.youtube",
-                developerName: "DexterDevKH",
-                subtitle: "Enhanced YouTube with YTKACE tweak engine & 12 modular extensions",
-                localizedDescription: "Official iOS release of DTKACE (DexTube) featuring YTKACE, up to 4K media downloads, Picture-in-Picture, SponsorBlock, dislike restoration, and pure dark OLED mode.",
-                iconURL: "icons/dtkace.png",
-                tintColor: "#E36678",
-                size: 134728319,
-                screenshots: {
-                    iphone: [
-                        { width: 923, height: 2000, imageURL: "https://raw.githubusercontent.com/itzzace/ytkace/main/screenshots/source/glass-home.jpg" },
-                        { width: 923, height: 2000, imageURL: "https://raw.githubusercontent.com/itzzace/ytkace/main/screenshots/source/video-player.png" },
-                        { width: 923, height: 2000, imageURL: "https://raw.githubusercontent.com/itzzace/ytkace/main/screenshots/source/download-library.jpg" },
-                        { width: 923, height: 2000, imageURL: "https://raw.githubusercontent.com/itzzace/ytkace/main/screenshots/source/glass-settings.jpg" },
-                        { width: 923, height: 2000, imageURL: "https://raw.githubusercontent.com/itzzace/ytkace/main/screenshots/source/sponsorblock-settings.jpg" }
-                    ]
-                },
-                appPermissions: {
-                    entitlements: [],
-                    privacy: {
-                        NSBackgroundAudioUsageDescription: "Allows audio and video playback in background and Picture-in-Picture.",
-                        NSBackgroundFetchUsageDescription: "Allows background updates and download synchronization.",
-                        NSFaceIDUsageDescription: "Face ID is required to authenticate."
-                    }
-                },
-                versions: [
-                    {
-                        version: "21.44.4",
-                        date: "2026-11-04",
-                        localizedDescription: "Version 21.44.4 release.",
-                        downloadURL: "https://github.com/DexterDevKH/DTKACE/releases/download/dtkaceplus-v1.1.5-21.44.4/DTKACEPlus_v1.1.5_21.44.4.ipa",
-                        size: 134728319,
-                        minOSVersion: "15.0"
-                    }
-                ]
+        size: 151151311,
+        screenshots: {
+            iphone: [
+                { width: 1242, height: 2556, imageURL: "https://raw.githubusercontent.com/DexterDevKH/DTLite/main/Resources/scr1.jpg" },
+                { width: 1242, height: 2556, imageURL: "https://raw.githubusercontent.com/DexterDevKH/DTLite/main/Resources/scr2.jpg" },
+                { width: 1242, height: 2556, imageURL: "https://raw.githubusercontent.com/DexterDevKH/DTLite/main/Resources/scr3.jpg" },
+                { width: 1242, height: 2556, imageURL: "https://raw.githubusercontent.com/DexterDevKH/DTLite/main/Resources/scr4.jpg" },
+                { width: 1242, height: 2556, imageURL: "https://raw.githubusercontent.com/DexterDevKH/DTLite/main/Resources/scr5.jpg" },
+                { width: 1242, height: 2556, imageURL: "https://raw.githubusercontent.com/DexterDevKH/DTLite/main/Resources/scr6.jpg" },
+                { width: 1242, height: 2556, imageURL: "https://raw.githubusercontent.com/DexterDevKH/DTLite/main/Resources/scr7.jpg" },
+                { width: 1242, height: 2556, imageURL: "https://raw.githubusercontent.com/DexterDevKH/DTLite/main/Resources/scr8.jpg" },
+                { width: 1242, height: 2556, imageURL: "https://raw.githubusercontent.com/DexterDevKH/DTLite/main/Resources/scr9.jpg" }
+            ]
+        },
+        appPermissions: {
+            entitlements: [],
+            privacy: {
+                NSBackgroundAudioUsageDescription: "Allows audio and video playback in background and Picture-in-Picture.",
+                NSBackgroundFetchUsageDescription: "Allows background updates and download synchronization."
             }
-        ],
-        news: [
+        },
+        versions: [
             {
-                title: "DTKACE v21.44.4 Released",
-                identifier: "release-com-google-ios-youtube-dtkace-21-44-4",
-                caption: "Version 21.44.4 is now available with the latest features, enhancements, and iOS 18 fixes.",
-                tintColor: "#E36678",
-                imageURL: "icons/dtkace.png",
-                url: "https://github.com/DexterDevKH/DTKACE/releases/tag/dtkaceplus-v1.1.5-21.44.4",
-                date: "2026-11-04",
-                notify: true
-            },
-            {
-                title: "DTLite Plus v21.44.4 Released",
-                identifier: "release-com-google-ios-youtube-21-44-4",
-                caption: "Version 21.44.4 is now available with the latest features, enhancements, and iOS 18 fixes.",
-                tintColor: "#007AFF",
-                imageURL: "icons/dtlite.png",
-                url: "https://github.com/DexterDevKH/DTLite/releases/tag/ytp-v6.0-21.44.4",
+                version: "21.44.4",
                 date: "2026-11-03",
-                notify: true
-            },
-            {
-                title: "DexTube Music v9.43.2 Released",
-                identifier: "release-com-google-ios-youtubemusic-9-43-2",
-                caption: "Version 9.43.2 is now available with the latest features, enhancements, and iOS 18 fixes.",
-                tintColor: "#FF2D55",
-                imageURL: "icons/dtmusicultimate.png",
-                url: "https://github.com/DexterDevKH/DTMusicUltimate/releases/tag/dtm-9.43.2",
-                date: "2026-10-26",
-                notify: true
+                localizedDescription: "Version 21.44.4 release.",
+                downloadURL: "https://github.com/DexterDevKH/DTLite/releases/download/ytp-v6.0-21.44.4/DTLitePlus_v6.0_21.44.4.ipa",
+                size: 151151311,
+                minOSVersion: "16.0"
             }
         ]
     };
+
+    const APP_MUSIC = {
+        name: "DexTube Music",
+        bundleIdentifier: "com.google.ios.youtubemusic",
+        developerName: "DexterDevKH",
+        subtitle: "High-fidelity music streaming, background audio & lyrics",
+        localizedDescription: "Official iOS release of DTMusicUltimate (DexTube Music) featuring background audio, ad-free listening, and lossless presets.",
+        iconURL: "icons/dtmusicultimate.png",
+        tintColor: "#FF2D55",
+        size: 107672160,
+        screenshots: {
+            iphone: [
+                { width: 1000, height: 2060, imageURL: "https://raw.githubusercontent.com/DexterDevKH/DTMusicUltimate/main/Resources/scrn1.png" },
+                { width: 1000, height: 2060, imageURL: "https://raw.githubusercontent.com/DexterDevKH/DTMusicUltimate/main/Resources/scrn2.png" },
+                { width: 1000, height: 2060, imageURL: "https://raw.githubusercontent.com/DexterDevKH/DTMusicUltimate/main/Resources/scrn3.png" },
+                { width: 1000, height: 2060, imageURL: "https://raw.githubusercontent.com/DexterDevKH/DTMusicUltimate/main/Resources/scrn4.png" },
+                { width: 1000, height: 2060, imageURL: "https://raw.githubusercontent.com/DexterDevKH/DTMusicUltimate/main/Resources/scrn5.png" }
+            ]
+        },
+        appPermissions: {
+            entitlements: [],
+            privacy: {
+                NSBackgroundAudioUsageDescription: "Enables uninterrupted high-fidelity background music and lock screen playback controls.",
+                NSBackgroundFetchUsageDescription: "Enables background sync and offline cache verification."
+            }
+        },
+        versions: [
+            {
+                version: "9.43.2",
+                date: "2026-10-26",
+                localizedDescription: "Version 9.43.2 release.",
+                downloadURL: "https://github.com/DexterDevKH/DTMusicUltimate/releases/download/dtm-9.43.2/DTMusicUltimate_9.43.2.ipa",
+                size: 107672160,
+                minOSVersion: "16.0"
+            },
+            {
+                version: "9.42.2",
+                date: "2026-10-19",
+                localizedDescription: "Version 9.42.2 release.",
+                downloadURL: "https://github.com/DexterDevKH/DTMusicUltimate/releases/download/dtm-9.42.2/DTMusicUltimate_9.42.2.ipa",
+                size: 107274691,
+                minOSVersion: "16.0"
+            },
+            {
+                version: "9.41.2",
+                date: "2026-10-18",
+                localizedDescription: "Version 9.41.2 release.",
+                downloadURL: "https://github.com/DexterDevKH/DTMusicUltimate/releases/download/dtm-9.41.2/DTMusicUltimate_9.41.2.ipa",
+                size: 107008594,
+                minOSVersion: "16.0"
+            }
+        ]
+    };
+
+    const APP_DTKACE = {
+        name: "DTKACE Plus",
+        bundleIdentifier: "com.google.ios.youtube",
+        developerName: "DexterDevKH",
+        subtitle: "Enhanced YouTube with YTKACE tweak engine & 12 modular extensions",
+        localizedDescription: "Official iOS release of DTKACE Plus featuring YTKACE, up to 4K media downloads, Picture-in-Picture, SponsorBlock, dislike restoration, and pure dark OLED mode.",
+        iconURL: "icons/dtkace.png",
+        tintColor: "#E36678",
+        size: 134704280,
+        screenshots: {
+            iphone: [
+                { width: 923, height: 2000, imageURL: "https://raw.githubusercontent.com/itzzace/ytkace/main/screenshots/source/glass-home.jpg" },
+                { width: 923, height: 2000, imageURL: "https://raw.githubusercontent.com/itzzace/ytkace/main/screenshots/source/video-player.png" },
+                { width: 923, height: 2000, imageURL: "https://raw.githubusercontent.com/itzzace/ytkace/main/screenshots/source/download-library.jpg" },
+                { width: 923, height: 2000, imageURL: "https://raw.githubusercontent.com/itzzace/ytkace/main/screenshots/source/glass-settings.jpg" },
+                { width: 923, height: 2000, imageURL: "https://raw.githubusercontent.com/itzzace/ytkace/main/screenshots/source/sponsorblock-settings.jpg" }
+            ]
+        },
+        appPermissions: {
+            entitlements: [],
+            privacy: {
+                NSBackgroundAudioUsageDescription: "Allows audio and video playback in background and Picture-in-Picture.",
+                NSBackgroundFetchUsageDescription: "Allows background updates and download synchronization.",
+                NSFaceIDUsageDescription: "Face ID is required to authenticate."
+            }
+        },
+        versions: [
+            {
+                version: "21.44.4",
+                date: "2026-11-04",
+                localizedDescription: "Version 21.44.4 release.",
+                downloadURL: "https://github.com/DexterDevKH/DTKACE/releases/download/dtkaceplus-v1.1.5-21.44.4/DTKACEPlus_v1.1.5_21.44.4.ipa",
+                size: 134704280,
+                minOSVersion: "15.0"
+            }
+        ]
+    };
+
+    // Separate fallback manifests per source
+    const FALLBACK_MANIFESTS = {
+        main: {
+            name: "DexterDevKH Apps",
+            identifier: "com.dexterdevkh.source",
+            website: "https://dexterdevkh.github.io/dexter-sources/",
+            subtitle: "Official SideStore, Feather, and AltStore Source.",
+            description: "High-performance curated iOS apps including DTLite Plus and DexTube Music.",
+            tintColor: "#007AFF",
+            iconURL: "https://avatars.githubusercontent.com/u/274127037?v=4",
+            headerURL: "https://avatars.githubusercontent.com/u/274127037?v=4",
+            apps: [APP_DTLITE, APP_MUSIC],
+            news: [
+                {
+                    title: "DTLite Plus v21.44.4 Released",
+                    identifier: "release-com-google-ios-youtube-21-44-4",
+                    caption: "Version 21.44.4 is now available with the latest features, enhancements, and iOS 18 fixes.",
+                    tintColor: "#007AFF",
+                    imageURL: "icons/dtlite.png",
+                    url: "https://github.com/DexterDevKH/DTLite/releases/tag/ytp-v6.0-21.44.4",
+                    date: "2026-11-03",
+                    notify: true
+                },
+                {
+                    title: "DexTube Music v9.43.2 Released",
+                    identifier: "release-com-google-ios-youtubemusic-9-43-2",
+                    caption: "Version 9.43.2 is now available with the latest features, enhancements, and iOS 18 fixes.",
+                    tintColor: "#FF2D55",
+                    imageURL: "icons/dtmusicultimate.png",
+                    url: "https://github.com/DexterDevKH/DTMusicUltimate/releases/tag/dtm-9.43.2",
+                    date: "2026-10-26",
+                    notify: true
+                }
+            ]
+        },
+        dtkace: {
+            name: "DexterDevKH DTKACE Apps",
+            identifier: "com.dexterdevkh.dtkace.source",
+            website: "https://dexterdevkh.github.io/dexter-sources/?source=dtkace",
+            subtitle: "Official SideStore, Feather, and AltStore Source for DTKACE Plus.",
+            description: "High-performance curated iOS app: DTKACE Plus with YTKACE tweak engine & 12 modular extensions.",
+            tintColor: "#E36678",
+            iconURL: "https://raw.githubusercontent.com/DexterDevKH/dexter-sources/main/icons/dtkace.png",
+            headerURL: "https://raw.githubusercontent.com/DexterDevKH/dexter-sources/main/icons/dtkace.png",
+            apps: [APP_DTKACE],
+            news: [
+                {
+                    title: "DTKACE Plus v21.44.4 Released",
+                    identifier: "release-com-google-ios-youtube-dtkace-21-44-4",
+                    caption: "Version 21.44.4 is now available with the latest features, enhancements, and iOS 18 fixes.",
+                    tintColor: "#E36678",
+                    imageURL: "icons/dtkace.png",
+                    url: "https://github.com/DexterDevKH/DTKACE/releases/tag/dtkaceplus-v1.1.5-21.44.4",
+                    date: "2026-11-04",
+                    notify: true
+                }
+            ]
+        }
+    };
+
+    // Live manifest cache per source
+    const liveManifests = {
+        main: null,
+        dtkace: null
+    };
+
+    function getActiveManifest() {
+        return liveManifests[activeSourceKey] || FALLBACK_MANIFESTS[activeSourceKey] || FALLBACK_MANIFESTS.main;
+    }
 
     // Local icons map for flawless offline & web viewing
     const LOCAL_APP_ICONS = {
@@ -223,11 +251,32 @@
         return "";
     }
 
+    // Supported Source Presets
+    const SOURCE_PRESETS = {
+        main: {
+            id: "main",
+            name: "DTLite Plus & Music",
+            file: "sources.json",
+            url: "https://dexterdevkh.github.io/dexter-sources/sources.json",
+            tintColor: "#007AFF"
+        },
+        dtkace: {
+            id: "dtkace",
+            name: "DTKACE Plus",
+            file: "dtkace.json",
+            url: "https://dexterdevkh.github.io/dexter-sources/dtkace.json",
+            tintColor: "#E36678"
+        }
+    };
+
     // State
     const urlParams = new URLSearchParams(window.location.search);
-    const sourceUrl = urlParams.get("url") || DEFAULT_SOURCE_URL;
+    const sourceParam = (urlParams.get("source") || "").toLowerCase().trim();
+    const explicitUrl = urlParams.get("url");
+    let activeSourceKey = (sourceParam === "dtkace" || sourceParam === "dtkaceplus" || (explicitUrl && explicitUrl.toLowerCase().includes("dtkace"))) ? "dtkace" : "main";
+    let currentSourceUrl = explicitUrl || SOURCE_PRESETS[activeSourceKey].url;
     const redirectKey = (urlParams.get("r") || "").toLowerCase().trim();
-    let currentManifest = FALLBACK_MANIFEST;
+    let currentManifest = getActiveManifest();
     let activeFilter = "all";
     let activeSearch = "";
     let activeQrTarget = "sidestore";
@@ -245,7 +294,7 @@
             const cleanUrl = window.location.pathname + (cleanSearch ? `?${cleanSearch}` : "") + window.location.hash;
             window.history.replaceState(null, "", cleanUrl);
 
-            window.location.href = SCHEMES[redirectKey](sourceUrl);
+            window.location.href = SCHEMES[redirectKey](currentSourceUrl);
         } catch (e) {
             console.error("Redirection error:", e);
         }
@@ -254,18 +303,94 @@
     // 2. Initialize application after DOM is ready
     window.addEventListener("DOMContentLoaded", () => {
         initTheme();
+        initSourceSwitcher();
         initSideloaders();
         initSourceUrlBar();
         initSearchAndFilter();
         initModals();
         initKeyboardShortcuts();
 
-        // Render initial data immediately (prevents any blank/skeleton stutter)
-        applyManifest(FALLBACK_MANIFEST);
+        // Render initial data for the selected active source
+        currentManifest = getActiveManifest();
+        applyManifest(currentManifest);
 
         // Fetch live manifest asynchronously
         fetchLiveManifest();
     });
+
+    /**
+     * Source Switcher (DTLite Plus & Music <-> DTKACE Plus)
+     */
+    function setActiveSource(sourceKey, updateUrl = true) {
+        if (!SOURCE_PRESETS[sourceKey]) return;
+        activeSourceKey = sourceKey;
+        currentSourceUrl = explicitUrl || SOURCE_PRESETS[sourceKey].url;
+
+        // Update selector tab buttons
+        document.querySelectorAll(".source-selector-tab").forEach((tab) => {
+            const isMatch = tab.getAttribute("data-source") === sourceKey;
+            tab.classList.toggle("active", isMatch);
+            tab.setAttribute("aria-selected", isMatch ? "true" : "false");
+        });
+
+        // Update Sideloaders
+        document.querySelectorAll("[data-key]").forEach((btn) => {
+            const key = btn.getAttribute("data-key");
+            if (SCHEMES[key]) {
+                btn.href = SCHEMES[key](currentSourceUrl);
+            }
+        });
+
+        // Update Source URL Bar
+        const urlCode = document.getElementById("sourceUrlCode");
+        const rawJsonBtn = document.getElementById("viewJsonBtn");
+        if (urlCode) urlCode.textContent = currentSourceUrl;
+        if (rawJsonBtn) rawJsonBtn.href = SOURCE_PRESETS[sourceKey].file;
+
+        // Reset category filter to 'all' so apps of newly selected source are visible immediately
+        activeFilter = "all";
+        const filterTabs = document.getElementById("filterTabs");
+        if (filterTabs) {
+            filterTabs.querySelectorAll(".filter-tab").forEach((t) => {
+                t.classList.toggle("active", t.getAttribute("data-filter") === "all");
+            });
+        }
+
+        // Apply manifest for the selected source to Featured Apps!
+        currentManifest = getActiveManifest();
+        applyManifest(currentManifest);
+
+        // Update QR code if modal open or rendered
+        if (typeof renderActiveQrCode === "function") {
+            renderActiveQrCode();
+        }
+
+        // Update URL query params without reloading
+        if (updateUrl && window.history && window.history.replaceState) {
+            const newParams = new URLSearchParams(window.location.search);
+            if (sourceKey === "main") {
+                newParams.delete("source");
+            } else {
+                newParams.set("source", sourceKey);
+            }
+            const newSearch = newParams.toString();
+            const newUrl = window.location.pathname + (newSearch ? `?${newSearch}` : "") + window.location.hash;
+            window.history.replaceState(null, "", newUrl);
+        }
+    }
+
+    function initSourceSwitcher() {
+        document.querySelectorAll(".source-selector-tab").forEach((tab) => {
+            tab.addEventListener("click", () => {
+                const src = tab.getAttribute("data-source");
+                if (src && SOURCE_PRESETS[src]) {
+                    setActiveSource(src, true);
+                    showToast(`Active Source: ${SOURCE_PRESETS[src].name}`);
+                }
+            });
+        });
+        setActiveSource(activeSourceKey, false);
+    }
 
     /**
      * Theme Initialization & Toggle
@@ -309,7 +434,7 @@
             }
 
             if (SCHEMES[key]) {
-                btn.href = SCHEMES[key](sourceUrl);
+                btn.href = SCHEMES[key](currentSourceUrl);
             }
         });
     }
@@ -322,12 +447,12 @@
         const rawJsonBtn = document.getElementById("viewJsonBtn");
         const copyBtn = document.getElementById("copyUrlBtn");
 
-        if (urlCode) urlCode.textContent = sourceUrl;
-        if (rawJsonBtn) rawJsonBtn.href = sourceUrl;
+        if (urlCode) urlCode.textContent = currentSourceUrl;
+        if (rawJsonBtn) rawJsonBtn.href = SOURCE_PRESETS[activeSourceKey] ? SOURCE_PRESETS[activeSourceKey].file : currentSourceUrl;
 
         if (copyBtn) {
             copyBtn.addEventListener("click", async () => {
-                const success = await copyToClipboard(sourceUrl);
+                const success = await copyToClipboard(currentSourceUrl);
                 if (success) {
                     showToast("Source JSON URL copied to clipboard!");
                     const copyText = document.getElementById("copyBtnText");
@@ -381,30 +506,59 @@
     }
 
     /**
-     * Fetch Live Manifest (Auto-syncs with sources.json)
+     * Fetch Live Manifests (sources.json & dtkace.json)
      */
     function fetchLiveManifest() {
         const isWeb = window.location.protocol === "http:" || window.location.protocol === "https:";
-        const baseTarget = urlParams.has("url") ? sourceUrl : (isWeb ? "sources.json" : sourceUrl);
-        const cacheBustUrl = baseTarget + (baseTarget.includes("?") ? "&" : "?") + "_t=" + Date.now();
+        if (!isWeb) return;
 
-        fetch(cacheBustUrl, { cache: "no-cache" })
-            .then((res) => {
-                if (!res.ok) throw new Error("HTTP status " + res.status);
-                return res.json();
-            })
-            .then((data) => {
-                if (data && typeof data === "object") {
-                    // Only re-render if data has actually changed to save CPU/battery
-                    if (!isManifestIdentical(currentManifest, data)) {
+        if (urlParams.has("url")) {
+            const customUrl = urlParams.get("url");
+            const cacheBustUrl = customUrl + (customUrl.includes("?") ? "&" : "?") + "_t=" + Date.now();
+            fetch(cacheBustUrl, { cache: "no-cache" })
+                .then((res) => {
+                    if (!res.ok) throw new Error("HTTP status " + res.status);
+                    return res.json();
+                })
+                .then((data) => {
+                    if (data && typeof data === "object") {
                         currentManifest = data;
                         applyManifest(data);
                     }
-                }
+                })
+                .catch((err) => {
+                    console.warn("Could not fetch custom manifest:", err);
+                });
+            return;
+        }
+
+        // Parallel fetch for both sources.json and dtkace.json
+        Promise.allSettled([
+            fetch("sources.json?_t=" + Date.now(), { cache: "no-cache" }).then((res) => {
+                if (!res.ok) throw new Error("sources.json HTTP " + res.status);
+                return res.json();
+            }),
+            fetch("dtkace.json?_t=" + Date.now(), { cache: "no-cache" }).then((res) => {
+                if (!res.ok) throw new Error("dtkace.json HTTP " + res.status);
+                return res.json();
             })
-            .catch((err) => {
-                console.warn("Could not fetch remote sources.json; using cached fallback:", err);
-            });
+        ]).then(([resMain, resDtkace]) => {
+            if (resMain.status === "fulfilled" && resMain.value && typeof resMain.value === "object") {
+                liveManifests.main = resMain.value;
+            }
+            if (resDtkace.status === "fulfilled" && resDtkace.value && typeof resDtkace.value === "object") {
+                liveManifests.dtkace = resDtkace.value;
+            }
+
+            // Refresh DOM with current active source's manifest
+            const active = getActiveManifest();
+            if (!isManifestIdentical(currentManifest, active)) {
+                currentManifest = active;
+                applyManifest(active);
+            }
+        }).catch((err) => {
+            console.warn("Could not fetch remote sources manifests; using cached fallback:", err);
+        });
     }
 
     /**
@@ -475,17 +629,19 @@
                 newsBanner.style.setProperty("--news-accent", hexColor);
             }
             if (newsBanner) newsBanner.classList.remove("hidden");
+        } else if (newsBanner) {
+            newsBanner.classList.add("hidden");
         }
 
         if (newsCloseBtn && newsBanner) {
-            newsCloseBtn.addEventListener("click", () => {
+            newsCloseBtn.onclick = () => {
                 newsBanner.style.transition = "opacity 0.25s ease, transform 0.25s ease";
                 newsBanner.style.opacity = "0";
                 newsBanner.style.transform = "translateY(-6px)";
                 setTimeout(() => {
                     newsBanner.classList.add("hidden");
                 }, 250);
-            });
+            };
         }
 
         renderApps();
@@ -985,20 +1141,20 @@
         const captionText = document.getElementById("qrCaptionText");
         if (!canvas) return;
 
-        let targetUrl = sourceUrl;
+        let targetUrl = currentSourceUrl;
         let caption = "SideStore Source";
 
         if (activeQrTarget === "sidestore") {
-            targetUrl = SCHEMES.sidestore(sourceUrl);
+            targetUrl = SCHEMES.sidestore(currentSourceUrl);
             caption = "Direct SideStore Import Scheme";
         } else if (activeQrTarget === "altstore") {
-            targetUrl = SCHEMES.altstore(sourceUrl);
+            targetUrl = SCHEMES.altstore(currentSourceUrl);
             caption = "Direct AltStore Import Scheme";
         } else if (activeQrTarget === "livecontainer") {
-            targetUrl = SCHEMES.livecontainer(sourceUrl);
+            targetUrl = SCHEMES.livecontainer(currentSourceUrl);
             caption = "Direct LiveContainer Import Scheme";
         } else if (activeQrTarget === "feather") {
-            targetUrl = SCHEMES.feather(sourceUrl);
+            targetUrl = SCHEMES.feather(currentSourceUrl);
             caption = "Direct Feather Import Scheme";
         } else if (activeQrTarget === "portal") {
             targetUrl = (currentManifest && currentManifest.website) || "https://dexterdevkh.github.io/dexter-sources/";

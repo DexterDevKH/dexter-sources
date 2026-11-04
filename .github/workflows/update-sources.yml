@@ -49,8 +49,10 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Backup current sources.json
-        run: cp sources.json sources.json.bak
+      - name: Backup current manifests
+        run: |
+          cp sources.json sources.json.bak
+          cp dtkace.json dtkace.json.bak 2>/dev/null || true
 
       - name: Run manifest updater
         env:
@@ -60,34 +62,35 @@ jobs:
         run: |
           MAX_VER="${{ inputs.max_versions || '3' }}"
           MAX_NEWS="${{ inputs.max_news || '3' }}"
-          python update_sources.py --source sources.json --max-versions "$MAX_VER" --max-news "$MAX_NEWS"
+          python update_sources.py --all --max-versions "$MAX_VER" --max-news "$MAX_NEWS"
 
       - name: Validate manifest JSON format
         run: |
           python -m json.tool sources.json > /dev/null
-          echo "✅ sources.json syntax validated successfully."
+          python -m json.tool dtkace.json > /dev/null
+          echo "✅ All source manifests validated successfully."
 
       - name: Check for changes
         id: diff
         run: |
-          if diff -q sources.json sources.json.bak > /dev/null 2>&1 && git diff --quiet README.md; then
+          if diff -q sources.json sources.json.bak > /dev/null 2>&1 && diff -q dtkace.json dtkace.json.bak > /dev/null 2>&1 && git diff --quiet README.md; then
             echo "changed=false" >> "$GITHUB_OUTPUT"
             echo "📭 No manifest or README changes detected."
           else
             echo "changed=true" >> "$GITHUB_OUTPUT"
-            echo "📬 Manifest or README updated with new release metadata."
+            echo "📬 Manifests or README updated with new release metadata."
           fi
-          rm -f sources.json.bak
+          rm -f sources.json.bak dtkace.json.bak
 
       - name: Commit and push updates
         if: steps.diff.outputs.changed == 'true' || inputs.force == true
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add sources.json README.md
+          git add sources.json dtkace.json README.md
           if git diff --staged --quiet; then
             echo "No changes staged."
             exit 0
           fi
-          git commit -m "chore(auto): update sources.json and README releases [skip ci]"
+          git commit -m "chore(auto): update sources manifests and README releases [skip ci]"
           git push

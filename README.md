@@ -2,7 +2,7 @@
 
 # ⚡ DexterDevKH Apps
 
-**Official SideStore, Feather, AltStore, LiveContainer & TrollStore Source**
+**Official SideStore, Feather, AltStore, LiveContainer & TrollStore Sources**
 
 A high-performance, curated repository distributing optimized, feature-packed iOS applications with automated release synchronization.
 
@@ -27,31 +27,42 @@ A high-performance, curated repository distributing optimized, feature-packed iO
 | :--- | :--- | :--- | :--- | :--- |
 | <img src="icons/dtlite.png" width="40" height="40" style="border-radius:10px" alt="DTLite Plus" /><br>**DTLite Plus** | Video & Media | `v21.44.4` | Ad-blocking, SponsorBlock, Background Playback, PiP, OLED Pure Dark Mode | [Download IPA](https://github.com/DexterDevKH/DTLite/releases/latest) |
 | <img src="icons/dtmusicultimate.png" width="40" height="40" style="border-radius:10px" alt="DexTube Music" /><br>**DexTube Music** | Music & Audio | `v9.43.2` | Lossless EQ, Ad-Free Streaming, Real-time Lyrics, Offline Playback | [Download IPA](https://github.com/DexterDevKH/DTMusicUltimate/releases/latest) |
-| <img src="icons/dtkace.png" width="40" height="40" style="border-radius:10px" alt="DTKACE" /><br>**DTKACE** | Video & Media | `v21.44.4` | YTKACE Engine, 4K Downloader, SponsorBlock, PiP, Dislike Counter, Volume Boost | [Download IPA](https://github.com/DexterDevKH/DTKACE/releases/latest) |
+| <img src="icons/dtkace.png" width="40" height="40" style="border-radius:10px" alt="DTKACE Plus" /><br>**DTKACE Plus** | Video & Media | `v21.44.4` | YTKACE Engine, 4K Downloader, SponsorBlock, PiP, Dislike Counter, Volume Boost | [Download IPA](https://github.com/DexterDevKH/DTKACE/releases/latest) |
 
 ---
 
 ## 🚀 One-Tap Installation
 
-Tap your preferred sideloading client on your iOS device to add this repository instantly:
+Choose the source manifest corresponding to the apps you want to install:
 
-* 📱 **[SideStore (Recommended)](https://dexterdevkh.github.io/dexter-sources/?r=sidestore)** — Seamless on-device sideloading without a computer
-* 🪶 **[Feather](https://dexterdevkh.github.io/dexter-sources/?r=feather)** — Modern on-device certificate signer
-* 🌿 **[AltStore](https://dexterdevkh.github.io/dexter-sources/?r=altstore)** — Classic sideloading manager
-* 📦 **[LiveContainer](https://dexterdevkh.github.io/dexter-sources/?r=livecontainer)** — Run multiple apps inside a single container without using app IDs
-* ⚡ **[TrollApps](https://dexterdevkh.github.io/dexter-sources/?r=trollapps)** — TrollStore repository manager
-
----
-
-## 📋 Manual Source URL
-
-Copy and paste this URL into your sideloading app’s source manager:
+### 1️⃣ Primary Source (DTLite Plus & DexTube Music)
+* 📱 **[SideStore](https://dexterdevkh.github.io/dexter-sources/?r=sidestore)**
+* 🪶 **[Feather](https://dexterdevkh.github.io/dexter-sources/?r=feather)**
+* 🌿 **[AltStore](https://dexterdevkh.github.io/dexter-sources/?r=altstore)**
+* 💙 **[LiveContainer](https://dexterdevkh.github.io/dexter-sources/?r=livecontainer)**
+* ⚡ **[TrollApps](https://dexterdevkh.github.io/dexter-sources/?r=trollapps)**
 
 ```text
 https://dexterdevkh.github.io/dexter-sources/sources.json
 ```
 
+### 2️⃣ DTKACE Plus Source (Dedicated Source for DTKACE)
+* 📱 **[SideStore](https://dexterdevkh.github.io/dexter-sources/?source=dtkace&r=sidestore)**
+* 🪶 **[Feather](https://dexterdevkh.github.io/dexter-sources/?source=dtkace&r=feather)**
+* 🌿 **[AltStore](https://dexterdevkh.github.io/dexter-sources/?source=dtkace&r=altstore)**
+* 💙 **[LiveContainer](https://dexterdevkh.github.io/dexter-sources/?source=dtkace&r=livecontainer)**
+* ⚡ **[TrollApps](https://dexterdevkh.github.io/dexter-sources/?source=dtkace&r=trollapps)**
+
+```text
+https://dexterdevkh.github.io/dexter-sources/dtkace.json
+```
+
+---
+
 ## 🛠️ Credits & Attribution
 
 - Built & Maintained by **[DexterDevKH](https://github.com/DexterDevKH)**
+- **[DTLite](https://github.com/DexterDevKH/DTLite)** — Enhanced YouTube client with ad-blocking & background play
+- **[DTMusicUltimate](https://github.com/DexterDevKH/DTMusicUltimate)** — High-fidelity music streaming client
+- **[DTKACE](https://github.com/DexterDevKH/DTKACE)** — Enhanced YouTube with YTKACE tweak engine & 12 extensions
 - Powered by [SideStore](https://sidestore.io/) & [AltStore](https://altstore.io/)

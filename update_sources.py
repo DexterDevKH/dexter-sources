@@ -2,9 +2,9 @@
 """
 DexterDevKH Source Updater
 ==========================
-Synchronizes GitHub Releases with SideStore & AltStore sources.json manifest.
+Synchronizes GitHub Releases with SideStore & AltStore source manifests.
 Supports multiple apps, version sanitization, release body parsing, news item
-generation, and safe atomic writing.
+generation, multi-source manifests (sources.json, dtkace.json), and safe atomic writing.
 """
 
 from __future__ import annotations
@@ -46,22 +46,24 @@ class AppConfig:
     ipa_keyword: str = ".ipa"
     fallback_description: str = ""
     min_os_version: str = "16.0"
+    target_manifests: List[str] = field(default_factory=lambda: ["sources.json"])
     screenshots: Dict[str, List[Dict[str, Any]]] = field(default_factory=lambda: {"iphone": []})
     app_permissions: Dict[str, Any] = field(default_factory=lambda: {"entitlements": [], "privacy": {}})
 
 
-# Configured applications in DexterDevKH source
+# Configured applications in DexterDevKH sources
 APP_CONFIGS: List[AppConfig] = [
     AppConfig(
         bundle_id="com.google.ios.youtube",
         repo=f"{GITHUB_OWNER}/DTLite",
-        name="DexTube",
+        name="DTLite Plus",
         subtitle="Enhanced YouTube client with ad-blocking & background play",
         category="entertainment",
         tint_color="#007AFF",
         icon_url=f"https://raw.githubusercontent.com/{GITHUB_OWNER}/dexter-sources/main/icons/dtlite.png",
-        fallback_description="Official iOS release of DTLite (DexTube) featuring ad-blocking, background playback, and SponsorBlock.",
+        fallback_description="Official iOS release of DTLite Plus featuring ad-blocking, background playback, and SponsorBlock.",
         min_os_version="16.0",
+        target_manifests=["sources.json"],
         screenshots={
             "iphone": [
                 {
@@ -90,6 +92,7 @@ APP_CONFIGS: List[AppConfig] = [
         icon_url=f"https://raw.githubusercontent.com/{GITHUB_OWNER}/dexter-sources/main/icons/dtmusicultimate.png",
         fallback_description="Official iOS release of DTMusicUltimate (DexTube Music) featuring background audio, ad-free listening, and lossless presets.",
         min_os_version="16.0",
+        target_manifests=["sources.json"],
         screenshots={
             "iphone": [
                 {
@@ -105,6 +108,55 @@ APP_CONFIGS: List[AppConfig] = [
             "privacy": {
                 "NSBackgroundAudioUsageDescription": "Enables uninterrupted high-fidelity background music and lock screen playback controls.",
                 "NSBackgroundFetchUsageDescription": "Enables background sync and offline cache verification.",
+            },
+        },
+    ),
+    AppConfig(
+        bundle_id="com.google.ios.youtube",
+        repo=f"{GITHUB_OWNER}/DTKACE",
+        name="DTKACE Plus",
+        subtitle="Enhanced YouTube with YTKACE tweak engine & 12 modular extensions",
+        category="entertainment",
+        tint_color="#E36678",
+        icon_url=f"https://raw.githubusercontent.com/{GITHUB_OWNER}/dexter-sources/main/icons/dtkace.png",
+        fallback_description="Official iOS release of DTKACE Plus featuring YTKACE, up to 4K media downloads, Picture-in-Picture, SponsorBlock, dislike restoration, and pure dark OLED mode.",
+        min_os_version="15.0",
+        target_manifests=["dtkace.json"],
+        screenshots={
+            "iphone": [
+                {
+                    "width": 923,
+                    "height": 2000,
+                    "imageURL": "https://raw.githubusercontent.com/itzzace/ytkace/main/screenshots/source/glass-home.jpg",
+                },
+                {
+                    "width": 923,
+                    "height": 2000,
+                    "imageURL": "https://raw.githubusercontent.com/itzzace/ytkace/main/screenshots/source/video-player.png",
+                },
+                {
+                    "width": 923,
+                    "height": 2000,
+                    "imageURL": "https://raw.githubusercontent.com/itzzace/ytkace/main/screenshots/source/download-library.jpg",
+                },
+                {
+                    "width": 923,
+                    "height": 2000,
+                    "imageURL": "https://raw.githubusercontent.com/itzzace/ytkace/main/screenshots/source/glass-settings.jpg",
+                },
+                {
+                    "width": 923,
+                    "height": 2000,
+                    "imageURL": "https://raw.githubusercontent.com/itzzace/ytkace/main/screenshots/source/sponsorblock-settings.jpg",
+                },
+            ]
+        },
+        app_permissions={
+            "entitlements": [],
+            "privacy": {
+                "NSBackgroundAudioUsageDescription": "Allows audio and video playback in background and Picture-in-Picture.",
+                "NSBackgroundFetchUsageDescription": "Allows background updates and download synchronization.",
+                "NSFaceIDUsageDescription": "Face ID is required to authenticate.",
             },
         },
     ),
@@ -151,9 +203,10 @@ def sanitize_version(tag_name: str) -> str:
     """
     Cleans release tag names into semantic/standard iOS version strings.
     Examples:
-      'ytp-v6.0.b2-21.41.5' -> '21.41.5'
-      'dtm-9.41.2'          -> '9.41.2'
-      'v1.2.3'              -> '1.2.3'
+      'ytp-v6.0-21.44.4'          -> '21.44.4'
+      'dtkaceplus-v1.1.5-21.44.4' -> '21.44.4'
+      'dtm-9.43.2'                -> '9.43.2'
+      'v1.2.3'                    -> '1.2.3'
     """
     tag = tag_name.strip()
     if "-" in tag:
@@ -161,7 +214,7 @@ def sanitize_version(tag_name: str) -> str:
         if last_part and last_part[0].isdigit():
             return last_part
 
-    for prefix in ["ytp-v", "ytp-", "dtm-v", "dtm-", "v", "V"]:
+    for prefix in ["dtkaceplus-v", "dtkaceplus-", "ytp-v", "ytp-", "dtm-v", "dtm-", "v", "V"]:
         if tag.startswith(prefix):
             return tag[len(prefix):].strip()
 
@@ -204,14 +257,29 @@ def clean_release_body(body: Optional[str], default_text: str) -> str:
 
 def load_source_manifest(path: str) -> Dict[str, Any]:
     """Loads and validates the source JSON manifest."""
+    is_dtkace = "dtkace" in os.path.basename(path).lower()
+
     if not os.path.exists(path):
         logger.info("Manifest '%s' not found. Creating standard initial manifest.", path)
+        if is_dtkace:
+            return {
+                "name": f"{GITHUB_OWNER} DTKACE Apps",
+                "identifier": f"com.{GITHUB_OWNER.lower()}.dtkace.source",
+                "website": f"https://{GITHUB_OWNER.lower()}.github.io/dexter-sources/?source=dtkace",
+                "subtitle": "Official SideStore, Feather, and AltStore Source for DTKACE Plus.",
+                "description": "High-performance curated iOS app: DTKACE Plus with YTKACE tweak engine & 12 modular extensions.",
+                "tintColor": "#E36678",
+                "iconURL": f"https://raw.githubusercontent.com/{GITHUB_OWNER}/dexter-sources/main/icons/dtkace.png",
+                "headerURL": f"https://raw.githubusercontent.com/{GITHUB_OWNER}/dexter-sources/main/icons/dtkace.png",
+                "apps": [],
+                "news": [],
+            }
         return {
             "name": f"{GITHUB_OWNER} Apps",
             "identifier": f"com.{GITHUB_OWNER.lower()}.source",
             "website": f"https://{GITHUB_OWNER.lower()}.github.io/dexter-sources/",
             "subtitle": "Official SideStore, Feather, and AltStore Source.",
-            "description": "High-performance curated iOS apps including DexTube and DexTube Music.",
+            "description": "High-performance curated iOS apps including DTLite Plus and DexTube Music.",
             "tintColor": "#007AFF",
             "iconURL": f"https://github.com/{GITHUB_OWNER}.png",
             "headerURL": f"https://github.com/{GITHUB_OWNER}.png",
@@ -225,7 +293,7 @@ def load_source_manifest(path: str) -> Dict[str, Any]:
     try:
         data = json.loads(raw_text)
     except json.JSONDecodeError as err:
-        # Gracefully handle common manual editing errors (e.g. trailing commas before ] or })
+        # Gracefully handle common manual editing errors
         cleaned = re.sub(r",\s*([\]\}])", r"\1", raw_text)
         try:
             data = json.loads(cleaned)
@@ -241,6 +309,7 @@ def load_source_manifest(path: str) -> Dict[str, Any]:
 def save_source_manifest_atomic(path: str, data: Dict[str, Any]) -> None:
     """Writes the manifest safely to a temp file first, then atomically replaces target."""
     dir_name = os.path.dirname(os.path.abspath(path))
+    os.makedirs(dir_name, exist_ok=True)
     with tempfile.NamedTemporaryFile("w", dir=dir_name, delete=False, encoding="utf-8") as tf:
         temp_name = tf.name
         json.dump(data, tf, indent=2, ensure_ascii=False)
@@ -267,10 +336,19 @@ def generate_news_item(
     else:
         formatted_date = datetime.now(timezone.utc).strftime("%Y-%m-%d")
     color = tint_color if tint_color.startswith("#") else f"#{tint_color}"
-    news_url = url or f"https://dexterdevkh.github.io/dexter-sources/?app={bundle_id}"
+
+    clean_bundle = bundle_id.replace(".", "-")
+    clean_ver = version.replace(".", "-")
+    if "kace" in app_name.lower():
+        news_id = f"release-{clean_bundle}-dtkace-{clean_ver}"
+        news_url = url or "https://dexterdevkh.github.io/dexter-sources/?source=dtkace"
+    else:
+        news_id = f"release-{clean_bundle}-{clean_ver}"
+        news_url = url or f"https://dexterdevkh.github.io/dexter-sources/?app={bundle_id}"
+
     return {
         "title": f"{app_name} v{version} Released",
-        "identifier": f"release-{bundle_id.replace('.', '-')}-{version.replace('.', '-')}",
+        "identifier": news_id,
         "caption": f"Version {version} is now available with the latest features, enhancements, and iOS 18 fixes.",
         "tintColor": color,
         "imageURL": icon_url,
@@ -289,15 +367,33 @@ def update_manifest(
     update_news: bool = True,
 ) -> int:
     """
-    Main reconciliation loop that fetches GitHub releases and syncs with sources.json.
+    Main reconciliation loop that fetches GitHub releases and syncs with specified manifest.
     Returns the number of updated apps.
     """
     manifest = load_source_manifest(source_path)
+    base_name = os.path.basename(source_path).lower()
+    is_dtkace = "dtkace" in base_name
+
+    # Select which apps should be included in this manifest file
+    active_configs = [
+        conf for conf in APP_CONFIGS
+        if any(target in base_name for target in conf.target_manifests)
+    ]
+    if not active_configs:
+        # Fallback: if not explicitly mapped, check if dtkace
+        if is_dtkace:
+            active_configs = [conf for conf in APP_CONFIGS if "kace" in conf.name.lower()]
+        else:
+            active_configs = [conf for conf in APP_CONFIGS if "kace" not in conf.name.lower()]
 
     # Refresh owner metadata
     avatar_url = get_profile_avatar(GITHUB_OWNER, token)
-    manifest["iconURL"] = avatar_url or manifest.get("iconURL", "https://avatars.githubusercontent.com/u/274127037?v=4")
-    manifest["headerURL"] = avatar_url or manifest.get("headerURL", manifest["iconURL"])
+    if is_dtkace:
+        manifest["iconURL"] = manifest.get("iconURL", f"https://raw.githubusercontent.com/{GITHUB_OWNER}/dexter-sources/main/icons/dtkace.png")
+        manifest["headerURL"] = manifest.get("headerURL", manifest["iconURL"])
+    else:
+        manifest["iconURL"] = avatar_url or manifest.get("iconURL", f"https://github.com/{GITHUB_OWNER}.png")
+        manifest["headerURL"] = avatar_url or manifest.get("headerURL", manifest["iconURL"])
     manifest.setdefault("news", [])
 
     existing_apps_by_id: Dict[str, Dict[str, Any]] = {
@@ -307,8 +403,8 @@ def update_manifest(
     updated_count = 0
     new_announcements: List[Dict[str, Any]] = []
 
-    for conf in APP_CONFIGS:
-        logger.info("Checking repository %s (%s)...", conf.repo, conf.name)
+    for conf in active_configs:
+        logger.info("[%s] Checking repository %s (%s)...", base_name, conf.repo, conf.name)
         releases_url = f"https://api.github.com/repos/{conf.repo}/releases?per_page=15"
         releases = fetch_json(releases_url, token)
 
@@ -418,9 +514,19 @@ def update_manifest(
 
             # Ensure the latest release always has an announcement in the news list
             if update_news and max_news > 0:
-                expected_news_id = f"release-{conf.bundle_id.replace('.', '-')}-{latest_version['version'].replace('.', '-')}"
+                clean_bundle = conf.bundle_id.replace(".", "-")
+                clean_ver = latest_version['version'].replace('.', '-')
+                if "kace" in conf.name.lower():
+                    expected_news_ids = {
+                        f"release-{clean_bundle}-dtkace-{clean_ver}",
+                        f"release-dtkace-{clean_ver}",
+                    }
+                else:
+                    expected_news_ids = {
+                        f"release-{clean_bundle}-{clean_ver}",
+                    }
                 has_announcement = any(
-                    isinstance(n, dict) and n.get("identifier") == expected_news_id
+                    isinstance(n, dict) and n.get("identifier") in expected_news_ids
                     for n in manifest.get("news", [])
                 )
                 if not has_announcement:
@@ -439,9 +545,9 @@ def update_manifest(
                 existing_news.insert(0, ann)
                 existing_ids.add(ann["identifier"])
 
-        # If existing_news is empty, generate news items for the latest release of each app
+        # If existing_news is empty, generate news items for latest releases
         if not existing_news:
-            for conf in APP_CONFIGS:
+            for conf in active_configs:
                 app_entry = existing_apps_by_id.get(conf.bundle_id)
                 if not app_entry:
                     continue
@@ -463,28 +569,45 @@ def update_manifest(
                     if len(existing_news) >= max_news:
                         break
 
-    # Rebuild canonical manifest in StikDebug format
+    # Rebuild canonical manifest in AltStore/SideStore format
+    if is_dtkace:
+        default_name = f"{GITHUB_OWNER} DTKACE Apps"
+        default_identifier = f"com.{GITHUB_OWNER.lower()}.dtkace.source"
+        default_website = f"https://{GITHUB_OWNER.lower()}.github.io/dexter-sources/?source=dtkace"
+        default_subtitle = "Official SideStore, Feather, and AltStore Source for DTKACE Plus."
+        default_desc = "High-performance curated iOS app: DTKACE Plus with YTKACE tweak engine & 12 modular extensions."
+        default_tint = "#E36678"
+        default_icon = f"https://raw.githubusercontent.com/{GITHUB_OWNER}/dexter-sources/main/icons/dtkace.png"
+    else:
+        default_name = f"{GITHUB_OWNER} Apps"
+        default_identifier = f"com.{GITHUB_OWNER.lower()}.source"
+        default_website = f"https://{GITHUB_OWNER.lower()}.github.io/dexter-sources/"
+        default_subtitle = "Official SideStore, Feather, and AltStore Source."
+        default_desc = "High-performance curated iOS apps including DTLite Plus and DexTube Music."
+        default_tint = "#007AFF"
+        default_icon = avatar_url or f"https://github.com/{GITHUB_OWNER}.png"
+
     canonical_manifest = {
-        "name": manifest.get("name", f"{GITHUB_OWNER} Apps"),
-        "identifier": manifest.get("identifier", f"com.{GITHUB_OWNER.lower()}.source"),
-        "website": manifest.get("website", f"https://{GITHUB_OWNER.lower()}.github.io/dexter-sources/"),
-        "subtitle": manifest.get("subtitle", "Official SideStore, Feather, and AltStore Source."),
-        "description": manifest.get("description", "High-performance curated iOS apps including DexTube and DexTube Music."),
-        "tintColor": manifest.get("tintColor", "#007AFF"),
-        "iconURL": avatar_url or manifest.get("iconURL", f"https://github.com/{GITHUB_OWNER}.png"),
-        "headerURL": manifest.get("headerURL", avatar_url or f"https://github.com/{GITHUB_OWNER}.png"),
+        "name": manifest.get("name", default_name),
+        "identifier": manifest.get("identifier", default_identifier),
+        "website": manifest.get("website", default_website),
+        "subtitle": manifest.get("subtitle", default_subtitle),
+        "description": manifest.get("description", default_desc),
+        "tintColor": manifest.get("tintColor", default_tint),
+        "iconURL": manifest.get("iconURL", default_icon),
+        "headerURL": manifest.get("headerURL", manifest.get("iconURL", default_icon)),
         "apps": manifest.get("apps", []),
         "news": existing_news[:max_news],
     }
 
     if dry_run:
-        logger.info("[DRY RUN] Would write updated manifest. Total modified: %d", updated_count)
+        logger.info("[DRY RUN] Would write updated manifest '%s'. Total modified: %d", source_path, updated_count)
         print(json.dumps(canonical_manifest, indent=2))
         return updated_count
 
     save_source_manifest_atomic(source_path, canonical_manifest)
     update_readme_table("README.md", canonical_manifest)
-    logger.info("Manifest sync complete. Total apps updated: %d", updated_count)
+    logger.info("Manifest '%s' sync complete. Total apps updated: %d", source_path, updated_count)
     return updated_count
 
 
@@ -504,9 +627,10 @@ def update_readme_table(readme_path: str = "README.md", manifest: Optional[Dict[
         if not name or not version:
             continue
 
-        # Match table row for this app and update the `v...` version tag
+        # Match table row for this app (handling optional "Plus" suffix) and update version tag
+        escaped_name = re.escape(name)
         pattern_ver = re.compile(
-            rf"(\|\s*<img[^\n]*\*\*{re.escape(name)}\*\*\s*\|\s*[^|]+\|\s*)`v[^`]+`"
+            rf"(\|\s*<img[^\n]*\*\*{escaped_name}\*\*\s*\|\s*[^|]+\|\s*)`v[^`]+`"
         )
         if pattern_ver.search(content):
             new_content = pattern_ver.sub(rf"\g<1>`v{version}`", content)
@@ -523,10 +647,13 @@ def update_readme_table(readme_path: str = "README.md", manifest: Optional[Dict[
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        description="Synchronize GitHub releases into SideStore/AltStore sources.json manifest."
+        description="Synchronize GitHub releases into SideStore/AltStore sources manifest."
     )
     parser.add_argument(
-        "-s", "--source", default="sources.json", help="Path to source manifest JSON file (default: sources.json)"
+        "-s", "--source", default="sources.json", help="Path to source manifest JSON file (or 'all' for all manifests)"
+    )
+    parser.add_argument(
+        "--all", action="store_true", help="Update all configured sources (sources.json, dtkace.json)"
     )
     parser.add_argument(
         "-m", "--max-versions", type=int, default=3, help="Maximum number of historical versions to keep (default: 3)"
@@ -549,14 +676,23 @@ def parse_args() -> argparse.Namespace:
 if __name__ == "__main__":
     args = parse_args()
     try:
-        updated = update_manifest(
-            source_path=args.source,
-            max_versions=args.max_versions,
-            max_news=args.max_news,
-            token=args.token,
-            dry_run=args.dry_run,
-            update_news=not args.no_news,
-        )
+        targets: List[str] = []
+        if args.all or args.source.lower() == "all":
+            targets = ["sources.json", "dtkace.json"]
+        else:
+            targets = [args.source]
+
+        total_updated = 0
+        for target in targets:
+            total_updated += update_manifest(
+                source_path=target,
+                max_versions=args.max_versions,
+                max_news=args.max_news,
+                token=args.token,
+                dry_run=args.dry_run,
+                update_news=not args.no_news,
+            )
+
         sys.exit(0)
     except Exception as exc:
         logger.exception("Fatal error during manifest update: %s", exc)

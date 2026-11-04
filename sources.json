@@ -3,20 +3,20 @@
   "identifier": "com.dexterdevkh.source",
   "website": "https://dexterdevkh.github.io/dexter-sources/",
   "subtitle": "Official SideStore, Feather, and AltStore Source.",
-  "description": "High-performance curated iOS apps including DTLite Plus, DexTube Music, and DTKACE.",
+  "description": "High-performance curated iOS apps including DTLite Plus and DexTube Music.",
   "tintColor": "#007AFF",
   "iconURL": "https://avatars.githubusercontent.com/u/274127037?v=4",
   "headerURL": "https://avatars.githubusercontent.com/u/274127037?v=4",
   "apps": [
     {
-      "name": "DexTube",
+      "name": "DTLite Plus",
       "bundleIdentifier": "com.google.ios.youtube",
       "developerName": "DexterDevKH",
       "subtitle": "Enhanced YouTube client with ad-blocking & background play",
-      "localizedDescription": "Official iOS release of DTLite (DexTube) featuring ad-blocking, background playback, and SponsorBlock.",
+      "localizedDescription": "Official iOS release of DTLite Plus featuring ad-blocking, background playback, and SponsorBlock.",
       "iconURL": "https://raw.githubusercontent.com/DexterDevKH/dexter-sources/main/icons/dtlite.png",
       "tintColor": "#007AFF",
-      "size": 151151312,
+      "size": 151151311,
       "screenshots": {
         "iphone": [
           {
@@ -78,8 +78,8 @@
           "version": "21.44.4",
           "date": "2026-11-03",
           "localizedDescription": "Version 21.44.4 release.",
-          "downloadURL": "https://github.com/DexterDevKH/DTLite/releases/download/ytp-v6.0-21.44.4/DexTubePlus_v6.0_21.44.4.ipa",
-          "size": 151151312,
+          "downloadURL": "https://github.com/DexterDevKH/DTLite/releases/download/ytp-v6.0-21.44.4/DTLitePlus_v6.0_21.44.4.ipa",
+          "size": 151151311,
           "minOSVersion": "16.0"
         }
       ]

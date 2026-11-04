@@ -516,6 +516,103 @@ body {
     opacity: 0.7;
 }
 
+/* ── Source Selector Switcher ── */
+.source-selector-section {
+    margin-bottom: 20px;
+    position: relative;
+    z-index: 2;
+}
+
+.source-selector-tabs {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+    background: var(--card-bg);
+    padding: 6px;
+    border-radius: 18px;
+    border: 1px solid var(--card-border);
+}
+
+.source-selector-tab {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 10px 14px;
+    border-radius: 14px;
+    border: 1px solid transparent;
+    background: transparent;
+    color: var(--text-secondary);
+    cursor: pointer;
+    text-align: left;
+    transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, color 0.2s ease;
+    font-family: inherit;
+    width: 100%;
+}
+
+.source-selector-tab:hover {
+    background: var(--card-hover-bg);
+    color: var(--text-primary);
+}
+
+.source-selector-tab.active {
+    background: var(--surface-card);
+    border-color: var(--card-border);
+    color: var(--text-primary);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.source-selector-tab .tab-header-row {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    width: 100%;
+}
+
+.source-selector-tab .tab-title {
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.source-selector-tab .tab-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.source-selector-tab .tab-dot.dot-main {
+    background: #007AFF;
+    box-shadow: 0 0 8px rgba(0, 122, 255, 0.5);
+}
+
+.source-selector-tab .tab-dot.dot-dtkace {
+    background: #E36678;
+    box-shadow: 0 0 8px rgba(227, 102, 120, 0.5);
+}
+
+.source-selector-tab .tab-sub {
+    font-size: 0.68rem;
+    color: var(--text-muted);
+    margin-top: 3px;
+    padding-left: 15px;
+    font-weight: 500;
+}
+
+.source-selector-tab.active .tab-sub {
+    color: var(--accent-indigo-bright);
+    font-weight: 600;
+}
+
+@media (max-width: 440px) {
+    .source-selector-tabs {
+        grid-template-columns: 1fr;
+    }
+}
+
 /* ── Bento Installation Container ── */
 .bento-container {
     margin-bottom: 24px;

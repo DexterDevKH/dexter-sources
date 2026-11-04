@@ -1,0 +1,81 @@
+{
+  "name": "DexterDevKH DTKACE Apps",
+  "identifier": "com.dexterdevkh.dtkace.source",
+  "website": "https://dexterdevkh.github.io/dexter-sources/?source=dtkace",
+  "subtitle": "Official SideStore, Feather, and AltStore Source for DTKACE Plus.",
+  "description": "High-performance curated iOS app: DTKACE Plus with YTKACE tweak engine & 12 modular extensions.",
+  "tintColor": "#E36678",
+  "iconURL": "https://avatars.githubusercontent.com/u/274127037?v=4",
+  "headerURL": "https://avatars.githubusercontent.com/u/274127037?v=4",
+  "apps": [
+    {
+      "name": "DTKACE Plus",
+      "bundleIdentifier": "com.google.ios.youtube",
+      "developerName": "DexterDevKH",
+      "subtitle": "Enhanced YouTube with YTKACE tweak engine & 12 modular extensions",
+      "localizedDescription": "Official iOS release of DTKACE Plus featuring YTKACE, up to 4K media downloads, Picture-in-Picture, SponsorBlock, dislike restoration, and pure dark OLED mode.",
+      "iconURL": "https://raw.githubusercontent.com/DexterDevKH/dexter-sources/main/icons/dtkace.png",
+      "tintColor": "#E36678",
+      "size": 134704280,
+      "screenshots": {
+        "iphone": [
+          {
+            "width": 923,
+            "height": 2000,
+            "imageURL": "https://raw.githubusercontent.com/itzzace/ytkace/main/screenshots/source/glass-home.jpg"
+          },
+          {
+            "width": 923,
+            "height": 2000,
+            "imageURL": "https://raw.githubusercontent.com/itzzace/ytkace/main/screenshots/source/video-player.png"
+          },
+          {
+            "width": 923,
+            "height": 2000,
+            "imageURL": "https://raw.githubusercontent.com/itzzace/ytkace/main/screenshots/source/download-library.jpg"
+          },
+          {
+            "width": 923,
+            "height": 2000,
+            "imageURL": "https://raw.githubusercontent.com/itzzace/ytkace/main/screenshots/source/glass-settings.jpg"
+          },
+          {
+            "width": 923,
+            "height": 2000,
+            "imageURL": "https://raw.githubusercontent.com/itzzace/ytkace/main/screenshots/source/sponsorblock-settings.jpg"
+          }
+        ]
+      },
+      "appPermissions": {
+        "entitlements": [],
+        "privacy": {
+          "NSBackgroundAudioUsageDescription": "Allows audio and video playback in background and Picture-in-Picture.",
+          "NSBackgroundFetchUsageDescription": "Allows background updates and download synchronization.",
+          "NSFaceIDUsageDescription": "Face ID is required to authenticate."
+        }
+      },
+      "versions": [
+        {
+          "version": "21.44.4",
+          "date": "2026-11-04",
+          "localizedDescription": "Version 21.44.4 release.",
+          "downloadURL": "https://github.com/DexterDevKH/DTKACE/releases/download/dtkaceplus-v1.1.5-21.44.4/DTKACEPlus_v1.1.5_21.44.4.ipa",
+          "size": 134704280,
+          "minOSVersion": "15.0"
+        }
+      ]
+    }
+  ],
+  "news": [
+    {
+      "title": "DTKACE Plus v21.44.4 Released",
+      "identifier": "release-com-google-ios-youtube-dtkace-21-44-4",
+      "caption": "Version 21.44.4 is now available with the latest features, enhancements, and iOS 18 fixes.",
+      "tintColor": "#E36678",
+      "imageURL": "https://raw.githubusercontent.com/DexterDevKH/dexter-sources/main/icons/dtkace.png",
+      "url": "https://github.com/DexterDevKH/DTKACE/releases/tag/dtkaceplus-v1.1.5-21.44.4",
+      "date": "2026-11-04",
+      "notify": true
+    }
+  ]
+}
