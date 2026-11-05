@@ -92,7 +92,7 @@
       "localizedDescription": "Official iOS release of DTMusicUltimate (DexTube Music) featuring background audio, ad-free listening, and lossless presets.",
       "iconURL": "https://raw.githubusercontent.com/DexterDevKH/dexter-sources/main/icons/dtmusicultimate.png",
       "tintColor": "#FF2D55",
-      "size": 107672160,
+      "size": 108288866,
       "screenshots": {
         "iphone": [
           {
@@ -131,6 +131,14 @@
       },
       "versions": [
         {
+          "version": "9.44.2",
+          "date": "2026-11-05",
+          "localizedDescription": "Version 9.44.2 release.",
+          "downloadURL": "https://github.com/DexterDevKH/DTMusicUltimate/releases/download/dtm-9.44.2/DTMusicUltimate_9.44.2.ipa",
+          "size": 108288866,
+          "minOSVersion": "16.0"
+        },
+        {
           "version": "9.43.2",
           "date": "2026-10-26",
           "localizedDescription": "Version 9.43.2 release.",
@@ -145,19 +153,21 @@
           "downloadURL": "https://github.com/DexterDevKH/DTMusicUltimate/releases/download/dtm-9.42.2/DTMusicUltimate_9.42.2.ipa",
           "size": 107274691,
           "minOSVersion": "16.0"
-        },
-        {
-          "version": "9.41.2",
-          "date": "2026-10-18",
-          "localizedDescription": "Version 9.41.2 release.",
-          "downloadURL": "https://github.com/DexterDevKH/DTMusicUltimate/releases/download/dtm-9.41.2/DTMusicUltimate_9.41.2.ipa",
-          "size": 107008594,
-          "minOSVersion": "16.0"
         }
       ]
     }
   ],
   "news": [
+    {
+      "title": "DexTube Music v9.44.2 Released",
+      "identifier": "release-com-google-ios-youtubemusic-9-44-2",
+      "caption": "Version 9.44.2 is now available with the latest features, enhancements, and iOS 18 fixes.",
+      "tintColor": "#FF2D55",
+      "imageURL": "https://raw.githubusercontent.com/DexterDevKH/dexter-sources/main/icons/dtmusicultimate.png",
+      "url": "https://github.com/DexterDevKH/DTMusicUltimate/releases/tag/dtm-9.44.2",
+      "date": "2026-11-05",
+      "notify": true
+    },
     {
       "title": "DexTube Music v9.43.2 Released",
       "identifier": "release-com-google-ios-youtubemusic-9-43-2",
