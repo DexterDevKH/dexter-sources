@@ -21,7 +21,7 @@ A high-performance, curated repository distributing optimized, feature-packed iO
 | :--- | :--- | :--- | :--- | :--- |
 | <img src="icons/dtlite.png" width="40" height="40" style="border-radius:10px" alt="DTLite Plus" /><br>**DTLite Plus** | Video & Media | `v21.44.4` | Ad-blocking, SponsorBlock, Background Playback, PiP, OLED Pure Dark Mode | [Download IPA](https://github.com/DexterDevKH/DTLite/releases/latest) |
 | <img src="icons/dtmusicultimate.png" width="40" height="40" style="border-radius:10px" alt="DexTube Music" /><br>**DexTube Music** | Music & Audio | `v9.44.2` | Lossless EQ, Ad-Free Streaming, Real-time Lyrics, Offline Playback | [Download IPA](https://github.com/DexterDevKH/DTMusicUltimate/releases/latest) |
-| <img src="icons/dtkace.png" width="40" height="40" style="border-radius:10px" alt="DTKACE Plus" /><br>**DTKACE Plus** | Video & Media | `v21.44.4` | YTKACE Engine, 4K Downloader, SponsorBlock, PiP, Dislike Counter, Volume Boost | [Download IPA](https://github.com/DexterDevKH/DTKACE/releases/latest) |
+| <img src="icons/dtkace.png" width="40" height="40" style="border-radius:10px" alt="DTKACE Plus" /><br>**DTKACE Plus** | Video & Media | `v1.1.5-unknown` | YTKACE Engine, 4K Downloader, SponsorBlock, PiP, Dislike Counter, Volume Boost | [Download IPA](https://github.com/DexterDevKH/DTKACE/releases/latest) |
 
 ---
 

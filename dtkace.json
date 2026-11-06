@@ -16,7 +16,7 @@
       "localizedDescription": "Official iOS release of DTKACE Plus featuring YTKACE, up to 4K media downloads, Picture-in-Picture, SponsorBlock, dislike restoration, and pure dark OLED mode.",
       "iconURL": "https://raw.githubusercontent.com/DexterDevKH/dexter-sources/main/icons/dtkace.png",
       "tintColor": "#E36678",
-      "size": 134730742,
+      "size": 101494789,
       "screenshots": {
         "iphone": [
           {
@@ -56,6 +56,14 @@
       },
       "versions": [
         {
+          "version": "1.1.5-unknown",
+          "date": "2026-11-06",
+          "localizedDescription": "Version 1.1.5-unknown release.",
+          "downloadURL": "https://github.com/DexterDevKH/DTKACE/releases/download/dtkaceplus-v1.1.5-unknown/DTKACEPlus_v1.1.5_unknown.ipa",
+          "size": 101494789,
+          "minOSVersion": "15.0"
+        },
+        {
           "version": "21.44.4",
           "date": "2026-11-04",
           "localizedDescription": "Version 21.44.4 release.",
@@ -67,6 +75,16 @@
     }
   ],
   "news": [
+    {
+      "title": "DTKACE Plus v1.1.5-unknown Released",
+      "identifier": "release-com-google-ios-youtube-dtkace-1-1-5-unknown",
+      "caption": "Version 1.1.5-unknown is now available with the latest features, enhancements, and iOS 18 fixes.",
+      "tintColor": "#E36678",
+      "imageURL": "https://raw.githubusercontent.com/DexterDevKH/dexter-sources/main/icons/dtkace.png",
+      "url": "https://github.com/DexterDevKH/DTKACE/releases/tag/dtkaceplus-v1.1.5-unknown",
+      "date": "2026-11-06",
+      "notify": true
+    },
     {
       "title": "DTKACE Plus v21.44.4 Released",
       "identifier": "release-com-google-ios-youtube-dtkace-21-44-4",
