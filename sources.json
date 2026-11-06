@@ -92,7 +92,7 @@
       "localizedDescription": "Official iOS release of DTMusicUltimate (DexTube Music) featuring background audio, ad-free listening, and lossless presets.",
       "iconURL": "https://raw.githubusercontent.com/DexterDevKH/dexter-sources/main/icons/dtmusicultimate.png",
       "tintColor": "#FF2D55",
-      "size": 108288860,
+      "size": 108288861,
       "screenshots": {
         "iphone": [
           {
@@ -135,7 +135,7 @@
           "date": "2026-11-05",
           "localizedDescription": "Version 9.44.2 release.",
           "downloadURL": "https://github.com/DexterDevKH/DTMusicUltimate/releases/download/dtm-9.44.2/DTMusicUltimate_9.44.2.ipa",
-          "size": 108288860,
+          "size": 108288861,
           "minOSVersion": "16.0"
         },
         {
