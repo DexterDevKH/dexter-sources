@@ -16,7 +16,7 @@
       "localizedDescription": "Official iOS release of DTKACE Plus featuring YTKACE, up to 4K media downloads, Picture-in-Picture, SponsorBlock, dislike restoration, and pure dark OLED mode.",
       "iconURL": "https://raw.githubusercontent.com/DexterDevKH/dexter-sources/main/icons/dtkace.png",
       "tintColor": "#E36678",
-      "size": 135556173,
+      "size": 135641326,
       "screenshots": {
         "iphone": [
           {
@@ -55,6 +55,14 @@
         }
       },
       "versions": [
+        {
+          "version": "21.45.4",
+          "date": "2026-11-11",
+          "localizedDescription": "Version 21.45.4 release.",
+          "downloadURL": "https://github.com/DexterDevKH/DTKACE/releases/download/dtkaceplus-v1.1.7-21.45.4/DTKACEPlus_v1.1.7_21.45.4.ipa",
+          "size": 135641326,
+          "minOSVersion": "15.0"
+        },
         {
           "version": "21.45.4",
           "date": "2026-11-09",
