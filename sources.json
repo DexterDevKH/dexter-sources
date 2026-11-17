@@ -83,6 +83,14 @@
           "minOSVersion": "16.0"
         },
         {
+          "version": "21.46.3",
+          "date": "2026-11-17",
+          "localizedDescription": "Version 21.46.3 release.",
+          "downloadURL": "https://github.com/DexterDevKH/DTLite/releases/download/ytp-v1.1.8-21.46.3/DTLitePlus_v1.1.8_21.46.3.ipa",
+          "size": 137505404,
+          "minOSVersion": "16.0"
+        },
+        {
           "version": "21.44.4",
           "date": "2026-11-03",
           "localizedDescription": "Version 21.44.4 release.",
